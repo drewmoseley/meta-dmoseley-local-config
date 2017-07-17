@@ -1,9 +1,9 @@
 # meta-dmoseley-local-config
-Yocto layer for my local WIP customizations.
+Yocto layers for my local WIP customizations.
 
 ## Description
 
-This is a general Yocto layer containing recipes and other changes that may not ever be submitted back upstream.  This is mainly to allow me to do extra changes that I find useful but are not generic.
+This repository contains Yocto layers containing recipes and other changes that may not ever be submitted back upstream.  This is mainly to allow me to do extra changes that I find useful but are not generic.
 
 ## Dependencies
 
