@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Custom script to be called by the Mender client when a new artifact
+# is ready to be committed.  This inserts a 30 second delay to allow
+# the user time to log in and manually create the /tmp/force-rollback
+# file to simulate a failed sanity check
+#
+
+log() {
+    echo "stderr:$*" >&2
+}
+
+log "$(cat /etc/mender/artifact_info): $(basename "$0") was called!"
+
+sleep 30
+
+RC=0
+if [ -e /tmp/force-rollback ]; then
+    RC=1
+    log "Forcing a commit failure.  Failed sanity check."
+else
+    log "Successful sanity check.  Allowing commit to proceed."
+fi
+
+log "Returning $RC from $0 state script"
+exit $RC
