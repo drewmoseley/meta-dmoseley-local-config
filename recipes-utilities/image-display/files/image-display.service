@@ -1,0 +1,12 @@
+[Unit]
+Description=Mender Demo mpv image display
+
+[Service]
+Type=idle
+User=root
+Group=root
+Environment="DISPLAY=:0"
+ExecStart=/usr/bin/mpv --fullscreen --loop=inf /etc/demo-image.png
+
+[Install]
+WantedBy=multi-user.target
