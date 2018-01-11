@@ -1,5 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
+# Disable systemd-networkd if we are using connman
+PACKAGECONFIG_remove += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-connman','networkd','',d)}"
+
 # Avoid issues with time being out of sync on first boot.  By default,
 # systemd uses its build time as the epoch. When systemd is launched
 # on a system without a real time clock, this time will be detected as
@@ -9,13 +12,13 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 EXTRA_OECONF += "--with-time-epoch=0"
 
 SRC_URI += " \
-    file://eth.network \
-    file://wlan.network \
+    ${@bb.utils.contains('PACKAGECONFIG','networkd','file://eth.network', '', d)} \
+    ${@bb.utils.contains('PACKAGECONFIG','networkd','file://wlan.network', '', d)} \
 "
 
 FILES_${PN} += " \
-    ${sysconfdir}/systemd/network/eth.network \
-    ${sysconfdir}/systemd/network/wlan.network \
+    ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/eth.network', '', d)} \
+    ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/wlan.network', '', d)} \
 "
 
 
