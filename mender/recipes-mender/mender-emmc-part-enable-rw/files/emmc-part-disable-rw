@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo 1 > /sys/block/mmcblk0boot1/force_ro
+
+# Return 0 to indicate success
+exit 0
