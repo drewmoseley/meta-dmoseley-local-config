@@ -16,7 +16,7 @@ python() {
         'dmoseley-mender-migrate-to-hosted',  # Migrate from production to hosted
     }
 
-    for feature in d.getVar('DMOSELEY_FEATURES', True).split():
+    for feature in d.getVar('DMOSELEY_FEATURES').split():
         if feature.startswith("dmoseley-"):
             if feature not in dmoseley_local_features:
                 bb.fatal("%s from DMOSELEY_FEATURES is not a valid local feature."
