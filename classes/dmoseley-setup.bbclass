@@ -6,7 +6,7 @@ python() {
         'dmoseley-connman',            # Use connman rather than systemd-networkd; only valid for systemd based configs
     }
 
-    for feature in d.getVar('DISTRO_FEATURES').split():
+    for feature in d.getVar('DISTRO_FEATURES', True).split():
         if feature.startswith("dmoseley-"):
             if feature not in dmoseley_local_features:
                 bb.fatal("%s from DISTRO_FEATURES is not a valid local feature."
