@@ -17,13 +17,19 @@ do_install_append () {
             # Setup my standard wpa_supplicant.conf file in /etc
             install -D -m 600 /work/dmoseley/local/wpa_supplicant.conf ${D}${sysconfdir}/
         elif ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-            # systemd w/o connman (which implies networkd)
-            # Setup my standard wpa_supplicant.conf file in /etc/wpa_supplicant/
-            install -d ${D}${sysconfdir}/wpa_supplicant/
-            install -D -m 600 /work/dmoseley/local/wpa_supplicant.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-nl80211-wlan0.conf
-            # Enable wlan0 systemd unit file for autostart
-            install -d ${D}${sysconfdir}/systemd/system//multi-user.target.wants/
-            ln -s ${systemd_unitdir}/system/wpa_supplicant-nl80211@.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/wpa_supplicant-nl80211@wlan0.service
+            if ${@bb.utils.contains('DISTRO_FEATURES', 'dmoseley-networkd', 'true', 'false', d)}; then
+                # systemd-networkd
+                # Setup my standard wpa_supplicant.conf file in /etc/wpa_supplicant/
+                install -d ${D}${sysconfdir}/wpa_supplicant/
+                install -D -m 600 /work/dmoseley/local/wpa_supplicant.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-nl80211-wlan0.conf
+                # Enable wlan0 systemd unit file for autostart
+                install -d ${D}${sysconfdir}/systemd/system//multi-user.target.wants/
+                ln -s ${systemd_unitdir}/system/wpa_supplicant-nl80211@.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/wpa_supplicant-nl80211@wlan0.service
+            else
+                # Assume networkmanager
+                # Setup my standard wpa_supplicant.conf file in /etc
+                install -D -m 600 /work/dmoseley/local/wpa_supplicant.conf ${D}${sysconfdir}/
+            fi
         else
             # no connman and no systemd (which implies sysvinit)
             # Setup my standard wpa_supplicant.conf file in /etc

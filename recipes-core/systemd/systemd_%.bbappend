@@ -1,7 +1,9 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-# Disable systemd-networkd if we are using connman
+# Configure systemd-networkd as appropriate
 PACKAGECONFIG_remove += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-connman','networkd','',d)}"
+PACKAGECONFIG_remove += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-networkmanager','networkd','',d)}"
+PACKAGECONFIG_append += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-networkd','networkd resolved','',d)}"
 
 # Avoid issues with time being out of sync on first boot.  By default,
 # systemd uses its build time as the epoch. When systemd is launched
