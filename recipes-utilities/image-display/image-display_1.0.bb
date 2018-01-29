@@ -22,4 +22,6 @@ do_install() {
   install -m 0644 ${WORKDIR}/${PN}.service ${D}/${systemd_unitdir}/system
   install -d ${D}/${sysconfdir}/
   install -m 0644 ${WORKDIR}/demo-image-unlocked.png ${D}/${sysconfdir}/
+  install -m 0644 ${WORKDIR}/demo-image-locked.png ${D}/${sysconfdir}/
+  ln -s demo-image-unlocked.png  ${D}/${sysconfdir}/demo-image.png
 }
