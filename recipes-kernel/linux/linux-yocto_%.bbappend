@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append_beaglebone = " \
+SRC_URI_append_beaglebone-yocto = " \
 	file://wifi-drivers.cfg \
 "
 SRC_URI_append_raspberrypi2 = " \

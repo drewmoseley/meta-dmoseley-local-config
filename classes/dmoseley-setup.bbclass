@@ -64,7 +64,7 @@ IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-n
 DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
 IMAGE_INSTALL_append_dmoseley-wifi = " \
     iw wpa-supplicant \
-    ${@bb.utils.contains('MACHINE', 'beaglebone', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
     ${@bb.utils.contains('MACHINE', 'colibri-imx7', 'kernel-module-rt2500usb kernel-module-rtl8192cu kernel-module-r8188eu linux-firmware-ralink linux-firmware-rtl8192cu linux-firmware-rtl8188 linux-firmware-rtl8188eu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'colibri-imx7-mender', 'kernel-module-rt2500usb kernel-module-rtl8192cu kernel-module-r8188eu linux-firmware-ralink linux-firmware-rtl8192cu linux-firmware-rtl8188 linux-firmware-rtl8188eu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'chip', 'linux-firmware-rtl8723 kernel-module-r8723bs rtl8723bs', '', d)} \
@@ -78,8 +78,8 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'up-board', 'linux-firmware-rtl8188 kernel-module-r8188eu', '', d)} \
 "
 
-KERNEL_DEVICETREE_append_beaglebone = " am335x-boneblack-wireless.dtb "
-IMAGE_BOOT_FILES_append_beaglebone = " am335x-boneblack-wireless.dtb "
+KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
+IMAGE_BOOT_FILES_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
 
 # Enable systemd if required
 DISTRO_FEATURES_append = " ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'systemd', '', d)} "
@@ -106,7 +106,7 @@ IMAGE_FSTYPES_REMOVE_MENDER = " \
 "
 IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ext4 tar.xz \
-    ${@bb.utils.contains("MACHINE", "beaglebone", "jffs2.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "beaglebone-yocto", "jffs2.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "rpi-sdimg.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
@@ -128,7 +128,7 @@ DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
 # Setup Mender disk sizes
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone ??= "1024"
+MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_up-board = "4096"
