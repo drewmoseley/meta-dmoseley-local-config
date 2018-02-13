@@ -53,3 +53,33 @@ DISTRO_FEATURES_remove_vexpress-qemu += " wifi"
 DISTRO_FEATURES_remove_vexpress-qemu-flash += " wifi"
 IMAGE_INSTALL_remove_vexpress-qemu += " iw wpa-supplicant"
 IMAGE_INSTALL_remove_vexpress-qemu-flash += " iw wpa-supplicant"
+
+# Cleanup FSTYPES
+IMAGE_FSTYPES_APPEND_MENDER = " \
+    ext4 \
+"
+IMAGE_FSTYPES_REMOVE_MENDER = " \
+    ext3 \
+    jffs2 jffs2.bz2 jffs2.gz jffs2.xz \
+    rpi-sdimg rpi-sdimg.bz2 rpi-sdimg.gz rpi-sdimg.xz rpi-sdimg.bmap \
+    sdcard sdcard.gz sdcard.bz2 sdcard.xz \
+    tar tar.bz2 tar.gz tar.xz \
+    teziimg.bz2 teziimg.gz teziimg.xz \
+    wic wic.bz2 wic.gz wic.xz wic.bmap \
+"
+IMAGE_FSTYPES_APPEND_COMMUNITY = " \
+    ext4 tar.xz \
+    ${@bb.utils.contains("MACHINE", "beaglebone", "jffs2.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "colibri-imx7", "sdcard.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "colibri-vf", "sdcard.bmap", "", d)} \
+    ${@bb.utils.contains("SOC_FAMILY", "rpi", "rpi-sdimg.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
+"
+IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
+    ext3 \
+    tar tar.bz2 tar.gz \
+    ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
+"
+
+IMAGE_FSTYPES_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)}"
+IMAGE_FSTYPES_remove += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
