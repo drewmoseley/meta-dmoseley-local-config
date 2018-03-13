@@ -23,6 +23,7 @@ FILES_${PN} += " \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/wlan.network', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','resolved','${sysconfdir}/resolv-conf.systemd', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','resolved','${sysconfdir}/resolv.conf', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES','dmoseley-localntp','${sysconfdir}/systemd/timesyncd.conf', '', d)} \
 "
 
 
@@ -40,5 +41,14 @@ do_install_append() {
 	    ln -s ../run/systemd/resolve/resolv.conf ${D}${sysconfdir}/resolv-conf.systemd
 	    ln -s ${sysconfdir}/resolv-conf.systemd ${D}${sysconfdir}/resolv.conf
         fi
+    fi
+    if ${@bb.utils.contains('DISTRO_FEATURES','dmoseley-localntp','true','false',d)}; then
+        install -d ${D}${sysconfdir}/systemd
+        cat >${D}${sysconfdir}/systemd/timesyncd.conf <<EOF
+[Time]
+NTP=${DMOSELEY_LOCAL_NTP_ADDRESS}
+FallbackNTP=time1.google.com time2.google.com time3.google.com time4.google.com
+EOF
+        chmod 0644 ${D}${sysconfdir}/systemd/timesyncd.conf
     fi
 }

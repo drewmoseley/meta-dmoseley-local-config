@@ -7,6 +7,7 @@ python() {
         'dmoseley-networkmanager',     # Use networkmanager
         'dmoseley-connman',            # Use connman
         'dmoseley-wifi',               # Use wifi and install device firmware blobs
+        'dmoseley-localntp',           # Use a custom local NTP server
     }
 
     for feature in d.getVar('DISTRO_FEATURES', True).split():
@@ -83,3 +84,5 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
 
 IMAGE_FSTYPES_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)}"
 IMAGE_FSTYPES_remove += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
+
+DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.1.36"
