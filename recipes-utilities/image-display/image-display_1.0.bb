@@ -17,11 +17,13 @@ FILES_${PN} += "${systemd_unitdir}/system/${PN}.service"
 RDEPENDS_${PN} = "mpv"
 LICENSE_FLAGS_WHITELIST += "commercial"
 
+IMAGE_DISPLAY_IMAGE_FILE ?= "demo-image-unlocked.png"
+
 do_install() {
   install -d ${D}/${systemd_unitdir}/system
   install -m 0644 ${WORKDIR}/${PN}.service ${D}/${systemd_unitdir}/system
   install -d ${D}/${sysconfdir}/
   install -m 0644 ${WORKDIR}/demo-image-unlocked.png ${D}/${sysconfdir}/
   install -m 0644 ${WORKDIR}/demo-image-locked.png ${D}/${sysconfdir}/
-  ln -s demo-image-unlocked.png  ${D}/${sysconfdir}/demo-image.png
+  ln -s ${IMAGE_DISPLAY_IMAGE_FILE}  ${D}/${sysconfdir}/demo-image.png
 }
