@@ -21,8 +21,6 @@ SRC_URI += " \
 FILES_${PN} += " \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/eth.network', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/wlan.network', '', d)} \
-    ${@bb.utils.contains('PACKAGECONFIG','resolved','${sysconfdir}/resolv-conf.systemd', '', d)} \
-    ${@bb.utils.contains('PACKAGECONFIG','resolved','${sysconfdir}/resolv.conf', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','${sysconfdir}/systemd/timesyncd.conf', '', d)} \
 "
 
@@ -34,14 +32,6 @@ do_install_append() {
         install -m 0644 ${WORKDIR}/wlan.network ${D}${sysconfdir}/systemd/network
     fi
 
-    if ${@bb.utils.contains('PACKAGECONFIG', 'resolved', 'true', 'false', d)}; then
-	if [ ! -e ${D}${sysconfdir}/resolv-conf.systemd ]; then
-            # For some reason this does not exist on Morty and Pyro.  There are changes in
-            # upstream to address this but they don't show up until Rocko.
-	    ln -s ../run/systemd/resolve/resolv.conf ${D}${sysconfdir}/resolv-conf.systemd
-	    ln -s ${sysconfdir}/resolv-conf.systemd ${D}${sysconfdir}/resolv.conf
-        fi
-    fi
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd
         cat >${D}${sysconfdir}/systemd/timesyncd.conf <<EOF
