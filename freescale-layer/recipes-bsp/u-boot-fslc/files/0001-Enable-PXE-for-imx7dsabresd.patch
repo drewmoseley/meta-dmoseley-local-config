@@ -1,0 +1,37 @@
+From 9805dc7daba78034822d62e434ad16ff6d889d09 Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Mon, 9 Apr 2018 14:18:48 -0400
+Subject: [PATCH] Enable PXE for imx7dsabresd
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ configs/mx7dsabresd_secure_defconfig | 1 +
+ include/configs/mx7dsabresd.h        | 3 +++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/configs/mx7dsabresd_secure_defconfig b/configs/mx7dsabresd_secure_defconfig
+index bdc7748c43..5897dc8419 100644
+--- a/configs/mx7dsabresd_secure_defconfig
++++ b/configs/mx7dsabresd_secure_defconfig
+@@ -72,3 +72,4 @@ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX=y
+ CONFIG_VIDEO=y
+ CONFIG_ERRNO_STR=y
++CONFIG_CMD_PXE=y
+diff --git a/include/configs/mx7dsabresd.h b/include/configs/mx7dsabresd.h
+index 593bf38d7e..551ec90799 100644
+--- a/include/configs/mx7dsabresd.h
++++ b/include/configs/mx7dsabresd.h
+@@ -88,6 +88,9 @@
+ 	UPDATE_M4_ENV \
+ 	CONFIG_MFG_ENV_SETTINGS \
+ 	CONFIG_DFU_ENV_SETTINGS \
++	"pxefile_addr_r=0x82000000\0" \
++	"kernel_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
++	"fdt_addr_r=0x83000000\0" \
+ 	"script=boot.scr\0" \
+ 	"image=zImage\0" \
+ 	"console=ttymxc0\0" \
+-- 
+2.11.0
+
