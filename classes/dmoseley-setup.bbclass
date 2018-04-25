@@ -58,10 +58,9 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash += " iw wpa-supplicant"
 
 # Cleanup FSTYPES
 IMAGE_FSTYPES_APPEND_MENDER = " \
-    ext4 \
 "
 IMAGE_FSTYPES_REMOVE_MENDER = " \
-    ext3 \
+    ext4 ext3 \
     jffs2 jffs2.bz2 jffs2.gz jffs2.xz \
     rpi-sdimg rpi-sdimg.bz2 rpi-sdimg.gz rpi-sdimg.xz rpi-sdimg.bmap \
     sdcard sdcard.gz sdcard.bz2 sdcard.xz \
