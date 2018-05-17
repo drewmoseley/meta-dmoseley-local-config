@@ -1,9 +1,9 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 # Configure systemd-networkd as appropriate
-PACKAGECONFIG_remove += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-connman','networkd','',d)}"
-PACKAGECONFIG_remove += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-networkmanager','networkd','',d)}"
-PACKAGECONFIG_append += "${@bb.utils.contains('DISTRO_FEATURES','dmoseley-networkd','networkd resolved','',d)}"
+PACKAGECONFIG_remove += "${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-connman','networkd','',d)}"
+PACKAGECONFIG_remove += "${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkmanager','networkd','',d)}"
+PACKAGECONFIG_append += "${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','networkd resolved','',d)}"
 
 # Avoid issues with time being out of sync on first boot.  By default,
 # systemd uses its build time as the epoch. When systemd is launched
@@ -23,7 +23,7 @@ FILES_${PN} += " \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/wlan.network', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','resolved','${sysconfdir}/resolv-conf.systemd', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','resolved','${sysconfdir}/resolv.conf', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES','dmoseley-localntp','${sysconfdir}/systemd/timesyncd.conf', '', d)} \
+    ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','${sysconfdir}/systemd/timesyncd.conf', '', d)} \
 "
 
 
@@ -42,7 +42,7 @@ do_install_append() {
 	    ln -s ${sysconfdir}/resolv-conf.systemd ${D}${sysconfdir}/resolv.conf
         fi
     fi
-    if ${@bb.utils.contains('DISTRO_FEATURES','dmoseley-localntp','true','false',d)}; then
+    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd
         cat >${D}${sysconfdir}/systemd/timesyncd.conf <<EOF
 [Time]

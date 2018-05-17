@@ -13,12 +13,12 @@ SYSTEMD_AUTO_ENABLE_dmoseley-connman = "enable"
 WPA_SUPPLICANT_CONF ?= "/work/dmoseley/local/wpa_supplicant-caribbean.conf"
 
 do_install_append () {
-        if ${@bb.utils.contains('DISTRO_FEATURES', 'dmoseley-connman', 'true', 'false', d)}; then
+        if ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-connman', 'true', 'false', d)}; then
             # connman (which implies systemd)
             # Setup my standard wpa_supplicant.conf file in /etc
             install -D -m 600 ${WPA_SUPPLICANT_CONF} ${D}${sysconfdir}/wpa_supplicant.conf
         elif ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-            if ${@bb.utils.contains('DISTRO_FEATURES', 'dmoseley-networkd', 'true', 'false', d)}; then
+            if ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', 'true', 'false', d)}; then
                 # systemd-networkd
                 # Setup my standard wpa_supplicant.conf file in /etc/wpa_supplicant/
                 install -d ${D}${sysconfdir}/wpa_supplicant/
