@@ -4,14 +4,15 @@ python() {
     # Add all possible dmoseley-local features here.
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
-        'dmoseley-systemd',            # Use systemd
-        'dmoseley-networkd',           # Use systemd-networkd
-        'dmoseley-networkmanager',     # Use networkmanager
-        'dmoseley-connman',            # Use connman
-        'dmoseley-wifi',               # Use wifi and install device firmware blobs
-        'dmoseley-localntp',           # Use a custom local NTP server
-        'dmoseley-mender-prod-server', # Use an on-prem deployment of the Mender production server
-        'dmoseley-mender-demo-server', # Use the standard Mender demo server from the canned integration environment
+        'dmoseley-systemd',              # Use systemd
+        'dmoseley-networkd',             # Use systemd-networkd
+        'dmoseley-networkmanager',       # Use networkmanager
+        'dmoseley-connman',              # Use connman
+        'dmoseley-wifi',                 # Use wifi and install device firmware blobs
+        'dmoseley-localntp',             # Use a custom local NTP server
+        'dmoseley-mender-prod-server',   # Use an on-prem deployment of the Mender production server
+        'dmoseley-mender-demo-server',   # Use the standard Mender demo server from the canned integration environment
+        'dmoseley-mender-hosted-server', # Use hosted Mender
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES', True).split():
@@ -40,15 +41,26 @@ python() {
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
         if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
             bb.fatal("Cannot use dmoseley-mender-prod-server with dmoseley-mender-demo-server.")
+        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
+            bb.fatal("Cannot use dmoseley-mender-hosted-server with dmoseley-mender-demo-server.")
         if not bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
             bb.fatal("The mender-demo layer requires use of dmoseley-mender-demo-server.")
     elif bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
         if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
             bb.fatal("Cannot use dmoseley-mender-demo-server with dmoseley-mender-prod-server.")
+        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
+            bb.fatal("Cannot use dmoseley-mender-hosted-server with dmoseley-mender-prod-server.")
         if bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
             bb.fatal("The mender-demo layer must not be used with dmoseley-mender-prod-server.")
+    elif bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
+        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
+            bb.fatal("Cannot use dmoseley-mender-demo-server with dmoseley-mender-hosted-server.")
+        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
+            bb.fatal("Cannot use dmoseley-mender-prod-server with dmoseley-mender-hosted-server.")
+        if bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
+            bb.fatal("The mender-demo layer must not be used with dmoseley-mender-hosted-server.")
     else:
-        bb.fatal("Must specify exactly one of dmoseley-mender-prod-server, dmoseley-mender-demo-server.")
+        bb.fatal("Must specify exactly one of dmoseley-mender-prod-server, dmoseley-mender-demo-server, dmoseley-mender-hosted-server.")
 }
 
 IMAGE_INSTALL_append_dmoseley-connman += " connman connman-client"
@@ -103,3 +115,6 @@ IMAGE_FSTYPES_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-instal
 IMAGE_FSTYPES_remove += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.1.36"
+
+# Setup Mender disk sizes
+MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "800"
