@@ -20,7 +20,7 @@ def dmoseley_mender_tenant_from_file(d):
             d.setVar('MENDER_TENANT_TOKEN', token)
 MENDER_TENANT_TOKEN_dmoseley-mender-hosted-server = "${@dmoseley_mender_tenant_from_file(d)}"
 
-MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://192.168.1.36"
+MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://tobago.home.moseleynet.net"
 MENDER_SERVER_URL_dmoseley-mender-hosted-server = "https://hosted.mender.io"
 
 do_install_append () {
