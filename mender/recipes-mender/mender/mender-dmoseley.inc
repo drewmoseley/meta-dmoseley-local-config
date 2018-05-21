@@ -10,6 +10,8 @@ DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-demo-server = ""
 DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-prod-server = "/work/dmoseley/Mender/integration/mender-production-server/production/keys-generated/certs/server.crt"
 DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-hosted-server = ""
 
+MENDER_CERT_LOCATION_dmoseley-mender-prod-server = "${sysconfdir}/mender/server.crt"
+
 DMOSELEY_MENDER_TENANT_TOKEN_FILE ?= "/work/dmoseley/local/mender-tenant.txt"
 def dmoseley_mender_tenant_from_file(d):
     import os.path
