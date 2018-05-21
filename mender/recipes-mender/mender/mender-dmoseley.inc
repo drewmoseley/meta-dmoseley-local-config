@@ -10,8 +10,6 @@ DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-demo-server = ""
 DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-prod-server = "/work/dmoseley/Mender/integration/mender-production-server/production/keys-generated/certs/server.crt"
 DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-hosted-server = ""
 
-MENDER_DEMO_HOST_IP_ADDRESS_dmoseley-mender-demo-server = "192.168.1.36"
-
 DMOSELEY_MENDER_TENANT_TOKEN_FILE ?= "/work/dmoseley/local/mender-tenant.txt"
 def dmoseley_mender_tenant_from_file(d):
     import os.path
@@ -22,7 +20,6 @@ def dmoseley_mender_tenant_from_file(d):
             d.setVar('MENDER_TENANT_TOKEN', token)
 MENDER_TENANT_TOKEN_dmoseley-mender-hosted-server = "${@dmoseley_mender_tenant_from_file(d)}"
 
-MENDER_SERVER_URL_dmoseley-mender-demo-server = "https://192.168.1.36"
 MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://192.168.1.36"
 MENDER_SERVER_URL_dmoseley-mender-hosted-server = "https://hosted.mender.io"
 
