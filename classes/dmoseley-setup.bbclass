@@ -117,4 +117,4 @@ IMAGE_FSTYPES_remove += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-instal
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.1.36"
 
 # Setup Mender disk sizes
-MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "800"
+MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "1024"
