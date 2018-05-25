@@ -12,6 +12,7 @@ PACKAGECONFIG_append = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-netw
 # in an epoch of January 1, 1970 which is detected as an invalid time
 # and the fsck will be skipped.
 EXTRA_OECONF += "--with-time-epoch=0"
+EXTRA_OEMESON += " -Dtime-epoch=0"
 
 SRC_URI += " \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','file://eth.network', '', d)} \
