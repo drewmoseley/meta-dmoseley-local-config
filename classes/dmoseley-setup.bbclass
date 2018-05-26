@@ -124,10 +124,7 @@ IMAGE_INSTALL_append_rpi = " userland bluez5-noinst-tools "
 IMAGE_INSTALL_remove_raspberrypi3-64 = "userland"
 VIDEO_CAMERA_rpi = "1"
 GPU_MEM_rpi = "128"
-KERNEL_IMAGETYPE_rpi = "uImage"
-# raspberrypi files aligned with mender layout requirements
-IMAGE_BOOT_FILES_append_rpi = " boot.scr u-boot.bin;${SDIMG_KERNELIMAGE} "
-IMAGE_INSTALL_append_rpi = " kernel-image kernel-devicetree "
+RPI_USE_U_BOOT_rpi = "1"
 ENABLE_UART_rpi = "1"
 RPI_EXTRA_CONFIG = " \n\
  # Raspberry Pi 7 inch display/touch screen \n\
