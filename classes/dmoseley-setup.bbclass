@@ -63,9 +63,6 @@ python() {
         bb.fatal("Must specify exactly one of dmoseley-mender-prod-server, dmoseley-mender-demo-server, dmoseley-mender-hosted-server.")
 }
 
-# Switch to IPK packages
-PACKAGE_CLASSES = "package_ipk"
-
 IMAGE_INSTALL_append_dmoseley-connman += " connman connman-client"
 IMAGE_INSTALL_append_dmoseley-networkmanager += " networkmanager networkmanager-nmtui"
 
