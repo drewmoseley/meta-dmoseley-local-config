@@ -133,9 +133,9 @@ KERNEL_IMAGETYPE_rpi = "uImage"
 IMAGE_BOOT_FILES_append_rpi += " boot.scr u-boot.bin;${SDIMG_KERNELIMAGE}"
 IMAGE_INSTALL_append_rpi += " kernel-image kernel-devicetree"
 ENABLE_UART_rpi = "1"
-RPI_EXTRA_CONFIG = " \\n\\
- # Raspberry Pi 7 inch display/touch screen \\n\\
- lcd_rotate=2 \\n\\
+RPI_EXTRA_CONFIG = " \n\
+ # Raspberry Pi 7 inch display/touch screen \n\
+ lcd_rotate=2 \n\
 "
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 
