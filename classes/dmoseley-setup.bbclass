@@ -119,3 +119,7 @@ DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.1.36"
 # Setup Mender disk sizes
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone = "1024"
+
+# Multimedia licensing
+LICENSE_FLAGS_WHITELIST_append_rpi += "commercial"
+LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender += "commercial"
