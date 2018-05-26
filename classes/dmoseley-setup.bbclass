@@ -135,6 +135,34 @@ KERNEL_IMAGETYPE_rpi = "uImage"
 # raspberrypi files aligned with mender layout requirements
 IMAGE_BOOT_FILES_append_rpi += " boot.scr u-boot.bin;${SDIMG_KERNELIMAGE}"
 IMAGE_INSTALL_append_rpi += " kernel-image kernel-devicetree"
+ENABLE_UART_rpi = "1"
+RPI_EXTRA_CONFIG = " \\n\\
+ # Raspberry Pi 7 inch display/touch screen \\n\\
+ lcd_rotate=2 \\n\\
+"
+SDIMG_ROOTFS_TYPE_rpi = "ext4"
+
+# Other packages to install in _all_ images
+IMAGE_INSTALL_append_genericx86 += " v86d"
+IMAGE_INSTALL_append += " kernel-image kernel-modules kernel-devicetree"
+IMAGE_INSTALL_remove_vexpress-qemu-flash += " kernel-image kernel-modules kernel-devicetree"
+IMAGE_INSTALL_append += " libnss-mdns"
+IMAGE_INSTALL_remove_vexpress-qemu += " libnss-mdns"
+IMAGE_INSTALL_remove_vexpress-qemu-flash += " libnss-mdns"
+
+# Remove wayland on Udooneo.  This allows X11 based builds to succeed
+# See https://lists.yoctoproject.org/pipermail/meta-freescale/2016-November/019638.html
+DISTRO_FEATURES_remove_udooneo = " wayland"
+
+EXTRA_IMAGE_FEATURES_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "", " package-management", d)}"
+
+# Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
+# MACHINE_EXTRA_RRECOMMENDS.  This is not included by default in core-image-minimal and
+# core-image-full-cmdline but it has some handy packages so let's include it by default.
+# If certain builds are size constrained this (as well as package-management) should be
+# removed.
+IMAGE_INSTALL_append += "packagegroup-base"
+IMAGE_INSTALL_remove_vexpress-qemu-flash += "packagegroup-base"
 
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi = "40"
