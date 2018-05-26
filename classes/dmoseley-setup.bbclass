@@ -63,6 +63,9 @@ python() {
         bb.fatal("Must specify exactly one of dmoseley-mender-prod-server, dmoseley-mender-demo-server, dmoseley-mender-hosted-server.")
 }
 
+# Switch to IPK packages
+PACKAGE_CLASSES = "package_ipk"
+
 IMAGE_INSTALL_append_dmoseley-connman += " connman connman-client"
 IMAGE_INSTALL_append_dmoseley-networkmanager += " networkmanager networkmanager-nmtui"
 
@@ -128,3 +131,8 @@ LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender += "commercial"
 IMAGE_INSTALL_append_rpi += " userland bluez5-noinst-tools"
 VIDEO_CAMERA_rpi = "1"
 GPU_MEM_rpi = "128"
+
+# Mender settings
+MENDER_BOOT_PART_SIZE_MB_rpi = "40"
+IMAGE_INSTALL_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " mender-wait-for-timesync", "", d)}"
+IMAGE_INSTALL_append += " image-display"
