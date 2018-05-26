@@ -123,3 +123,8 @@ MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone = "1024"
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append_rpi += "commercial"
 LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender += "commercial"
+
+# RPI specifics
+IMAGE_INSTALL_append_rpi += " userland bluez5-noinst-tools"
+VIDEO_CAMERA_rpi = "1"
+GPU_MEM_rpi = "128"
