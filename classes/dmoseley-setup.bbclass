@@ -131,8 +131,13 @@ LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender += "commercial"
 IMAGE_INSTALL_append_rpi += " userland bluez5-noinst-tools"
 VIDEO_CAMERA_rpi = "1"
 GPU_MEM_rpi = "128"
+KERNEL_IMAGETYPE_rpi = "uImage"
+# raspberrypi files aligned with mender layout requirements
+IMAGE_BOOT_FILES_append_rpi += " boot.scr u-boot.bin;${SDIMG_KERNELIMAGE}"
+IMAGE_INSTALL_append_rpi += " kernel-image kernel-devicetree"
 
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi = "40"
+MENDER_PARTITION_ALIGNMENT_KB_rpi = "4096"
 IMAGE_INSTALL_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " mender-wait-for-timesync", "", d)}"
 IMAGE_INSTALL_append += " image-display"
