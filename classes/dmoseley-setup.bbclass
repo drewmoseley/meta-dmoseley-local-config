@@ -117,8 +117,8 @@ IMAGE_FSTYPES_remove += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-instal
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.1.36"
 
 # Setup Mender disk sizes
-MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "1024"
-MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone = "1024"
+MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "1024"
+MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone ??= "1024"
 
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append_rpi += "commercial"
@@ -164,5 +164,5 @@ IMAGE_INSTALL_append += "packagegroup-base"
 IMAGE_INSTALL_remove_vexpress-qemu-flash += "packagegroup-base"
 
 # Mender settings
-MENDER_BOOT_PART_SIZE_MB_rpi = "40"
-MENDER_PARTITION_ALIGNMENT_KB_rpi = "4096"
+MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
+MENDER_PARTITION_ALIGNMENT_KB_rpi ??= "4096"
