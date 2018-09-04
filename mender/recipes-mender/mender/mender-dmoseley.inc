@@ -1,5 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-SRC_URI_append = " file://mender.conf "
+SRC_URI_append = " \
+     file://mender.conf \
+     file://artifact-verify-key.pem \
+"
 
 MENDER_UPDATE_POLL_INTERVAL_SECONDS = "5"
 MENDER_INVENTORY_POLL_INTERVAL_SECONDS = "5"
