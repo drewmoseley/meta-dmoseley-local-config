@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Blank script to force Yocto to build the package.
+#
+
+exit 0
