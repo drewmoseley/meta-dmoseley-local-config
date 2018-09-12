@@ -168,3 +168,16 @@ MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_PARTITION_ALIGNMENT_KB_rpi ??= "4096"
 IMAGE_INSTALL_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts", "", d)}"
 MENDER_ARTIFACT_SIGNING_KEY = "/work/dmoseley/local/mender-artifact-signing-private.key"
+
+add_dmoseley_data() {
+   local buildhost=$(hostname)
+   case $(hostname) in
+        ip-172-30-0-144 ) buildhost="menderBuild";;
+   esac
+   cat > ${IMAGE_ROOTFS}${sysconfdir}/yocto-dmoseley-release <<-EOF
+	yocto_image=${IMAGE_BASENAME}
+	yocto_buildhost=$buildhost
+	EOF
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "

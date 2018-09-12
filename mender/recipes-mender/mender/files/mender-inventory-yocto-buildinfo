@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Include additional Yocto build details into Mender inventory
+#
+
+echo $(grep PRETTY_ /etc/os-release)
+cat /etc/yocto-dmoseley-release
+echo yocto_datetime=$(cat /etc/timestamp)
