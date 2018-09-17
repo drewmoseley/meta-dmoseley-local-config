@@ -79,6 +79,12 @@ IMAGE_INSTALL_append_dmoseley-wifi += " \
     ${@bb.utils.contains('MACHINE', 'udooneo', 'linux-firmware-wl18xx', '', d)} \
 "
 
+# Enable systemd if required
+DISTRO_FEATURES_append = " ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'systemd', '', d)}"
+DISTRO_FEATURES_BACKFILL_CONSIDERED = "${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'sysvinit', '', d)}"
+VIRTUAL-RUNTIME_init_manager_dmoseley-systemd = "systemd"
+VIRTUAL-RUNTIME_initscripts_dmoseley-systemd = ""
+
 # Explicitly remove wifi from qemu buids
 DISTRO_FEATURES_remove_vexpress-qemu += " wifi"
 DISTRO_FEATURES_remove_vexpress-qemu-flash += " wifi"
