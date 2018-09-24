@@ -1,4 +1,4 @@
-From 2a85de1dd6413bb19f9ee4b32c685ec94028b34b Mon Sep 17 00:00:00 2001
+From d1d51c498ecb62a5a4ff0e173060b700e00de7a5 Mon Sep 17 00:00:00 2001
 From: Drew Moseley <drew.moseley@northern.tech>
 Date: Mon, 9 Apr 2018 14:18:48 -0400
 Subject: [PATCH] Enable PXE for imx7dsabresd
@@ -11,19 +11,19 @@ Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
  2 files changed, 4 insertions(+)
 
 diff --git a/configs/mx7dsabresd_defconfig b/configs/mx7dsabresd_defconfig
-index 148aff8..a027c06 100644
+index 191ff3b..c6eb64a 100644
 --- a/configs/mx7dsabresd_defconfig
 +++ b/configs/mx7dsabresd_defconfig
-@@ -76,3 +76,4 @@ CONFIG_USB_HOST_ETHER=y
+@@ -77,3 +77,4 @@ CONFIG_USB_HOST_ETHER=y
  CONFIG_USB_ETHER_ASIX=y
  CONFIG_VIDEO=y
  CONFIG_ERRNO_STR=y
 +CONFIG_CMD_PXE=y
 diff --git a/include/configs/mx7dsabresd.h b/include/configs/mx7dsabresd.h
-index 87d2b52..c927746 100644
+index 87241ef..6162cfe 100644
 --- a/include/configs/mx7dsabresd.h
 +++ b/include/configs/mx7dsabresd.h
-@@ -87,6 +87,9 @@
+@@ -86,6 +86,9 @@
  	UPDATE_M4_ENV \
  	CONFIG_MFG_ENV_SETTINGS \
  	CONFIG_DFU_ENV_SETTINGS \
