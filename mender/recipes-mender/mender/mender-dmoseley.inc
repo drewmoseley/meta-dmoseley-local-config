@@ -10,21 +10,8 @@ MENDER_INVENTORY_POLL_INTERVAL_SECONDS = "5"
 MENDER_RETRY_POLL_INTERVAL_SECONDS = "30"
 
 DMOSELEY_MENDER_SERVER_CERT ?= ""
-DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-demo-server = ""
-DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-prod-server = "/work/dmoseley/Mender/integration/mender-production-server/production/keys-generated/certs/server.crt"
-DMOSELEY_MENDER_SERVER_CERT_dmoseley-mender-hosted-server = ""
 
 MENDER_CERT_LOCATION_dmoseley-mender-prod-server = "${sysconfdir}/mender/server.crt"
-
-DMOSELEY_MENDER_TENANT_TOKEN_FILE ?= "/work/dmoseley/local/mender-tenant.txt"
-def dmoseley_mender_tenant_from_file(d):
-    import os.path
-    fname = d.getVar('DMOSELEY_MENDER_TENANT_TOKEN_FILE', True)
-    if os.path.isfile(fname):
-        with open(fname, 'r') as tokFile:
-            token = tokFile.readline().rstrip()
-            d.setVar('MENDER_TENANT_TOKEN', token)
-MENDER_TENANT_TOKEN_dmoseley-mender-hosted-server = "${@dmoseley_mender_tenant_from_file(d)}"
 
 MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://tobago.home.moseleynet.net"
 MENDER_SERVER_URL_dmoseley-mender-hosted-server = "https://hosted.mender.io"
