@@ -22,6 +22,10 @@ python() {
                          % feature)
             d.setVar('OVERRIDES_append', ':%s' % feature)
 
+    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', True, False, d) and \
+       not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', True, False, d):
+        bb.fatal("Building networkd without systemd is not supported.")
+
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-connman', True, False, d) and \
        not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', True, False, d):
         bb.fatal("Building connman without systemd is not supported.")
