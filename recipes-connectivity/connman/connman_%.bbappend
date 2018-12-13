@@ -1,6 +1,5 @@
 do_install_append() {
-	install -d ${D}/var/lib/${PN}
-	install -m 0755 /work/dmoseley/local/caribbean.config ${D}/var/lib/${PN}/
+	install -d ${D}/${systemd_unitdir}/system/
         cat >> ${D}${systemd_unitdir}/system/${PN}.service <<-EOF
 		
 		[Service]
