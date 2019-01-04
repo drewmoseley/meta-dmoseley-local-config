@@ -73,7 +73,7 @@ IMAGE_INSTALL_append_dmoseley-networkmanager += " networkmanager networkmanager-
 DISTRO_FEATURES_append_dmoseley-wifi += " wifi"
 IMAGE_INSTALL_append_dmoseley-wifi += " \
     iw wpa-supplicant \
-    ${@bb.utils.contains('MACHINE', 'beaglebone', 'linux-firmware-rtl8192cu', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'beaglebone', 'linux-firmware-ralink linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'chip', 'linux-firmware-rtl8723 kernel-module-r8723bs rtl8723bs', '', d)} \
     ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
