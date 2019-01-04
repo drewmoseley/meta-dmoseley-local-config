@@ -163,7 +163,8 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash += " libnss-mdns"
 # See https://lists.yoctoproject.org/pipermail/meta-freescale/2016-November/019638.html
 DISTRO_FEATURES_remove_udooneo = " wayland"
 
-EXTRA_IMAGE_FEATURES_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "", " package-management", d)}"
+EXTRA_IMAGE_FEATURES_append += " package-management"
+PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
 # MACHINE_EXTRA_RRECOMMENDS.  This is not included by default in core-image-minimal and
