@@ -207,6 +207,9 @@ USE_VT_dmoseley-fastboot = "0"
 
 IMAGE_FEATURES += "hwcodecs"
 
+GSTEXAMPLES_colibri-imx7 = ""
+GSTEXAMPLES_colibri-imx7-mender = ""
+
 # Full versions of various utilities
 IMAGE_INSTALL_append = " \
     bind-utils \
