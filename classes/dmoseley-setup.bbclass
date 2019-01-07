@@ -120,6 +120,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "2048"
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append_rpi = " commercial "
 LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender = " commercial "
+LICENSE_FLAGS_WHITELIST_append_colibri-imx7 = " commercial "
 
 # RPI specifics
 IMAGE_INSTALL_append_rpi = " userland bluez5-noinst-tools "
@@ -147,7 +148,8 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
 # Remove wayland on Udooneo.  This allows X11 based builds to succeed
 # See https://lists.yoctoproject.org/pipermail/meta-freescale/2016-November/019638.html
 DISTRO_FEATURES_remove_udooneo = "wayland"
-DISTRO_FEATURES_remove_colibri-imx7-mender = " wayland"
+DISTRO_FEATURES_remove_colibri-imx7-mender = "wayland"
+DISTRO_FEATURES_remove_colibri-imx7 = "wayland"
 
 EXTRA_IMAGE_FEATURES_append = " package-management "
 PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
