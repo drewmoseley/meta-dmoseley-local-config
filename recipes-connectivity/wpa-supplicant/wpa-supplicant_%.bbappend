@@ -3,12 +3,20 @@
 # mechanisms for systemd-networkd.  For systemd-networkd we then
 # manually create symlink in the do_install_append() below.
 #
-SYSTEMD_AUTO_ENABLE_dmoseley-networkd = "disable"
+SYSTEMD_AUTO_ENABLE_dmoseley-networkd = "enable"
 
-do_install_append () {
-    if ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', 'true', 'false', d)}; then
-        # Enable wlan0 systemd unit file for autostart
-        install -d ${D}${sysconfdir}/systemd/system//multi-user.target.wants/
-        ln -s ${systemd_unitdir}/system/wpa_supplicant-nl80211@.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/wpa_supplicant-nl80211@wlan0.service
-    fi
+do_install_append_dmoseley-networkd () {
+    #
+    # Explicitly specify both nl80211 and wext to allow for fallback on older devices
+    #
+    sed -i 's@\(ExecStart=.*\)@\1 -Dnl80211,wext@' ${D}/${systemd_unitdir}/system/wpa_supplicant@.service
+
+    #
+    # Enable wlan0 systemd unit file for autostart
+    # It seems like a postinst script explicitly calling "systemctl enable" would be
+    # cleaner but that fails at bitbake time and I don't want to use an ontarget
+    # version in case of read-only rootfs.
+    #
+    install -d ${D}${sysconfdir}/systemd/system/multi-user.target.wants/
+    ln -s ${systemd_unitdir}/system/wpa_supplicant@.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
 }
