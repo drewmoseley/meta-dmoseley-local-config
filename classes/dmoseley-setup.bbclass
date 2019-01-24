@@ -92,7 +92,6 @@ IMAGE_FSTYPES_REMOVE_MENDER = " \
     rpi-sdimg rpi-sdimg.bz2 rpi-sdimg.gz rpi-sdimg.xz rpi-sdimg.bmap \
     sdcard sdcard.gz sdcard.bz2 sdcard.xz \
     tar tar.bz2 tar.gz tar.xz \
-    teziimg.bz2 teziimg.gz teziimg.xz \
     wic wic.bz2 wic.gz wic.xz wic.bmap \
 "
 IMAGE_FSTYPES_APPEND_COMMUNITY = " \
