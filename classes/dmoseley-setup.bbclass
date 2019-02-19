@@ -43,44 +43,13 @@ python() {
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', True, False, d):
         bb.fatal("Building system-networkd and networkmanager together is not supported.")
 
-    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-prod-server with dmoseley-mender-demo-server.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-hosted-server with dmoseley-mender-demo-server.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-migrate-to-hosted', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-migrate-to-hosted with dmoseley-mender-demo-server.")
-        if not bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
-            bb.fatal("The mender-demo layer requires use of dmoseley-mender-demo-server.")
-    elif bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-demo-server with dmoseley-mender-prod-server.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-hosted-server with dmoseley-mender-prod-server.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-migrate-to-hosted', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-migrate-to-hosted with dmoseley-mender-prod-server.")
-        if bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
-            bb.fatal("The mender-demo layer must not be used with dmoseley-mender-prod-server.")
-    elif bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-demo-server with dmoseley-mender-hosted-server.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-prod-server with dmoseley-mender-hosted-server.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-migrate-to-hosted', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-migrate-to-hosted with dmoseley-mender-hosted-server.")
-        if bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
-            bb.fatal("The mender-demo layer must not be used with dmoseley-mender-hosted-server.")
-    elif bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-migrate-to-hosted', True, False, d):
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-demo-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-demo-server with dmoseley-mender-migrate-to-hosted.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-prod-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-prod-server with dmoseley-mender-migrate-to-hosted.")
-        if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender-hosted-server', True, False, d):
-            bb.fatal("Cannot use dmoseley-mender-hosted-server with dmoseley-mender-migrate-to-hosted.")
-        if bb.utils.contains('BBFILE_COLLECTIONS', 'mender-demo', True, False, d):
-            bb.fatal("The mender-demo layer must not be used with dmoseley-mender-migrate-to-hosted.")
-    else:
-        bb.fatal("Must specify exactly one of dmoseley-mender-prod-server, dmoseley-mender-demo-server, dmoseley-mender-hosted-server, dmoseley-mender-migrate-to-hosted.")
+    numberOfServersConfigured=0
+    for serverType in [ "demo-server", "prod-server", "hosted-server", "migrate-to-hosted" ]:
+        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-mender-" + serverType, True, False, d):
+            numberOfServersConfigured += 1
+
+    if (numberOfServersConfigured != 1):
+        bb.fatal("Must specify exactly one server type.")
 }
 
 IMAGE_INSTALL_append_dmoseley-connman += " connman connman-client"
