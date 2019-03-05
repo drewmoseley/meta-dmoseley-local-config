@@ -43,13 +43,13 @@ python() {
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', True, False, d):
         bb.fatal("Building system-networkd and networkmanager together is not supported.")
 
-    numberOfServersConfigured=0
-    for serverType in [ "demo-server", "prod-server", "hosted-server", "migrate-to-hosted" ]:
-        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-mender-" + serverType, True, False, d):
-            numberOfServersConfigured += 1
-
-    if (numberOfServersConfigured != 1):
-        bb.fatal("Must specify exactly one server type.")
+    if bb.utils.contains('DISTRO_FEATURES', 'mender-install', True, False, d):
+        numberOfServersConfigured=0
+        for serverType in [ "demo-server", "prod-server", "hosted-server", "migrate-to-hosted" ]:
+            if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-mender-" + serverType, True, False, d):
+                numberOfServersConfigured += 1
+        if (numberOfServersConfigured != 1):
+            bb.fatal("Must specify exactly one server type.")
 }
 
 IMAGE_INSTALL_append_dmoseley-connman += " connman connman-client"
