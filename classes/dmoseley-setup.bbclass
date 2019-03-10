@@ -52,11 +52,11 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
-IMAGE_INSTALL_append_dmoseley-connman += " connman connman-client"
-IMAGE_INSTALL_append_dmoseley-networkmanager += " networkmanager networkmanager-nmtui"
+IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client "
+IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
 
-DISTRO_FEATURES_append_dmoseley-wifi += " wifi"
-IMAGE_INSTALL_append_dmoseley-wifi += " \
+DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
+IMAGE_INSTALL_append_dmoseley-wifi = " \
     iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'chip', 'linux-firmware-rtl8723 kernel-module-r8723bs rtl8723bs', '', d)} \
@@ -69,16 +69,16 @@ IMAGE_INSTALL_append_dmoseley-wifi += " \
 "
 
 # Enable systemd if required
-DISTRO_FEATURES_append = " ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'systemd', '', d)}"
+DISTRO_FEATURES_append = " ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'systemd', '', d)} "
 DISTRO_FEATURES_BACKFILL_CONSIDERED = "${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'sysvinit', '', d)}"
 VIRTUAL-RUNTIME_init_manager_dmoseley-systemd = "systemd"
 VIRTUAL-RUNTIME_initscripts_dmoseley-systemd = ""
 
 # Explicitly remove wifi from qemu buids
-DISTRO_FEATURES_remove_vexpress-qemu += " wifi"
-DISTRO_FEATURES_remove_vexpress-qemu-flash += " wifi"
-IMAGE_INSTALL_remove_vexpress-qemu += " iw wpa-supplicant"
-IMAGE_INSTALL_remove_vexpress-qemu-flash += " iw wpa-supplicant"
+DISTRO_FEATURES_remove_vexpress-qemu = "wifi"
+DISTRO_FEATURES_remove_vexpress-qemu-flash = "wifi"
+IMAGE_INSTALL_remove_vexpress-qemu = "iw wpa-supplicant"
+IMAGE_INSTALL_remove_vexpress-qemu-flash = "iw wpa-supplicant"
 
 # Cleanup FSTYPES
 IMAGE_FSTYPES_APPEND_MENDER = " \
@@ -106,8 +106,8 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
 "
 
-IMAGE_FSTYPES_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)}"
-IMAGE_FSTYPES_remove += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
+IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
+IMAGE_FSTYPES_remove = "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.36"
 
@@ -116,17 +116,17 @@ MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone ??= "1024"
 
 # Multimedia licensing
-LICENSE_FLAGS_WHITELIST_append_rpi += "commercial"
-LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender += "commercial"
+LICENSE_FLAGS_WHITELIST_append_rpi = " commercial "
+LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender = " commercial "
 
 # RPI specifics
-IMAGE_INSTALL_append_rpi += " userland bluez5-noinst-tools"
+IMAGE_INSTALL_append_rpi = " userland bluez5-noinst-tools "
 VIDEO_CAMERA_rpi = "1"
 GPU_MEM_rpi = "128"
 KERNEL_IMAGETYPE_rpi = "uImage"
 # raspberrypi files aligned with mender layout requirements
-IMAGE_BOOT_FILES_append_rpi += " boot.scr u-boot.bin;${SDIMG_KERNELIMAGE}"
-IMAGE_INSTALL_append_rpi += " kernel-image kernel-devicetree"
+IMAGE_BOOT_FILES_append_rpi = " boot.scr u-boot.bin;${SDIMG_KERNELIMAGE} "
+IMAGE_INSTALL_append_rpi = " kernel-image kernel-devicetree "
 ENABLE_UART_rpi = "1"
 RPI_EXTRA_CONFIG = " \n\
  # Raspberry Pi 7 inch display/touch screen \n\
@@ -135,20 +135,20 @@ RPI_EXTRA_CONFIG = " \n\
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 
 # Other packages to install in _all_ images
-IMAGE_INSTALL_append_genericx86 += " v86d"
-IMAGE_INSTALL_append += " kernel-image kernel-modules kernel-devicetree"
-IMAGE_INSTALL_remove_vexpress-qemu-flash += " kernel-image kernel-modules kernel-devicetree"
-IMAGE_INSTALL_remove_x86 += " kernel-devicetree"
-IMAGE_INSTALL_remove_x86-64 += " kernel-devicetree"
-IMAGE_INSTALL_append += " libnss-mdns"
-IMAGE_INSTALL_remove_vexpress-qemu += " libnss-mdns"
-IMAGE_INSTALL_remove_vexpress-qemu-flash += " libnss-mdns"
+IMAGE_INSTALL_append_genericx86 = " v86d "
+IMAGE_INSTALL_append = " kernel-image kernel-modules kernel-devicetree "
+IMAGE_INSTALL_remove_vexpress-qemu-flash = "kernel-image kernel-modules kernel-devicetree"
+IMAGE_INSTALL_remove_x86 = "kernel-devicetree"
+IMAGE_INSTALL_remove_x86-64 = "kernel-devicetree"
+IMAGE_INSTALL_append = " libnss-mdns "
+IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
+IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
 
 # Remove wayland on Udooneo.  This allows X11 based builds to succeed
 # See https://lists.yoctoproject.org/pipermail/meta-freescale/2016-November/019638.html
-DISTRO_FEATURES_remove_udooneo = " wayland"
+DISTRO_FEATURES_remove_udooneo = "wayland"
 
-EXTRA_IMAGE_FEATURES_append += " package-management"
+EXTRA_IMAGE_FEATURES_append = " package-management "
 PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
@@ -156,13 +156,13 @@ PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
 # core-image-full-cmdline but it has some handy packages so let's include it by default.
 # If certain builds are size constrained this (as well as package-management) should be
 # removed.
-IMAGE_INSTALL_append += "packagegroup-base"
-IMAGE_INSTALL_remove_vexpress-qemu-flash += "packagegroup-base"
+IMAGE_INSTALL_append = " packagegroup-base "
+IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
 
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_PARTITION_ALIGNMENT_KB_rpi ??= "4096"
-IMAGE_INSTALL_append += " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts", "", d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts", "", d)} "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
