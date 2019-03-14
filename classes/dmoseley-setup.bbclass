@@ -14,6 +14,7 @@ python() {
         'dmoseley-mender-demo-server',   # Use the standard Mender demo server from the canned integration environment
         'dmoseley-mender-hosted-server', # Use hosted Mender
         'dmoseley-mender-migrate-to-hosted',  # Migrate from production to hosted
+        'dmoseley-access-point',         # Enable access point mode
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
@@ -42,6 +43,10 @@ python() {
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', True, False, d) and \
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', True, False, d):
         bb.fatal("Building system-networkd and networkmanager together is not supported.")
+
+    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', True, False, d) and \
+       bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
+        bb.fatal("Building access-point requires networkmanager.")
 
     if bb.utils.contains('DISTRO_FEATURES', 'mender-install', True, False, d):
         numberOfServersConfigured=0
