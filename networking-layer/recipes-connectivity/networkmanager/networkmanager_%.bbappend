@@ -1,11 +1,15 @@
 SYSTEMD_AUTO_ENABLE_dmoseley-networkmanager = "enable"
 
 FILES_${PN} += " \
-    ${@bb.utils.contains('PACKAGECONFIG', 'dhclient', '${sysconfdir}/resolv.conf', '', d)} \
+    ${sysconfdir}/resolv.conf \
 "
 
 do_install_append() {
-    if ${@bb.utils.contains('PACKAGECONFIG', 'dhclient', 'true', 'false', d)}; then
-        ln -s ../run/NetworkManager/resolv.conf ${D}${sysconfdir}/resolv.conf
-    fi
+    ln -s ../run/NetworkManager/resolv.conf ${D}${sysconfdir}/resolv.conf
 }
+
+PACKAGECONFIG_remove = "dhclient"
+EXTRA_OECONF += " \
+	--with-config-dhcp-default=internal \
+	--with-dhclient=no \
+	"
