@@ -3,6 +3,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 SRC_URI = "file://ArtifactRollback_Enter_00;subdir=${PN}-${PV} \
            file://Download_Enter_00;subdir=${PN}-${PV} \
            file://LICENSE;subdir=${PN}-${PV} \
+           file://ArtifactCommit_Enter_00;subdir=${PN}-${PV} \
+           file://Sync_Enter_00;subdir=${PN}-${PV} \
           "
 
 LICENSE = "Apache-2.0"
@@ -13,4 +15,6 @@ inherit mender-state-scripts
 do_compile() {
     cp ArtifactRollback_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
     cp Download_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
+    cp ArtifactCommit_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
+    cp Sync_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
 }
