@@ -1,3 +1,5 @@
+SYSTEMD_AUTO_ENABLE_dmoseley-connman = "enable"
+
 do_install_append() {
 	install -d ${D}/${systemd_unitdir}/system/
         cat >> ${D}${systemd_unitdir}/system/${PN}.service <<-EOF

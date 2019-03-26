@@ -4,6 +4,7 @@
 # manually create symlink in the do_install_append() below.
 #
 SYSTEMD_AUTO_ENABLE_dmoseley-networkd = "enable"
+SYSTEMD_SERVICE_${PN}_append_dmoseley-networkd = " wpa_supplicant@wlan0.service "
 
 do_install_append_dmoseley-networkd () {
     #
@@ -13,9 +14,8 @@ do_install_append_dmoseley-networkd () {
 
     #
     # Enable wlan0 systemd unit file for autostart
-    # It seems like a postinst script explicitly calling "systemctl enable" would be
-    # cleaner but that fails at bitbake time and I don't want to use an ontarget
-    # version in case of read-only rootfs.
+    # It seems like the SYSTEMD_SERVICE append about should handle this but
+    # thus far I've not been able to get that to work.
     #
     install -d ${D}${sysconfdir}/systemd/system/multi-user.target.wants/
     ln -s ${systemd_unitdir}/system/wpa_supplicant@.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
