@@ -12,6 +12,10 @@ EXTRA_OECONF += " \
 	--with-dhclient=no \
 	"
 
+PACKAGECONFIG_remove = " \
+    ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', '', 'dnsmasq', d)} \
+"
+
 do_install_append() {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-access-point','true','false',d)}; then
         # Default Access Point

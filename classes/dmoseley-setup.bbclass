@@ -8,6 +8,7 @@ python() {
         'dmoseley-networkd',             # Use systemd-networkd
         'dmoseley-networkmanager',       # Use networkmanager
         'dmoseley-connman',              # Use connman
+        'dmoseley-wifi-connect',         # Use wifi-connect
         'dmoseley-wifi',                 # Use wifi and install device firmware blobs
         'dmoseley-localntp',             # Use a custom local NTP server
         'dmoseley-mender-prod-server',   # Use an on-prem deployment of the Mender production server
@@ -25,6 +26,13 @@ python() {
                          % feature)
             d.setVar('OVERRIDES_append', ':%s' % feature)
 
+    numberOfNetworkManagersConfigured=0
+    for networkManager in [ "networkd", "networkmanager", "connman", "wifi-connect" ]:
+        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + networkManager, True, False, d):
+            numberOfNetworkManagersConfigured += 1
+    if (numberOfNetworkManagersConfigured != 1):
+        bb.fatal("Must specify exactly one network manager.")
+
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', True, False, d) and \
        not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', True, False, d):
         bb.fatal("Building networkd without systemd is not supported.")
@@ -32,18 +40,6 @@ python() {
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-connman', True, False, d) and \
        not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', True, False, d):
         bb.fatal("Building connman without systemd is not supported.")
-
-    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-connman', True, False, d) and \
-       bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', True, False, d):
-        bb.fatal("Building connman and system-networkd together is not supported.")
-
-    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-connman', True, False, d) and \
-       bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', True, False, d):
-        bb.fatal("Building connman [and networkmanager together is not supported.")
-
-    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', True, False, d) and \
-       bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', True, False, d):
-        bb.fatal("Building system-networkd and networkmanager together is not supported.")
 
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', True, False, d) and \
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
@@ -60,6 +56,7 @@ python() {
 
 IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client "
 IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
+IMAGE_INSTALL_append_dmoseley-wifi-connect = " wifi-connect "
 
 DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
 IMAGE_INSTALL_append_dmoseley-wifi = " \

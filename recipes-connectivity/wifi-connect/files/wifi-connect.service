@@ -1,0 +1,12 @@
+[Unit]
+Description=Easy WiFi setup for Linux devices from your mobile phone or laptop
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 30
+ExecStart=/usr/bin/wifi-connect-startup.sh
+RestartSec=300
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
