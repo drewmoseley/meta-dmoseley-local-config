@@ -74,6 +74,7 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-raspbian-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'udooneo', 'linux-firmware-wl18xx', '', d)} \
     ${@bb.utils.contains('MACHINE', 'imx7dsabresd', 'linux-firmware-rtl8192cu', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'up-board', 'linux-firmware-rtl8188 kernel-module-r8188eu', '', d)} \
 "
 
 # Enable systemd if required
@@ -122,6 +123,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB_up-board = "4096"
 
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append_rpi = " commercial "
@@ -185,3 +187,9 @@ add_dmoseley_data() {
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
+
+# Up Squared Board extra settings
+SERIAL_CONSOLE_append_up-board = " ttyS1 "
+SERIAL_CONSOLES_append_up-board = " 115200;ttyS1 "
+MENDER_STORAGE_DEVICE_up-board = "/dev/sda"
+MENDER_GRUB_STORAGE_DEVICE_up-board = "hd0"
