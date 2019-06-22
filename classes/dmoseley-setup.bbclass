@@ -15,6 +15,7 @@ python() {
         'dmoseley-mender-hosted-server', # Use hosted Mender
         'dmoseley-mender-migrate-to-hosted',  # Migrate from production to hosted
         'dmoseley-access-point',         # Enable access point mode
+        'dmoseley-fastboot',            # Fastboot mode
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
