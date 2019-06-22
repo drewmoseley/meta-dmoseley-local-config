@@ -1,11 +1,11 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
 SYSTEMD_AUTO_ENABLE_dmoseley-connman = "enable"
 
+SRC_URI += " file://settings "
+FILES_${PN} += " /var/lib/${PN}/settings "
+
 do_install_append() {
-	install -d ${D}/${systemd_unitdir}/system/
-        cat >> ${D}${systemd_unitdir}/system/${PN}.service <<-EOF
-		
-		[Service]
-		ExecStartPost=/bin/sleep 5
-		ExecStartPost=/usr/bin/connmanctl enable wifi
-		EOF
+	install -d -m 0755 ${D}/var/lib/${PN}
+        install -m 0600 ${WORKDIR}/settings ${D}/var/lib/${PN}/
 }
