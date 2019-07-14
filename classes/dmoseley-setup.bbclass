@@ -194,3 +194,6 @@ SERIAL_CONSOLE_append_up-board = " ttyS1 "
 SERIAL_CONSOLES_append_up-board = " 115200;ttyS1 "
 MENDER_STORAGE_DEVICE_up-board = "/dev/sda"
 MENDER_GRUB_STORAGE_DEVICE_up-board = "hd0"
+
+# Graphical display demo
+IMAGE_INSTALL_append = " image-display "

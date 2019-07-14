@@ -14,7 +14,7 @@ inherit systemd
 
 SYSTEMD_SERVICE_${PN} = "${PN}.service"
 FILES_${PN} += "${systemd_unitdir}/system/${PN}.service"
-RDEPENDS_${PN} = "mpv"
+RDEPENDS_${PN} += "fbida"
 LICENSE_FLAGS_WHITELIST += "commercial"
 
 IMAGE_DISPLAY_IMAGE_FILE ?= "demo-image-unlocked.png"
