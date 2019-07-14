@@ -197,3 +197,6 @@ MENDER_GRUB_STORAGE_DEVICE_up-board = "hd0"
 
 # Graphical display demo
 IMAGE_INSTALL_append = " image-display "
+
+# Disable console on VT/FB
+USE_VT_dmoseley-fastboot = "0"

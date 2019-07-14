@@ -1,0 +1,32 @@
+From 3a5059dc3dac11c1961e87835492b95b89e0cbf9 Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Sat, 13 Jul 2019 17:10:49 +0000
+Subject: [PATCH] u-boot: Disable serial and video console for RpI.
+
+This patch is applied for fastboot
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ include/configs/rpi.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/configs/rpi.h b/include/configs/rpi.h
+index bb6f4263e4..aaff54075e 100644
+--- a/include/configs/rpi.h
++++ b/include/configs/rpi.h
+@@ -89,9 +89,9 @@
+ 
+ /* Environment */
+ #define ENV_DEVICE_SETTINGS \
+-	"stdin=serial,usbkbd\0" \
+-	"stdout=serial,vidconsole\0" \
+-	"stderr=serial,vidconsole\0"
++	"stdin=serial\0" \
++	"stdout=serial\0" \
++	"stderr=serial\0"
+ 
+ #ifdef CONFIG_ARM64
+ #define FDT_HIGH "ffffffffffffffff"
+-- 
+2.22.0
+
