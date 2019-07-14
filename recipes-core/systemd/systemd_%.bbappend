@@ -15,11 +15,13 @@ EXTRA_OECONF += "--with-time-epoch=0"
 
 SRC_URI += " \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','file://eth.network', '', d)} \
+    ${@bb.utils.contains('PACKAGECONFIG','networkd','file://eno.network', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','file://wlan.network', '', d)} \
 "
 
 FILES_${PN} += " \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/eth.network', '', d)} \
+    ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/eno.network', '', d)} \
     ${@bb.utils.contains('PACKAGECONFIG','networkd','${sysconfdir}/systemd/network/wlan.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','${sysconfdir}/systemd/timesyncd.conf', '', d)} \
 "
@@ -29,6 +31,7 @@ do_install_append() {
     if ${@bb.utils.contains('PACKAGECONFIG','networkd','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd/network
         install -m 0644 ${WORKDIR}/eth.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${WORKDIR}/eno.network ${D}${sysconfdir}/systemd/network
         install -m 0644 ${WORKDIR}/wlan.network ${D}${sysconfdir}/systemd/network
     fi
 
