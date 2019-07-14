@@ -44,4 +44,8 @@ FallbackNTP=time1.google.com time2.google.com time3.google.com time4.google.com
 EOF
         chmod 0644 ${D}${sysconfdir}/systemd/timesyncd.conf
     fi
+
+    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','true','false',d)}; then
+        rm -f ${D}${sysconfdir}/systemd/system/getty.target.wants/getty@tty1.service
+    fi
 }
