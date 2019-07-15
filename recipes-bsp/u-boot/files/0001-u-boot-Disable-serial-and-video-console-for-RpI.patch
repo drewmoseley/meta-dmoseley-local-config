@@ -1,4 +1,4 @@
-From 3557fcda50a6b49a9da6093c934d792ecc277a1c Mon Sep 17 00:00:00 2001
+From 20531e6deaba0d510065cee829eae3e855a60a8d Mon Sep 17 00:00:00 2001
 From: Drew Moseley <drew.moseley@northern.tech>
 Date: Sat, 13 Jul 2019 17:10:49 +0000
 Subject: [PATCH] u-boot: Disable serial and video console for RpI.
@@ -11,12 +11,12 @@ Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/include/configs/rpi.h b/include/configs/rpi.h
-index e27ceb157c..da7d64151a 100644
+index bb6f4263e4..aaff54075e 100644
 --- a/include/configs/rpi.h
 +++ b/include/configs/rpi.h
-@@ -105,9 +105,9 @@
+@@ -89,9 +89,9 @@
+ 
  /* Environment */
- #define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
  #define ENV_DEVICE_SETTINGS \
 -	"stdin=serial,usbkbd\0" \
 -	"stdout=serial,vidconsole\0" \
@@ -25,8 +25,8 @@ index e27ceb157c..da7d64151a 100644
 +	"stdout=serial\0" \
 +	"stderr=serial\0"
  
- /*
-  * Memory layout for where various images get loaded by boot scripts:
+ #ifdef CONFIG_ARM64
+ #define FDT_HIGH "ffffffffffffffff"
 -- 
 2.22.0
 
