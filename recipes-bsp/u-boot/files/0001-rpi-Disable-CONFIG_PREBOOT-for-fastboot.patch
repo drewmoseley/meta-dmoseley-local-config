@@ -1,4 +1,4 @@
-From 707b289d17b38ef8344d733cb2b6cf7c88d3e267 Mon Sep 17 00:00:00 2001
+From 079763d9512a3337539e24a1abe23125cfd0ba03 Mon Sep 17 00:00:00 2001
 From: Drew Moseley <drew.moseley@northern.tech>
 Date: Sun, 14 Jul 2019 18:54:10 +0000
 Subject: [PATCH] rpi: Disable CONFIG_PREBOOT for fastboot
@@ -9,7 +9,7 @@ Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
  1 file changed, 1 deletion(-)
 
 diff --git a/include/configs/rpi.h b/include/configs/rpi.h
-index f9d1a97ea7..a174683717 100644
+index 412596862d..6a7b890f21 100644
 --- a/include/configs/rpi.h
 +++ b/include/configs/rpi.h
 @@ -75,7 +75,6 @@
@@ -19,7 +19,7 @@ index f9d1a97ea7..a174683717 100644
 -#define CONFIG_PREBOOT			"usb start"
  
  /* Shell */
- #define CONFIG_CMDLINE_EDITING
+ 
 -- 
 2.22.0
 
