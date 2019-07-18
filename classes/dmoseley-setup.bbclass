@@ -125,6 +125,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_up-board = "4096"
+MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 = "4096"
 
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append_rpi = " commercial "
