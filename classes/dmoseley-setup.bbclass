@@ -278,6 +278,9 @@ BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PREFERRED_VERSION_imx-gpu-viv = "6.2.4.p1.2-aarch32"
 PREFERRED_VERSION_kernel-module-imx-gpu-viv = "6.2.4.p1.2"
 
+GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "Mender.tga", "Max.tga", d)}"
+IMAGE_BOOT_FILES_append_intel-corei7-64 = " ${GRUB_SPLASH_IMAGE_FILE} unifont.pf2;EFI/BOOT/fonts/unifont.pf2 "
+
 #
 # Settings for Variscite boards
 #
