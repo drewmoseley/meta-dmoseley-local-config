@@ -1,12 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append_rpi_dmoseley-fastboot = " \
-    file://fastboot.cfg \
-"
-
 SRC_URI_append_rpi = " \
     file://logo_custom_clut224.ppm \
-    file://enable_splash.cfg \
+    file://${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','fastboot.cfg','enable_splash.cfg',d)} \
 "
 
 SERIAL_dmoseley-fastboot=""
