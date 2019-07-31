@@ -204,6 +204,11 @@ SERIAL_CONSOLES_append_up-board = " 115200;ttyS1 "
 MENDER_STORAGE_DEVICE_up-board = "/dev/sda"
 MENDER_GRUB_STORAGE_DEVICE_up-board = "hd0"
 
+# intel-corei7-64 Board extra settings
+SERIAL_CONSOLE_append_intel-corei7-64 = " ttyUSB0 "
+SERIAL_CONSOLES_append_intel-corei7-64 = " 115200;ttyUSB0 "
+KERNEL_CONSOLE_intel-corei7-64 = "ttyUSB0"
+
 # Graphical display demo
 IMAGE_INSTALL_append = " image-display "
 
