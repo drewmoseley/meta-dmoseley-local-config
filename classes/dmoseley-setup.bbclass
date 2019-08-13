@@ -139,10 +139,7 @@ VIDEO_CAMERA_rpi = "1"
 GPU_MEM_rpi = "128"
 RPI_USE_U_BOOT_rpi = "1"
 ENABLE_UART_rpi = "1"
-RPI_EXTRA_CONFIG = " \n\
- # Raspberry Pi 7 inch display/touch screen \n\
- lcd_rotate=2 \n\
-"
+RPI_EXTRA_CONFIG = "lcd_rotate=2"
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 
 # Other packages to install in _all_ images
