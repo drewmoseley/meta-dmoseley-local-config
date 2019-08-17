@@ -200,3 +200,19 @@ IMAGE_INSTALL_append = " image-display "
 USE_VT_dmoseley-fastboot = "0"
 
 IMAGE_FEATURES += "hwcodecs"
+
+# Full versions of various utilities
+IMAGE_INSTALL_append = " \
+    bind-utils \
+    coreutils \
+    findutils \
+    iputils-ping \
+    iputils-tracepath \
+    iputils-traceroute6 \
+    iproute2 \
+    less \
+    ncurses-terminfo \
+    net-tools \
+    procps \
+    util-linux \
+"
