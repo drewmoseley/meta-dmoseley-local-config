@@ -198,3 +198,5 @@ IMAGE_INSTALL_append = " image-display "
 
 # Disable console on VT/FB
 USE_VT_dmoseley-fastboot = "0"
+
+IMAGE_FEATURES += "hwcodecs"

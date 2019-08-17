@@ -37,3 +37,5 @@ do_install_append () {
             ${WORKDIR}/mender-inventory-*
 
 }
+
+PACKAGECONFIG_append = " modules "
