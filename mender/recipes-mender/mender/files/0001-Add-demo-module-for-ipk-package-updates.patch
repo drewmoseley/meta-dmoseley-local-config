@@ -1,0 +1,35 @@
+From ec0112454118e93ab41d437e52766faa78883870 Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Sun, 18 Aug 2019 12:01:53 -0400
+Subject: [PATCH] Add demo module for ipk package updates
+
+Changelog: Title
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ support/modules/ipk | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+ create mode 100755 support/modules/ipk
+
+diff --git a/support/modules/ipk b/support/modules/ipk
+new file mode 100755
+index 0000000..ff10de7
+--- /dev/null
++++ b/support/modules/ipk
+@@ -0,0 +1,13 @@
++#!/bin/sh
++
++set -e
++
++STATE="$1"
++FILES="$2"
++
++case "$STATE" in
++    ArtifactInstall)
++        opkg install "$FILES"/files/*.ipk
++        ;;
++esac
++exit 0
+-- 
+2.17.1
+
