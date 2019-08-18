@@ -1,6 +1,22 @@
 #!/bin/sh
-#
-# Blank script to force Yocto to build the package.
-#
 
-exit 0
+RETRY_LATER=21
+OK=0
+ABORT=1
+
+log() {
+    echo "stderr:$*" >&2
+}
+
+log "$(cat /etc/mender/artifact_info): $(basename "$0") was called!"
+
+if [ -e /data/allow-download ]; then
+    log "Found /tmp/allow-download"
+    RC=OK
+    break
+elif [ -e /data/disallow-download ]; then
+    log "Found /tmp/disallow-download"
+    RC=ABORT
+fi
+
+exit $RC
