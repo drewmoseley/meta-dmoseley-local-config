@@ -216,3 +216,8 @@ IMAGE_INSTALL_append = " \
     procps \
     util-linux \
 "
+
+# Use Mender v2.x
+PREFERRED_VERSION_pn-mender = "2.%"
+PREFERRED_VERSION_pn-mender-artifact = "3.%"
+PREFERRED_VERSION_pn-mender-artifact-native = "3.%"
