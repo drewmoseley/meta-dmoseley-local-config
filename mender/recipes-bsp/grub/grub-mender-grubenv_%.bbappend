@@ -21,7 +21,7 @@ do_compile_prepend() {
 
     # Determine other bootargs
     case $MENDER_MACHINE in
-        *up-board* ) EXTRA_BOOTARGS="biosdevname=0 net.ifnames=0";;
+        *intel-corei7-64* | up-board ) EXTRA_BOOTARGS="biosdevname=0 net.ifnames=0";;
     esac
 
     echo "set console_bootargs=\"${CONSOLE_ARGS}\"" > ${S}/02_dmoseley_grub.cfg
