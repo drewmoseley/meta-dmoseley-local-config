@@ -120,7 +120,7 @@ IMAGE_FSTYPES_remove = "${@bb.utils.contains("DISTRO_FEATURES", "mender-install"
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.36"
 
 # Setup Mender disk sizes
-MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "1024"
+MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "2048"
@@ -168,6 +168,7 @@ PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
 # removed.
 IMAGE_INSTALL_append = " packagegroup-base "
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
+IMAGE_INSTALL_remove_colibri-imx7-mender = "packagegroup-base"
 
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
