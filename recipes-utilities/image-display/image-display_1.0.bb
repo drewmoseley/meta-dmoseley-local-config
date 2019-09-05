@@ -3,7 +3,7 @@ HOMEPAGE = "https://mender.io"
 LICENSE = "Apache-2.0"
 
 SRC_URI = " \
-	file://${PN}.service \
+	file://${BPN}.service \
         ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "file://demo-image-locked.png file://demo-image-unlocked.png", "file://Max.png", d)} \
 	file://LICENSE \
 "
