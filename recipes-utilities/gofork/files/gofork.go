@@ -5,8 +5,11 @@ import (
         "os/exec"
 )
 
+var (
+        c uint64 = 8 * 1024 * 1024 * 1024
+)
+
 func main() {
-        c := 365 * 1024 * 1024
         a := make([]byte, c, c)
         for i := range a {
                 a[i] = byte(i % 255)
