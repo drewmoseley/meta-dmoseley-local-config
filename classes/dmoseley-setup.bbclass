@@ -107,11 +107,15 @@ IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "rpi-sdimg.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "sdcard.gz", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx7", "sdcard.gz", "", d)} \
 "
 IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ext3 \
     tar tar.bz2 tar.gz \
     ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic.gz", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx7", "wic.gz", "", d)} \
 "
 
 IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
@@ -222,3 +226,8 @@ IMAGE_INSTALL_append = " \
 PREFERRED_VERSION_pn-mender = "2.%"
 PREFERRED_VERSION_pn-mender-artifact = "3.%"
 PREFERRED_VERSION_pn-mender-artifact-native = "3.%"
+
+# Settings for Technexion boards.
+# These are normally set by the edm-setup-release.sh script
+MACHINEOVERRIDES_append_pico-imx7 = ":brcm"
+MACHINEOVERRIDES_append_pico-imx6ul = ":qca"
