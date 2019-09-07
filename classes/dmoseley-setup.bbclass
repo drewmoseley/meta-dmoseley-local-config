@@ -107,15 +107,11 @@ IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "rpi-sdimg.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "sdcard.gz", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx7", "sdcard.gz", "", d)} \
 "
 IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ext3 \
     tar tar.bz2 tar.gz \
     ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic.gz", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx7", "wic.gz", "", d)} \
 "
 
 IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
@@ -231,9 +227,15 @@ PREFERRED_VERSION_pn-mender-artifact-native = "3.%"
 # These are normally set by the edm-setup-release.sh script
 MACHINEOVERRIDES_append_pico-imx7 = ":brcm"
 MACHINEOVERRIDES_append_pico-imx6ul = ":qca"
-PREFERRED_PROVIDER_u-boot-fw-utils_pico-imx7 = "u-boot-edm-fw-utils"
+PREFERRED_VERSION_u-boot_pico-imx6ul = "2017.03"
+PREFERRED_VERSION_u-boot-edm-fw-utils_pico-imx6ul = "2017.03"
+PREFERRED_PROVIDER_u-boot_pico-imx7 = "u-boot-edm"
+PREFERRED_PROVIDER_u-boot_pico-imx6ul = "u-boot-edm"
+PREFERRED_RPROVIDER_u-boot_pico-imx7 = "u-boot-edm"
+PREFERRED_RPROVIDER_u-boot_pico-imx6ul = "u-boot-edm"
+PREFERRED_PROVIDER_u-boot-fw-utils_pico-imx7 = "u-boot-fw-utils-mender-auto-provided"
 PREFERRED_PROVIDER_u-boot-fw-utils_pico-imx6ul = "u-boot-edm-fw-utils"
-PREFERRED_RPROVIDER_u-boot-fw-utils_pico-imx7 = "u-boot-edm-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils_pico-imx7 = "u-boot-fw-utils-mender-auto-provided"
 PREFERRED_RPROVIDER_u-boot-fw-utils_pico-imx6ul = "u-boot-edm-fw-utils"
 MENDER_STORAGE_DEVICE_pico-imx7 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_INTERFACE_pico-imx7 = "mmc"
@@ -246,10 +248,10 @@ MENDER_UBOOT_STORAGE_DEVICE_pico-imx6ul = "0"
 MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_1_pico-imx6ul = "0xC0000"
 MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_2_pico-imx6ul = "0xE0000"
 IMAGE_BOOT_FILES_pico-imx7="u-boot.img uEnv.txt"
-IMAGE_BOOTLOADER_FILE_pico-imx7="SPL"
+MENDER_IMAGE_BOOTLOADER_FILE_pico-imx7="SPL"
 MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx7="run loadbootenv; run importbootenv; setenv kernel_addr_r \${loadaddr}; setenv bootargs console=\${console},\${baudrate}; run setfdt; setenv mender_dtb_name \${fdtfile}; "
 IMAGE_BOOT_FILES_pico-imx6ul="u-boot.img uEnv.txt"
-IMAGE_BOOTLOADER_FILE_pico-imx6ul="SPL"
+MENDER_IMAGE_BOOTLOADER_FILE_pico-imx6ul="SPL"
 MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx6ul="run loadbootenv; run importbootenv; setenv kernel_addr_r \${loadaddr}; setenv bootargs console=\${console},\${baudrate}; run setfdt; setenv mender_dtb_name \${fdtfile}; "
 
 #
