@@ -107,11 +107,15 @@ IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "rpi-sdimg.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx7", "wic wic.bmap", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic wic.bmap", "", d)} \
 "
 IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ext3 \
     tar tar.bz2 tar.gz \
     ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx7", "wic.gz wic.xz", "", d)} \
+    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic.gz wic.xz", "", d)} \
 "
 
 IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
