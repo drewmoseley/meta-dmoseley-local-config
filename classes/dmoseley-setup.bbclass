@@ -231,3 +231,7 @@ PREFERRED_VERSION_pn-mender-artifact-native = "3.%"
 # These are normally set by the edm-setup-release.sh script
 MACHINEOVERRIDES_append_pico-imx7 = ":brcm"
 MACHINEOVERRIDES_append_pico-imx6ul = ":qca"
+PREFERRED_PROVIDER_u-boot-fw-utils_pico-imx7 = "u-boot-edm-fw-utils"
+PREFERRED_PROVIDER_u-boot-fw-utils_pico-imx6ul = "u-boot-edm-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils_pico-imx7 = "u-boot-edm-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils_pico-imx6ul = "u-boot-edm-fw-utils"
