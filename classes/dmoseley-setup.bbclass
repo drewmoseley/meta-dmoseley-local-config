@@ -179,7 +179,7 @@ IMAGE_INSTALL_remove_colibri-imx7-mender = "packagegroup-base"
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_PARTITION_ALIGNMENT_KB_rpi ??= "4096"
-IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts", "", d)} "
+IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
