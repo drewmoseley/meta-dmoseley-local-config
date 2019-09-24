@@ -283,7 +283,7 @@ PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
 GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "Mender.tga", "Max.tga", d)}"
 IMAGE_BOOT_FILES_append_intel-corei7-64 = " ${GRUB_SPLASH_IMAGE_FILE} unifont.pf2;EFI/BOOT/fonts/unifont.pf2 "
 
-MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id mender-growfs-data "
 
 #
 # Settings for Variscite boards
