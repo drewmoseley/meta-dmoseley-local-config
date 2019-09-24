@@ -10,13 +10,10 @@ log() {
 
 log "$(cat /etc/mender/artifact_info): $(basename "$0") was called!"
 
-if [ -e /data/allow-download ]; then
-    log "Found /tmp/allow-download"
-    RC=OK
-    break
-elif [ -e /data/disallow-download ]; then
+RC=${OK}
+if [ -e /data/disallow-download ]; then
     log "Found /tmp/disallow-download"
     RC=ABORT
 fi
 
-exit $RC
+exit ${RC}
