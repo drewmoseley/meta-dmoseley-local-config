@@ -18,3 +18,5 @@ do_compile() {
     cp ArtifactCommit_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
     cp Sync_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
 }
+
+RDEPENDS_${PN}_append = " netcat "
