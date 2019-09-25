@@ -1,5 +1,5 @@
 [Match]
-Name=eno*
+Name=en*
 KernelCommandLine=!nfsroot
 
 [Network]
