@@ -261,6 +261,16 @@ MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx6ul="run loadbootenv; run importbootenv;
 # Check for CVEs
 INHERIT += "cve-check"
 
+# Extra Toradex settings
+MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_colibri-imx7 = "0x380000"
+PREFERRED_PROVIDER_u-boot-fw-utils_colibri-imx7 = "u-boot-toradex-fsl-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils_colibri-imx7 = "u-boot-toradex-fsl-fw-utils"
+PREFERRED_PROVIDER_u-boot-fw-utils_apalis-imx6 = "u-boot-toradex-fsl-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils_apalis-imx6 = "u-boot-toradex-fsl-fw-utils"
+BOOTENV_SIZE_apalis-imx6 = "0x2000"
+PREFERRED_VERSION_imx-gpu-viv = "6.2.4.p1.2-aarch32"
+PREFERRED_VERSION_kernel-module-imx-gpu-viv = "6.2.4.p1.2"
+
 #
 # Settings for Variscite boards
 #
