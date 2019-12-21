@@ -182,6 +182,7 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
 
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
+MENDER_BOOT_PART_SIZE_MB_intel-corei7-64 ??= "32"
 IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
