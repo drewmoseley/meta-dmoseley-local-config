@@ -282,7 +282,22 @@ BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
 
 GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "Mender.tga", "Max.tga", d)}"
-IMAGE_BOOT_FILES_append_intel-corei7-64 = " ${GRUB_SPLASH_IMAGE_FILE} unifont.pf2;EFI/BOOT/fonts/unifont.pf2 "
+# I'm not sure why this cannot be calculated using bitbake variable inline python syntax
+# but when I do it that way, and SB is not enabled then the expansion is not done and the
+# shell eventually chokes on the unknown syntax."
+python () {
+    splashfile = d.getVar("GRUB_SPLASH_IMAGE_FILE")
+    extension = d.getVar("SB_FILE_EXT")
+    if extension is not None and extension != "":
+        d.setVar("EFI_SECUREBOOT_BOOT_FILES", "%s%s unifont.pf2%s:EFI/BOOT/fonts/unifont.pf2%s" % (splashfile, extension, extension, extension))
+    else:
+        d.setVar("EFI_SECUREBOOT_BOOT_FILES", "")
+}
+IMAGE_BOOT_FILES_append_intel-corei7-64 = " \
+    ${GRUB_SPLASH_IMAGE_FILE} \
+    unifont.pf2;EFI/BOOT/fonts/unifont.pf2 \
+    ${EFI_SECUREBOOT_BOOT_FILES} \
+"
 
 MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id mender-growfs-data "
 
