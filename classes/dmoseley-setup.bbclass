@@ -257,14 +257,6 @@ IMAGE_BOOT_FILES_pico-imx6ul="u-boot.img uEnv.txt"
 IMAGE_BOOTLOADER_FILE_pico-imx6ul="SPL"
 MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx6ul="run loadbootenv; run importbootenv; setenv kernel_addr_r \${loadaddr}; setenv bootargs console=\${console},\${baudrate}; run setfdt; setenv mender_dtb_name \${fdtfile}; "
 
-# Make sure we also build virtual box images for bootable X86 images
-python() {
-    if d.getVar("TRANSLATED_TARGET_ARCH", True) in ["x86-64", "i586", "i686"]:
-        for image_type in ["wic", "uefiimg", "biosimg", "gptimg", "sdimg"]:
-            if bb.utils.contains('IMAGE_FSTYPES', image_type, True, False, d):
-               d.appendVar('IMAGE_FSTYPES', ' %s.vdi ' % image_type)
-}
-
 #
 # Settings for Variscite boards
 #
