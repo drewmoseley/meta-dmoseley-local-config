@@ -157,7 +157,6 @@ BOOT_DELAY_MS_rpi = "0"
 DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG = "lcd_rotate=2"
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
-MACHINE_FEATURES_append_rpi =" vc4graphics "
 
 # Other packages to install in _all_ images
 IMAGE_INSTALL_append_genericx86 = " v86d "
