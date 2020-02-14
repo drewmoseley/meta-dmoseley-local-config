@@ -1,0 +1,1 @@
+PACKAGECONFIG_remove_rpi = "dc1394"
