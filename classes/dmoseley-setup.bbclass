@@ -161,12 +161,6 @@ IMAGE_INSTALL_append = " libnss-mdns "
 IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
 
-# Remove wayland on Udooneo.  This allows X11 based builds to succeed
-# See https://lists.yoctoproject.org/pipermail/meta-freescale/2016-November/019638.html
-DISTRO_FEATURES_remove_udooneo = "wayland"
-DISTRO_FEATURES_remove_colibri-imx7-mender = "wayland"
-DISTRO_FEATURES_remove_colibri-imx7 = "wayland"
-
 EXTRA_IMAGE_FEATURES_append = " package-management "
 PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
 
