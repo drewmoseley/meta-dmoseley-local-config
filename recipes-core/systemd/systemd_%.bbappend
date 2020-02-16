@@ -10,7 +10,7 @@ PACKAGECONFIG_append = " journal-upload "
 # in the future and an fsck will be done.  Setting this to 0 results
 # in an epoch of January 1, 1970 which is detected as an invalid time
 # and the fsck will be skipped.
-PACKAGECONFIG_append = " time-epoch"
+PACKAGECONFIG_append = " set-time-epoch"
 
 do_install_append() {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','true','false',d)}; then
