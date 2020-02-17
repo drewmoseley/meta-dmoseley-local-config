@@ -158,6 +158,8 @@ DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG = "lcd_rotate=2"
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 DISABLE_VC4GRAPHICS_rpi = "1"
+DISABLE_VC4GRAPHICS_raspberrypi3-64 = "0"
+DISABLE_VC4GRAPHICS_raspberrypi4-64 = "0"
 
 # Other packages to install in _all_ images
 IMAGE_INSTALL_append_genericx86 = " v86d "
