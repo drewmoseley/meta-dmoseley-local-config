@@ -98,7 +98,6 @@ IMAGE_FSTYPES_APPEND_MENDER = " \
 IMAGE_FSTYPES_REMOVE_MENDER = " \
     ext4 ext3 \
     jffs2 jffs2.bz2 jffs2.gz jffs2.xz \
-    rpi-sdimg rpi-sdimg.bz2 rpi-sdimg.gz rpi-sdimg.xz rpi-sdimg.bmap \
     sdcard sdcard.gz sdcard.bz2 sdcard.xz \
     tar tar.bz2 tar.gz tar.xz \
     wic wic.bz2 wic.gz wic.xz wic.bmap \
@@ -108,7 +107,7 @@ IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ext4 tar.xz \
     ${@bb.utils.contains("MACHINE", "beaglebone-yocto", "jffs2.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
-    ${@bb.utils.contains("SOC_FAMILY", "rpi", "rpi-sdimg.bmap", "", d)} \
+    ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic", "", d)} \
     ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "pico-imx7", "wic wic.bmap", "", d)} \
     ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic wic.bmap", "", d)} \
@@ -119,6 +118,7 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
     ${@bb.utils.contains("MACHINE", "pico-imx7", "wic.gz wic.xz", "", d)} \
     ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic.gz wic.xz", "", d)} \
+    ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
 IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
