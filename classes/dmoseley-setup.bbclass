@@ -142,8 +142,7 @@ LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender = " commercial "
 LICENSE_FLAGS_WHITELIST_append_colibri-imx7 = " commercial "
 
 # RPI specifics
-IMAGE_INSTALL_append_rpi = " userland bluez5-noinst-tools "
-IMAGE_INSTALL_remove_raspberrypi3-64 = "userland"
+IMAGE_INSTALL_append_rpi = " bluez5-noinst-tools "
 VIDEO_CAMERA_rpi = "1"
 GPU_MEM_rpi = "128"
 RPI_USE_U_BOOT_rpi = "1"
