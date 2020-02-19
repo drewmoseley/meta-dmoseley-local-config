@@ -2,7 +2,7 @@
 NETWORK_MANAGER = ""
 NETWORK_MANAGER_dmoseley-systemd = "systemd"
 NETWORK_MANAGER_dmoseley-connman = "connman-gnome"
-NETWORK_MANAGER_dmoseley-network-manager = "networkmanager"
+NETWORK_MANAGER_dmoseley-networkmanager = "networkmanager"
 
 # Extra multimedia stuff
 RDEPENDS_${PN}_append_rpi = " mpv vlc "
