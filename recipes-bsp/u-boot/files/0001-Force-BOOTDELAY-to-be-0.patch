@@ -1,0 +1,28 @@
+From 228737cf2a887d61e7de53138b99703cbc0c5ab1 Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Fri, 21 Feb 2020 01:47:43 +0000
+Subject: [PATCH] Force BOOTDELAY to be 0
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ include/env_default.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/include/env_default.h b/include/env_default.h
+index f56a1135f8..fc7a4a4c9c 100644
+--- a/include/env_default.h
++++ b/include/env_default.h
+@@ -43,9 +43,7 @@ const uchar default_environment[] = {
+ #ifdef	CONFIG_NFSBOOTCOMMAND
+ 	"nfsboot="	CONFIG_NFSBOOTCOMMAND		"\0"
+ #endif
+-#if defined(CONFIG_BOOTDELAY)
+-	"bootdelay="	__stringify(CONFIG_BOOTDELAY)	"\0"
+-#endif
++	"bootdelay=0\0"
+ #if defined(CONFIG_BAUDRATE) && (CONFIG_BAUDRATE >= 0)
+ 	"baudrate="	__stringify(CONFIG_BAUDRATE)	"\0"
+ #endif
+-- 
+2.25.0
+
