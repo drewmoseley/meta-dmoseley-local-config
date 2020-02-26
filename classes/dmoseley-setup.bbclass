@@ -146,8 +146,6 @@ LICENSE_FLAGS_WHITELIST_append_colibri-imx7-emmc = " commercial "
 
 # RPI specifics
 IMAGE_INSTALL_append_rpi = " bluez5-noinst-tools "
-VIDEO_CAMERA_rpi = "1"
-GPU_MEM_rpi = "128"
 RPI_USE_U_BOOT_rpi = "1"
 ENABLE_UART_rpi = "1"
 DISABLE_OVERSCAN_rpi = "1"
