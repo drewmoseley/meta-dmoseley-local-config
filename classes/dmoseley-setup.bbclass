@@ -199,7 +199,6 @@ ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
 SERIAL_CONSOLE_append_up-board = " ttyS1 "
 SERIAL_CONSOLES_append_up-board = " 115200;ttyS1 "
 MENDER_STORAGE_DEVICE_up-board = "/dev/sda"
-MENDER_GRUB_STORAGE_DEVICE_up-board = "hd0"
 
 # intel-corei7-64 Board extra settings
 SERIAL_CONSOLE_append_intel-corei7-64 = " ttyUSB0 "
