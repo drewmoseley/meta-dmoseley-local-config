@@ -1,0 +1,265 @@
+if [ "$0" = "$BASH_SOURCE" ]; then
+    echo "Error: Script must be sourced"
+    exit 1
+fi
+
+dncase() {
+    if [ $# = 0 ]; then
+        tr [A-Z] [a-z]
+    else
+        echo $1 | tr [A-Z] [a-z]
+    fi
+}
+
+set -ue
+
+#
+# The full path base source directory of everything
+#
+BASEDIR="$(pwd -P)/src"
+[ ! -d "${BASEDIR}" ] && BASEDIR="$(pwd -P)/sources"
+[ ! -d "${BASEDIR}" ] && echo "Unable to locate source directory for build." && exit 1
+
+#
+# Determine which setup script to use
+#
+SETUP_SCRIPT=""
+for i in "${BASEDIR}"/*/oe-init-build-env; do
+    [ -f "$i" ] && SETUP_SCRIPT="$i" && break
+done
+[ -z "${SETUP_SCRIPT}" ] && echo "Unable to locate setup script \"${SETUP_SCRIPT}\"" && exit 1
+
+#
+# Determine which configurations we are building
+#
+set +u
+export BUILD_TYPE="$1"
+export MACHINE="$2"
+set -u
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: $0 build-type machine"
+    exit 1
+fi
+
+#
+# Validate the build type
+#
+case "$(dncase ${BUILD_TYPE})" in
+    mender ) ;;
+    community ) ;;
+    * )
+        echo "Error. Unknown build type ${BUILD_TYPE}."
+        echo "Supported values are \"mender\", and \"community\""
+        exit 1
+        ;;
+esac
+
+#
+# Validate the machine
+#
+case "$(dncase ${MACHINE})" in
+    raspberrypi3 ) ;;
+    * )
+        echo "Error. Unknown machine ${MACHINE}."
+        echo "Supported values are \"raspberrypi3\""
+        exit 1
+        ;;
+esac
+
+echo "Preparing ${BUILD_TYPE}-${MACHINE}"
+
+#
+# Run the SETUP_SCRIPT and set MACHINE
+#
+set +u
+mkdir -p build
+. "${SETUP_SCRIPT}" "build/${MACHINE}"
+set -u
+
+#
+# Determine the branch
+#
+BRANCH=$(cd "${BASEDIR}"/meta-dmoseley-local-config/; git branch -a --contains HEAD | tail -n 1 | awk -F/ '{print $NF}')
+
+#
+# Setup the base platform
+#
+ORIG_MACHINE="${MACHINE}"
+case "${MACHINE}" in
+    beaglebone ) MACHINE="beaglebone-yocto";;
+    minnowboard ) MACHINE="intel-corei7-64";;
+esac
+
+#
+# Do some sanity checking on various combinations
+#
+case ${BUILD_TYPE}:${MACHINE}:${BRANCH} in
+    community:qemux86-64-bios:* )
+        echo "Error. Platform ${platform} does not exist for ${BUILD_TYPE} builds"
+        continue
+        ;;
+    *:raspberrypi4*:thud )
+        echo "Error. Platform ${platform} requires warrior or newer"
+        rm -rf $(pwd)
+        continue
+        ;;
+esac
+
+#
+# Setup platform and configuration-independent additional layers
+#
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-oe/meta-oe)
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-oe/meta-python)
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-oe/meta-multimedia)
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-oe/meta-networking)
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-oe/meta-gnome)
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-oe/meta-xfce)
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-rust)
+
+#
+# Setup platform-specific additional layers
+#
+case "${MACHINE}" in
+    *raspberry* ) bitbake-layers add-layer "${BASEDIR}"/meta-raspberrypi;;
+    *udooneo*   )
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-distro)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-udoo)
+        ;;
+    *colibri* | *apalis*  )
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-3rdparty)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-toradex-bsp-common)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-toradex-nxp)
+        ;;
+    *minnowboard* | *intel* )
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-intel)
+        ;;
+    *pico-imx* )
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-3rdparty)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-distro)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-edm-bsp-release)
+        ;;
+    *var* )
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-3rdparty)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-distro)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-variscite-fslc)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-swupdate)
+        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-qt5)
+        ;;
+esac
+
+#
+# Setup configuration-specific additional layers
+#
+if [ "${BUILD_TYPE}" == "mender" ]; then
+    bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender/meta-mender-core)
+    case "${MACHINE}" in
+        *qemu*        ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender/meta-mender-qemu);;
+        *raspberrypi* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender/meta-mender-raspberrypi);;
+    esac
+
+    # Setup meta-mender-community layers
+    case "${MACHINE}" in
+        *colibri* | *apalis* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-toradex-nxp);;
+        *beaglebone* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-beaglebone);;
+        *pico-imx* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-nxp);;
+        *var* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-variscite);;
+    esac
+
+    # Additional update-modules
+    bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-update-modules)
+fi
+
+#
+# Setup my specific layers
+#
+bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-dmoseley-local-config)
+bitbake-layers add-layer $(readlink -f /work/dmoseley/local/meta-dmoseley-private)
+
+cat > conf/auto.conf <<-EOF
+	MACHINE="${MACHINE}"
+	
+	# Other options for network managers
+	DMOSELEY_FEATURES_append = " dmoseley-networkd "
+	# DMOSELEY_FEATURES_append = " dmoseley-connman "
+	# DMOSELEY_FEATURES_append = " dmoseley-networkmanager "
+	# DMOSELEY_FEATURES_append = " dmoseley-wifi-connect "
+	EOF
+
+#
+# Configuration-specific settings
+#
+if [ $(dncase "${BUILD_TYPE}") == "mender" ]; then
+    case "${MACHINE}" in
+        qemux86-64-bios )
+            echo 'INHERIT += "mender-full-bios"' >> conf/auto.conf
+            ;;
+
+        *colibri*emmc* )
+            echo 'INHERIT += "mender-full"' >> conf/auto.conf
+            ;;
+
+        *vexpress-qemu-flash* | *colibri* )
+            echo 'INHERIT += "mender-full-ubi"' >> conf/auto.conf
+            ;;
+
+        * )
+            echo 'INHERIT += "mender-full"' >> conf/auto.conf
+            ;;
+    esac
+
+    cat >> conf/auto.conf <<-EOF
+
+	MENDER_ARTIFACT_NAME = "${BRANCH}-target-image-1.0"
+
+	# Which image to display in the Mender image-display demo
+	IMAGE_DISPLAY_IMAGE_FILE = "demo-image-unlocked.png"
+	# IMAGE_DISPLAY_IMAGE_FILE = "demo-image-locked.png"
+
+	# Choose an appropriate server
+	# DMOSELEY_FEATURES_append = " dmoseley-mender-demo-server "
+	# DMOSELEY_FEATURES_append = " dmoseley-mender-prod-server "
+	DMOSELEY_FEATURES_append = " dmoseley-mender-hosted-server "
+	EOF
+fi
+    
+
+#
+# The part of auto.conf that is independent of other config conditionals
+#
+cat >> conf/auto.conf <<-EOF
+	IMAGE_FSTYPES_remove = " teziimg"
+
+	# Switch to IPK packages
+	PACKAGE_CLASSES = "package_ipk"
+
+	ACCEPT_FSL_EULA = "1"
+
+	# Switch to systemd
+	DMOSELEY_FEATURES_append = " dmoseley-systemd "
+
+	# Include my customizations
+	DMOSELEY_FEATURES_append = " dmoseley-wifi "
+	INHERIT += "dmoseley-setup"
+	INHERIT += "dmoseley-private"
+
+	# Contents from ~/dmoseley/.yocto/site.conf
+	# Eventually we want to bind mount that in for all container builds
+	# rather than explicitly copying in the contents here.
+	# DL_DIR = "/work/dmoseley/yocto-downloads"
+	# SSTATE_DIR = "/work/dmoseley/yocto-sstate-cache"
+	INHERIT += "rm_work"
+
+	SSTATE_MIRRORS += "\
+	     file://.* http://sstate.yoctoproject.org/dev/PATH;downloadfilename=PATH \n \
+	     file://.* http://sstate.yoctoproject.org/2.6/PATH;downloadfilename=PATH \n \
+	     file://.* http://sstate.yoctoproject.org/2.7.1/PATH;downloadfilename=PATH \n \
+	     file://.* http://sstate.yoctoproject.org/3.0/PATH;downloadfilename=PATH \n \
+	     file://.* http://localhost:8000/PATH \n \
+	     "
+	EOF
+
+echo "Configuration complete for ${BUILD_TYPE}-${MACHINE}"
