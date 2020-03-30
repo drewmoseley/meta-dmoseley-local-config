@@ -295,7 +295,8 @@ IMAGE_BOOT_FILES_append_intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id mender-growfs-data "
+MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_ENABLE_remove = " mender-growfs-data "
 
 #
 # Settings for Variscite boards
