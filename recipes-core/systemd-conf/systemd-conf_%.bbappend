@@ -31,4 +31,16 @@ FallbackNTP=time1.google.com time2.google.com time3.google.com time4.google.com
 EOF
         chmod 0644 ${D}${sysconfdir}/systemd/timesyncd.conf
     fi
+
+    #
+    # Setup persistent systemd journaling.
+    #
+    sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' ${D}${sysconfdir}/systemd/journald.conf
+    sed -i -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' ${D}${sysconfdir}/systemd/journald.conf
+    sed -i -e 's/.*Storage.*/Storage=persistent/' ${D}${sysconfdir}/systemd/journald.conf
+    sed -i -e 's/.*Compress.*/Compress=yes/' ${D}${sysconfdir}/systemd/journald.conf
+    install -d ${D}/data/journal
+    install -d ${D}${sysconfdir}/tmpfiles.d
+    echo "L    /var/log/journal -    -    -     -   /data/journal" >> ${D}${sysconfdir}/tmpfiles.d/log-persist.conf
 }
+FILES_${PN} += "/data/journal ${sysconfdir}/tmpfiles.d/log-persist.conf"

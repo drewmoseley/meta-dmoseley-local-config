@@ -2,6 +2,7 @@
 PACKAGECONFIG_remove = "${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-connman','networkd resolved nss-resolve','',d)}"
 PACKAGECONFIG_remove = "${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkmanager','networkd resolved nss-resolve','',d)}"
 PACKAGECONFIG_append = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','networkd resolved nss-resolve','',d)} "
+PACKAGECONFIG_append = " journal-upload "
 
 # Avoid issues with time being out of sync on first boot.  By default,
 # systemd uses its build time as the epoch. When systemd is launched
@@ -15,4 +16,9 @@ do_install_append() {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','true','false',d)}; then
         rm -f ${D}${sysconfdir}/systemd/system/getty.target.wants/getty@tty1.service
     fi
+
+    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-journal-upload','true','false',d)}; then
+        sed -i -e 's@.*URL=*@URL=https://tobago.home.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
+    fi
 }
+FILES_${PN} += "/data/journal"
