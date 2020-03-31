@@ -171,15 +171,6 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
 EXTRA_IMAGE_FEATURES_append = " package-management "
 PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
 
-# Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
-# MACHINE_EXTRA_RRECOMMENDS.  This is not included by default in core-image-minimal and
-# core-image-full-cmdline but it has some handy packages so let's include it by default.
-# If certain builds are size constrained this (as well as package-management) should be
-# removed.
-IMAGE_INSTALL_append = " packagegroup-base "
-IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
-IMAGE_INSTALL_remove_colibri-imx7-mender = "packagegroup-base"
-
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_PARTITION_ALIGNMENT_rpi ??= "4194304"
