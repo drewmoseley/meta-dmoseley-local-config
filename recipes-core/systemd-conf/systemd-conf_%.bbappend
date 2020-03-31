@@ -35,10 +35,10 @@ EOF
     #
     # Setup persistent systemd journaling.
     #
-    sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' ${D}${sysconfdir}/systemd/journald.conf
-    sed -i -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' ${D}${sysconfdir}/systemd/journald.conf
-    sed -i -e 's/.*Storage.*/Storage=persistent/' ${D}${sysconfdir}/systemd/journald.conf
-    sed -i -e 's/.*Compress.*/Compress=yes/' ${D}${sysconfdir}/systemd/journald.conf
+    sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
+    sed -i -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
+    sed -i -e 's/.*Storage.*/Storage=persistent/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
+    sed -i -e 's/.*Compress.*/Compress=yes/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
     install -d ${D}/data/journal
     install -d ${D}${sysconfdir}/tmpfiles.d
     echo "L    /var/log/journal -    -    -     -   /data/journal" >> ${D}${sysconfdir}/tmpfiles.d/log-persist.conf
