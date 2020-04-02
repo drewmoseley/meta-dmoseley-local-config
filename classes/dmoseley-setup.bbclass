@@ -326,7 +326,7 @@ MENDER_STORAGE_DEVICE_imx6ul-var-dart = "/dev/mmcblk0"
 MENDER_BOOT_PART_SIZE_MB_imx6ul-var-dart = "0"
 
 # This naming of the mender recipes is for zeus and newer
-BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender-client_%.bbappend"
+BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender_%.bbappend"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
