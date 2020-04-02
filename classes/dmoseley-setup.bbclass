@@ -271,3 +271,6 @@ IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx6ul-var-dart = "2"
 MENDER_PARTITION_ALIGNMENT_KB_imx6ul-var-dart = "4096"
 MENDER_STORAGE_DEVICE_imx6ul-var-dart = "/dev/mmcblk0"
 MENDER_BOOT_PART_SIZE_MB_imx6ul-var-dart = "0"
+
+# This naming of the mender recipes is for zeus and newer
+BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender-client_%.bbappend"
