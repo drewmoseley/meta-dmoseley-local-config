@@ -157,6 +157,9 @@ DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG = "lcd_rotate=2"
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 
+# This is needed for the Pi Foundation Display to work with VC4.
+VC4DTBO_rpi = "vc4-fkms-v3d"
+
 # Other packages to install in _all_ images
 IMAGE_INSTALL_append_genericx86 = " v86d "
 IMAGE_INSTALL_append = " kernel-image kernel-modules kernel-devicetree "
