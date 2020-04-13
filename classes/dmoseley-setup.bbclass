@@ -154,7 +154,7 @@ DISABLE_SPLASH = "1"
 BOOT_DELAY_rpi = "0"
 BOOT_DELAY_MS_rpi = "0"
 DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
-RPI_EXTRA_CONFIG = "lcd_rotate=2"
+RPI_EXTRA_CONFIG_append = " \nlcd_rotate=2\n "
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 
 # This is needed for the Pi Foundation Display to work with VC4.
