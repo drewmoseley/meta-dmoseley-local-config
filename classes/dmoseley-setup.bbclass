@@ -224,9 +224,9 @@ IMAGE_INSTALL_append = " \
 "
 
 # Use Mender v2.x
-PREFERRED_VERSION_pn-mender = "2.%"
-PREFERRED_VERSION_pn-mender-artifact = "3.%"
-PREFERRED_VERSION_pn-mender-artifact-native = "3.%"
+PREFERRED_VERSION_pn-mender = "2.1.2"
+PREFERRED_VERSION_pn-mender-artifact = "3.2.1"
+PREFERRED_VERSION_pn-mender-artifact-native = "3.2.1"
 
 # Settings for Technexion boards.
 # These are normally set by the edm-setup-release.sh script
