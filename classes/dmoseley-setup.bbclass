@@ -260,7 +260,7 @@ MENDER_IMAGE_BOOTLOADER_FILE_pico-imx6ul="SPL"
 MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx6ul="run loadbootenv; run importbootenv; setenv kernel_addr_r \${loadaddr}; setenv bootargs console=\${console},\${baudrate}; run setfdt; setenv mender_dtb_name \${fdtfile}; "
 
 # Check for CVEs
-INHERIT += "cve-check"
+inherit cve-check
 
 # Extra Toradex settings
 MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_colibri-imx7 = "0x380000"
