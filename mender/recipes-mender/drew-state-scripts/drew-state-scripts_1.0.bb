@@ -1,10 +1,10 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://ArtifactRollback_Enter_00;subdir=${PN}-${PV} \
-           file://Download_Enter_00;subdir=${PN}-${PV} \
-           file://LICENSE;subdir=${PN}-${PV} \
-           file://ArtifactCommit_Enter_00;subdir=${PN}-${PV} \
-           file://Sync_Enter_00;subdir=${PN}-${PV} \
+SRC_URI = "file://ArtifactRollback_Enter_00;subdir=${BPN}-${PV} \
+           file://Download_Enter_00;subdir=${BPN}-${PV} \
+           file://LICENSE;subdir=${BPN}-${PV} \
+           file://ArtifactCommit_Enter_00;subdir=${BPN}-${PV} \
+           file://Sync_Enter_00;subdir=${BPN}-${PV} \
           "
 
 LICENSE = "Apache-2.0"
