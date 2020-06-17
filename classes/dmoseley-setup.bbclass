@@ -282,6 +282,15 @@ PREFERRED_RPROVIDER_u-boot-fw-utils_apalis-imx6 = "u-boot-toradex-fsl-fw-utils"
 BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
 BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
+MENDER_FEATURES_ENABLE_append_apalis-imx6 = " mender-uboot mender-image-sd"
+MENDER_FEATURES_DISABLE_append_apalis-imx6 = " mender-grub mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_colibri-imx7-nand = " mender-uboot mender-ubi"
+MENDER_FEATURES_DISABLE_append_colibri-imx7-nand = " mender-grub mender-image-sd mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_colibri-imx7-emmc = " mender-uboot mender-image-sd"
+MENDER_FEATURES_DISABLE_append_colibri-imx7-emmc = " mender-grub mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_colibri-imx8m = " mender-uboot mender-image-sd"
+MENDER_FEATURES_DISABLE_append_colibri-imx8m = " mender-grub mender-image-uefi"
+MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
 
 GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "Mender.tga", "Max.tga", d)}"
 
@@ -329,6 +338,9 @@ MENDER_BOOT_PART_SIZE_MB_imx6ul-var-dart = "0"
 
 # This naming of the mender recipes is for zeus and newer
 BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender_%.bbappend"
+
+# The meta-toradex-nxp version of the u-boot-toradex_2019.07 recipes does not build currently on master
+BBMASK += "/meta-toradex-nxp/recipes-bsp/u-boot"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
