@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-LOGO_PREFIX = "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "mender", "Max_Jojo", d)}"
+LOGO_PREFIX = "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender", "Max_Jojo", d)}"
 LOGO = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
 
 SRC_URI += " \

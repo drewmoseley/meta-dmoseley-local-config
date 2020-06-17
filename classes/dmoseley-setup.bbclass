@@ -48,7 +48,7 @@ python() {
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
         bb.fatal("Building access-point requires networkmanager.")
 
-    if bb.utils.contains('DISTRO_FEATURES', 'mender-install', True, False, d):
+    if bb.utils.contains('DISTRO_FEATURES', 'mender-client-install', True, False, d):
         numberOfServersConfigured=0
         for serverType in [ "demo-server", "prod-server", "hosted-server", "staging-server", "migrate-to-hosted" ]:
             if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-mender-" + serverType, True, False, d):
@@ -121,8 +121,8 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
-IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
-IMAGE_FSTYPES_remove = "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
+IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
+IMAGE_FSTYPES_remove = "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
@@ -185,7 +185,7 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
 # Mender settings
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_BOOT_PART_SIZE_MB_intel-corei7-64 ??= "32"
-IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-install", " drew-state-scripts mender-ipk", "", d)} "
+IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
@@ -282,7 +282,8 @@ BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
 BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
 
-GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-install", "Mender.tga", "Max.tga", d)}"
+GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "Mender.tga", "Max.tga", d)}"
+
 # I'm not sure why this cannot be calculated using bitbake variable inline python syntax
 # but when I do it that way, and SB is not enabled then the expansion is not done and the
 # shell eventually chokes on the unknown syntax."
