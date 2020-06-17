@@ -74,7 +74,7 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'udooneo', 'linux-firmware-wl18xx', '', d)} \
     ${@bb.utils.contains('MACHINE', 'imx7dsabresd', 'linux-firmware-rtl8192cu', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'up-board', 'linux-firmware-rtl8188 kernel-module-r8188eu', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'up-squared', 'linux-firmware-rtl8188 kernel-module-r8188eu', '', d)} \
 "
 
 KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
@@ -136,7 +136,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7 = "512"
 MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
 MENDER_MTDPARTS_colibri-imx7 = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
 MENDER_STORAGE_PEB_SIZE_colibri-imx7 = "131072"
-MENDER_STORAGE_TOTAL_SIZE_MB_up-board = "4096"
+MENDER_STORAGE_TOTAL_SIZE_MB_up-squared = "4096"
 MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 = "4096"
 MENDER_STORAGE_TOTAL_SIZE_MB_pico-imx7 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_pico-imx6ul ??= "2048"
@@ -201,9 +201,9 @@ add_dmoseley_data() {
 ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
 
 # Up Squared Board extra settings
-SERIAL_CONSOLE_append_up-board = " ttyS1 "
-SERIAL_CONSOLES_append_up-board = " 115200;ttyS1 "
-MENDER_STORAGE_DEVICE_up-board = "/dev/sda"
+SERIAL_CONSOLE_append_up-squared = " ttyS1 "
+SERIAL_CONSOLES_append_up-squared = " 115200;ttyS1 "
+MENDER_STORAGE_DEVICE_up-squared = "/dev/sda"
 
 # intel-corei7-64 Board extra settings
 SERIAL_CONSOLE_append_intel-corei7-64 = " ttyUSB0 "

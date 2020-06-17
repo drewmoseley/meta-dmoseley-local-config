@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append_up-board = " file://01_splash_mender_grub.cfg;subdir=git "
+SRC_URI_append_up-squared = " file://01_splash_mender_grub.cfg;subdir=git "
 SRC_URI_append_intel-corei7-64 = " file://01_splash_mender_grub.cfg;subdir=git "
 
 do_compile_prepend() {
@@ -8,8 +8,8 @@ do_compile_prepend() {
 
     # Determine the console settings
     case $MENDER_MACHINE:$FASTBOOT in
-         *up-board*:no         ) CONSOLE_ARGS="console=ttyS0,115200n8 console=tty0";;
-         *up-board*:yes        ) CONSOLE_ARGS="console=ttyS0,115200n8 quiet";;
+         *up-squared*:no         ) CONSOLE_ARGS="console=ttyS0,115200n8 console=tty0";;
+         *up-squared*:yes        ) CONSOLE_ARGS="console=ttyS0,115200n8 quiet";;
          *intel-corei7-64*:no  ) CONSOLE_ARGS="console=ttyUSB0,115200n8 console=tty0";;
          *intel-corei7-64*:yes ) CONSOLE_ARGS="console=ttyUSB0,115200n8 quiet";;
          *beaglebone*:no       ) CONSOLE_ARGS="console=tty0 console=ttyS0,115200n8";;
@@ -20,7 +20,7 @@ do_compile_prepend() {
 
     # Determine other bootargs
     case $MENDER_MACHINE in
-        *intel-corei7-64* | up-board ) EXTRA_BOOTARGS="biosdevname=0 net.ifnames=0";;
+        *intel-corei7-64* | up-squared ) EXTRA_BOOTARGS="biosdevname=0 net.ifnames=0";;
     esac
 
     echo "set console_bootargs=\"${CONSOLE_ARGS}\"" > ${S}/02_dmoseley_grub.cfg
