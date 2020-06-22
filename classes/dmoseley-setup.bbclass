@@ -339,9 +339,6 @@ MENDER_BOOT_PART_SIZE_MB_imx6ul-var-dart = "0"
 # This naming of the mender recipes is for zeus and newer
 BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender_%.bbappend"
 
-# The meta-toradex-nxp version of the u-boot-toradex_2019.07 recipes does not build currently on master
-BBMASK += "/meta-toradex-nxp/recipes-bsp/u-boot"
-
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
 DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7 ?= "800x480"
