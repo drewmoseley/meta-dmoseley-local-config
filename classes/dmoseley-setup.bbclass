@@ -5,6 +5,7 @@ python() {
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
         'dmoseley-setup',                # General enablement
+        'dmoseley-mender',               # Use mender
         'dmoseley-systemd',              # Use systemd
         'dmoseley-networkd',             # Use systemd-networkd
         'dmoseley-networkmanager',       # Use networkmanager
@@ -56,6 +57,12 @@ python() {
         if (numberOfServersConfigured != 1):
             bb.fatal("Must specify exactly one server type.")
 }
+
+MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
+MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
+MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
+MENDER_BBCLASS = "mender-full"
+inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${MENDER_BBCLASS}', '', d)}
 
 IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client "
 IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
