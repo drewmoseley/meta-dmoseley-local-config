@@ -1,4 +1,5 @@
-DMOSELEY_FEATURES ?= ""
+DMOSELEY_FEATURES = "dmoseley-setup"
+OVERRIDES =. "dmoseley-setup:"
 
 python() {
     # Add all possible dmoseley-local features here.
@@ -58,11 +59,11 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
-MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
-MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
-MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
-MENDER_BBCLASS = "mender-full"
-inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${MENDER_BBCLASS}', '', d)}
+DMOSELEY_MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
+DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
+DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
+DMOSELEY_MENDER_BBCLASS = "mender-full"
+inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${DMOSELEY_MENDER_BBCLASS}', '', d)}
 
 IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client "
 IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
@@ -286,6 +287,11 @@ PREFERRED_PROVIDER_u-boot-fw-utils_colibri-imx7-emmc = "u-boot-toradex-fsl-fw-ut
 PREFERRED_RPROVIDER_u-boot-fw-utils_colibri-imx7-emmc = "u-boot-toradex-fsl-fw-utils"
 PREFERRED_PROVIDER_u-boot-fw-utils_apalis-imx6 = "u-boot-toradex-fsl-fw-utils"
 PREFERRED_RPROVIDER_u-boot-fw-utils_apalis-imx6 = "u-boot-toradex-fsl-fw-utils"
+PREFERRED_PROVIDER_u-boot_colibri-imx7 = "u-boot-toradex"
+PREFERRED_PROVIDER_u-boot_colibri-imx7-emmc = "u-boot-toradex"
+PREFERRED_PROVIDER_u-boot_colibri-vf = "u-boot-toradex"
+PREFERRED_PROVIDER_u-boot_apalis-imx6 = "u-boot-toradex"
+PREFERRED_PROVIDER_u-boot_colibri-imx8m = "u-boot-toradex"
 BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
 BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
@@ -358,3 +364,9 @@ IMAGE_INSTALL_append = " mender-binary-delta"
 LICENSE_FLAGS_WHITELIST_append = " commercial_mender-binary-delta"
 FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0b1/:"
 PREFERRED_VERSION_mender-binary-delta = "1.1.0b1"
+
+# General settings
+PREFERRED_PROVIDER_u-boot = "u-boot"
+PREFERRED_RPROVIDER_u-boot = "u-boot"
+PREFERRED_PROVIDER_u-boot-fw-utils = "libubootenv"
+PREFERRED_RPROVIDER_u-boot-fw-utils = "libubootenv"

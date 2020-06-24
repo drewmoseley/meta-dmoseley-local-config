@@ -1,12 +1,12 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS_prepend_dmoseley-setup := "${THISDIR}/files:"
 
-SRC_URI += " \
+SRC_URI_append_dmoseley-setup = " \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','file://eth.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','file://en.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','file://wl.network', '', d)} \
 "
 
-FILES_${PN} += " \
+FILES_${PN}_append_dmoseley-setup = " \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','${sysconfdir}/systemd/network/eth.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','${sysconfdir}/systemd/network/en.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','${sysconfdir}/systemd/network/wl.network', '', d)} \
@@ -14,7 +14,7 @@ FILES_${PN} += " \
 "
 
 
-do_install_append() {
+do_install_append_dmoseley-setup () {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd/network
         install -m 0644 ${WORKDIR}/eth.network ${D}${sysconfdir}/systemd/network
@@ -43,4 +43,4 @@ EOF
     install -d ${D}${sysconfdir}/tmpfiles.d
     echo "L    /var/log/journal -    -    -     -   /data/journal" >> ${D}${sysconfdir}/tmpfiles.d/log-persist.conf
 }
-FILES_${PN} += "/data/journal ${sysconfdir}/tmpfiles.d/log-persist.conf"
+FILES_${PN}_append_dmoseley-setup += "/data/journal ${sysconfdir}/tmpfiles.d/log-persist.conf"
