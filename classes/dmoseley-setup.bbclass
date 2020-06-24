@@ -1,4 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -370,3 +370,5 @@ PREFERRED_PROVIDER_u-boot = "u-boot"
 PREFERRED_RPROVIDER_u-boot = "u-boot"
 PREFERRED_PROVIDER_u-boot-fw-utils = "libubootenv"
 PREFERRED_RPROVIDER_u-boot-fw-utils = "libubootenv"
+
+ACCEPT_FSL_EULA = "1"
