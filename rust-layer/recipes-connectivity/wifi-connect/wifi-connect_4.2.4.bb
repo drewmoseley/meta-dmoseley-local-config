@@ -1,7 +1,7 @@
 inherit cargo
 
 DEPENDS += "dbus"
-RDEPENDS_${PN} += " networkmanager dnsmasq wireless-tools "
+RDEPENDS_${PN} += " networkmanager dnsmasq iw "
 
 SRC_URI += "git://github.com/balena-io/wifi-connect;protocol=https"
 SRCREV = "9a1c8c7af699caea6beee50ba44b70909933d2a2"
