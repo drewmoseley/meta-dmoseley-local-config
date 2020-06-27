@@ -360,7 +360,8 @@ DMOSELEY_DISPLAY_RESOLUTION_rpi ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"
 
 # Mender Commercial settings
-IMAGE_INSTALL_append = " mender-binary-delta"
+IMAGE_INSTALL_append_arm = " mender-binary-delta"
+IMAGE_INSTALL_append_aarch64 = " mender-binary-delta"
 LICENSE_FLAGS_WHITELIST_append = " commercial_mender-binary-delta"
 FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0b1/:"
 PREFERRED_VERSION_mender-binary-delta = "1.1.0b1"
