@@ -169,7 +169,7 @@ IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
 
 EXTRA_IMAGE_FEATURES_append = " package-management "
-PACKAGE_FEED_URIS = "http://tobago.home.moseleynet.net:5678"
+PACKAGE_FEED_URIS = "http://aruba.home.moseleynet.net:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
 # MACHINE_EXTRA_RRECOMMENDS.  This is not included by default in core-image-minimal and
