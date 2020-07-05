@@ -18,7 +18,7 @@ do_install_append() {
     fi
 
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-journal-upload','true','false',d)}; then
-        sed -i -e 's@.*URL=*@URL=https://tobago.home.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
+        sed -i -e 's@.*URL=*@URL=https://aruba.home.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
     fi
 }
 FILES_${PN} += "/data/journal"
