@@ -4,6 +4,7 @@ python() {
     # Add all possible dmoseley-local features here.
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
+        'dmoseley-setup',                # General enablement
         'dmoseley-systemd',              # Use systemd
         'dmoseley-networkd',             # Use systemd-networkd
         'dmoseley-networkmanager',       # Use networkmanager
