@@ -101,6 +101,7 @@ IMAGE_FSTYPES_REMOVE_MENDER = " \
     sdcard sdcard.gz sdcard.bz2 sdcard.xz \
     tar tar.bz2 tar.gz tar.xz \
     wic wic.bz2 wic.gz wic.xz wic.bmap \
+    teziimg sdimg.bz2 uefiimg.bz2 mender.bmap \
 "
 IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ext4 tar.xz \
