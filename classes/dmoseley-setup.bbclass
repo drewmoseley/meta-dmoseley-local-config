@@ -63,8 +63,7 @@ DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
 IMAGE_INSTALL_append_dmoseley-wifi = " \
     iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'colibri-imx7', 'kernel-module-rt2500usb kernel-module-rtl8192cu kernel-module-r8188eu linux-firmware-ralink linux-firmware-rtl8192cu linux-firmware-rtl8188 linux-firmware-rtl8188eu', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'colibri-imx7-mender', 'kernel-module-rt2500usb kernel-module-rtl8192cu kernel-module-r8188eu linux-firmware-ralink linux-firmware-rtl8192cu linux-firmware-rtl8188 linux-firmware-rtl8188eu', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'colibri-imx7', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'chip', 'linux-firmware-rtl8723 kernel-module-r8723bs rtl8723bs', '', d)} \
     ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
@@ -142,7 +141,6 @@ MENDER_STORAGE_TOTAL_SIZE_MB_pico-imx6ul ??= "2048"
 
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append_rpi = " commercial "
-LICENSE_FLAGS_WHITELIST_append_colibri-imx7-mender = " commercial "
 LICENSE_FLAGS_WHITELIST_append_colibri-imx7 = " commercial "
 LICENSE_FLAGS_WHITELIST_append_colibri-imx7-emmc = " commercial "
 
@@ -219,7 +217,6 @@ USE_VT_dmoseley-fastboot = "0"
 IMAGE_FEATURES += "hwcodecs"
 
 GSTEXAMPLES_colibri-imx7 = ""
-GSTEXAMPLES_colibri-imx7-mender = ""
 
 # Full versions of various utilities
 IMAGE_INSTALL_append = " \
