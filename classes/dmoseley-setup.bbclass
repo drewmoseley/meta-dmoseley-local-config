@@ -361,8 +361,7 @@ DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"
 IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender-binary-delta", "", d)}"
 LICENSE_FLAGS_WHITELIST_append = " commercial_mender-binary-delta"
-FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0b1/:"
-PREFERRED_VERSION_mender-binary-delta = "1.1.0b1"
+FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0/:"
 
 # General settings
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot"
