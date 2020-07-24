@@ -5,7 +5,7 @@ python() {
     # Add all possible dmoseley-local features here.
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
-        'dmoseley-setup',                # General enablement
+        'dmoseley-setup',                # Basic setup -- flag for conditional settings
         'dmoseley-mender',               # Use mender
         'dmoseley-systemd',              # Use systemd
         'dmoseley-networkd',             # Use systemd-networkd
@@ -59,7 +59,7 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
-DMOSELEY_MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
+DMOSELEY_MENDER_BBCLASS_colibri-imx7 = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
 DMOSELEY_MENDER_BBCLASS = "mender-full"
@@ -74,7 +74,6 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
     ${@bb.utils.contains('MACHINE', 'colibri-imx7', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'chip', 'linux-firmware-rtl8723 kernel-module-r8723bs rtl8723bs', '', d)} \
     ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
@@ -228,6 +227,7 @@ USE_VT_dmoseley-fastboot = "0"
 IMAGE_FEATURES += "hwcodecs"
 
 GSTEXAMPLES_colibri-imx7 = ""
+GSTEXAMPLES_colibri-imx7-emmc = ""
 
 # Full versions of various utilities
 IMAGE_INSTALL_append = " \
@@ -293,13 +293,13 @@ BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
 MENDER_FEATURES_ENABLE_append_apalis-imx6 = " mender-uboot mender-image-sd"
 MENDER_FEATURES_DISABLE_append_apalis-imx6 = " mender-grub mender-image-uefi"
-MENDER_FEATURES_ENABLE_append_colibri-imx7-nand = " mender-uboot mender-ubi"
-MENDER_FEATURES_DISABLE_append_colibri-imx7-nand = " mender-grub mender-image-sd mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_colibri-imx7 = " mender-uboot mender-ubi"
+MENDER_FEATURES_DISABLE_append_colibri-imx7 = " mender-grub mender-image-sd mender-image-uefi"
 MENDER_FEATURES_ENABLE_append_colibri-imx7-emmc = " mender-uboot mender-image-sd"
 MENDER_FEATURES_DISABLE_append_colibri-imx7-emmc = " mender-grub mender-image-uefi"
 MENDER_FEATURES_ENABLE_append_colibri-imx8m = " mender-uboot mender-image-sd"
 MENDER_FEATURES_DISABLE_append_colibri-imx8m = " mender-grub mender-image-uefi"
-MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
+MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7 = "u-boot-nand.imx"
 
 GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "Mender.tga", "Max.tga", d)}"
 
