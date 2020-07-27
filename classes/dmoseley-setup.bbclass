@@ -1,6 +1,11 @@
 DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi"
 OVERRIDES =. "dmoseley-setup:"
 
+# Setup custom overrides for vendor-specific BSP features
+OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7 colibri-imx7-emmc colibri-imx8m', 'toradex:', '', d)}"
+OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'var-som-mx6 imx6ul-var-dart imx8mm-var-dart imx8mn-var-som', 'variscite:', '', d)}"
+OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'intel-corei7-64 intel-core2-32 up-squared minnowboard genericx86 genericx86-64', 'intelarch:', '', d)}"
+
 python() {
     # Add all possible dmoseley-local features here.
     # Each one will also define the same string in OVERRIDES.
@@ -59,6 +64,20 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
+#
+# General U-Boot settings - to be overriden below by machine specific overrides
+#
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
+PREFERRED_RPROVIDER_virtual/bootloader ?= "u-boot"
+PREFERRED_PROVIDER_u-boot ?= "u-boot"
+PREFERRED_RPROVIDER_u-boot ?= "u-boot"
+PREFERRED_PROVIDER_u-boot-fw-utils ?= "libubootenv"
+PREFERRED_RPROVIDER_u-boot-fw-utils ?= "libubootenv"
+PREFERRED_PROVIDER_u-boot-fw-utils_mender-client-install ?= "u-boot-fw-utils-mender-auto-provided"
+PREFERRED_RPROVIDER_u-boot-fw-utils_mender-client-install ?= "u-boot-fw-utils-mender-auto-provided"
+PREFERRED_PROVIDER_nativesdk-u-boot-mkimage_mender-client-install ?= "nativesdk-u-boot-mender-tools"
+PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage_mender-client-install ?= "nativesdk-u-boot-mender-tools"
+
 DMOSELEY_MENDER_BBCLASS_colibri-imx7 = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
@@ -116,15 +135,11 @@ IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic", "", d)} \
     ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx7", "wic wic.bmap", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic wic.bmap", "", d)} \
 "
 IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ext3 \
     tar tar.bz2 tar.gz \
     ${@bb.utils.contains("MACHINE", "chip", "ext4", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx7", "wic.gz wic.xz", "", d)} \
-    ${@bb.utils.contains("MACHINE", "pico-imx6ul", "wic.gz wic.xz", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
@@ -136,22 +151,14 @@ DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 # Setup Mender disk sizes
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
-MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB_intelarch ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7 = "512"
 MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
 MENDER_MTDPARTS_colibri-imx7 = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
 MENDER_STORAGE_PEB_SIZE_colibri-imx7 = "131072"
-MENDER_STORAGE_TOTAL_SIZE_MB_up-squared = "4096"
-MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 = "4096"
-MENDER_STORAGE_TOTAL_SIZE_MB_pico-imx7 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_pico-imx6ul ??= "2048"
 
 # Multimedia licensing
-LICENSE_FLAGS_WHITELIST_append_rpi = " commercial "
-LICENSE_FLAGS_WHITELIST_append_colibri-imx7 = " commercial "
-LICENSE_FLAGS_WHITELIST_append_colibri-imx7-emmc = " commercial "
+LICENSE_FLAGS_WHITELIST_append = " commercial "
 
 # RPI specifics
 IMAGE_INSTALL_append_rpi = " bluez5-noinst-tools "
@@ -169,12 +176,10 @@ SDIMG_ROOTFS_TYPE_rpi = "ext4"
 VC4DTBO_rpi = "vc4-fkms-v3d"
 
 # Other packages to install in _all_ images
-IMAGE_INSTALL_append_genericx86 = " v86d "
 IMAGE_INSTALL_append = " kernel-image kernel-modules kernel-devicetree "
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "kernel-image kernel-modules kernel-devicetree"
 IMAGE_INSTALL_remove_qemuarm = "kernel-devicetree"
-IMAGE_INSTALL_remove_x86 = "kernel-devicetree"
-IMAGE_INSTALL_remove_x86-64 = "kernel-devicetree"
+IMAGE_INSTALL_remove_intelarch = "kernel-devicetree"
 IMAGE_INSTALL_append = " libnss-mdns "
 IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
@@ -191,8 +196,6 @@ IMAGE_INSTALL_append = " packagegroup-base "
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
 
 # Mender settings
-MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
-MENDER_BOOT_PART_SIZE_MB_intel-corei7-64 ??= "32"
 IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
@@ -226,9 +229,6 @@ USE_VT_dmoseley-fastboot = "0"
 
 IMAGE_FEATURES += "hwcodecs"
 
-GSTEXAMPLES_colibri-imx7 = ""
-GSTEXAMPLES_colibri-imx7-emmc = ""
-
 # Full versions of various utilities
 IMAGE_INSTALL_append = " \
     bind-utils \
@@ -245,61 +245,8 @@ IMAGE_INSTALL_append = " \
     util-linux \
 "
 
-# Settings for Technexion boards.
-# These are normally set by the edm-setup-release.sh script
-MACHINEOVERRIDES_append_pico-imx7 = ":brcm"
-MACHINEOVERRIDES_append_pico-imx6ul = ":qca"
-PREFERRED_VERSION_u-boot_pico-imx6ul = "2017.03"
-PREFERRED_PROVIDER_u-boot_pico-imx7 = "u-boot-edm"
-PREFERRED_PROVIDER_u-boot_pico-imx6ul = "u-boot-edm"
-PREFERRED_PROVIDER_virtual/bootloader_pico-imx7 = "u-boot-edm"
-PREFERRED_PROVIDER_virtual/bootloader_pico-imx6ul = "u-boot-edm"
-PREFERRED_RPROVIDER_u-boot_pico-imx7 = "u-boot-edm"
-PREFERRED_RPROVIDER_u-boot_pico-imx6ul = "u-boot-edm"
-MENDER_STORAGE_DEVICE_pico-imx7 = "/dev/mmcblk2"
-MENDER_UBOOT_STORAGE_INTERFACE_pico-imx7 = "mmc"
-MENDER_UBOOT_STORAGE_DEVICE_pico-imx7 = "0"
-MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_1_pico-imx7 = "0xC0000"
-MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_2_pico-imx7 = "0xE0000"
-MENDER_STORAGE_DEVICE_pico-imx6ul = "/dev/mmcblk0"
-MENDER_UBOOT_STORAGE_INTERFACE_pico-imx6ul = "mmc"
-MENDER_UBOOT_STORAGE_DEVICE_pico-imx6ul = "0"
-MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_1_pico-imx6ul = "0xC0000"
-MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_2_pico-imx6ul = "0xE0000"
-IMAGE_BOOT_FILES_pico-imx7="u-boot.img uEnv.txt"
-MENDER_IMAGE_BOOTLOADER_FILE_pico-imx7="SPL"
-MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx7="run loadbootenv; run importbootenv; setenv kernel_addr_r \${loadaddr}; setenv bootargs console=\${console},\${baudrate}; run setfdt; setenv mender_dtb_name \${fdtfile}; "
-IMAGE_BOOT_FILES_pico-imx6ul="u-boot.img uEnv.txt"
-MENDER_IMAGE_BOOTLOADER_FILE_pico-imx6ul="SPL"
-MENDER_UBOOT_PRE_SETUP_COMMANDS_pico-imx6ul="run loadbootenv; run importbootenv; setenv kernel_addr_r \${loadaddr}; setenv bootargs console=\${console},\${baudrate}; run setfdt; setenv mender_dtb_name \${fdtfile}; "
-
 # Check for CVEs
 # inherit cve-check
-
-# Extra Toradex settings
-MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_colibri-imx7 = "0x380000"
-PREFERRED_PROVIDER_u-boot_colibri-imx7 = "u-boot-toradex"
-PREFERRED_PROVIDER_u-boot_colibri-imx7-emmc = "u-boot-toradex"
-PREFERRED_PROVIDER_u-boot_colibri-vf = "u-boot-toradex"
-PREFERRED_PROVIDER_u-boot_apalis-imx6 = "u-boot-toradex"
-PREFERRED_PROVIDER_u-boot_colibri-imx8m = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_colibri-imx7 = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_colibri-imx7-emmc = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_colibri-vf = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_apalis-imx6 = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_colibri-imx8m = "u-boot-toradex"
-BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
-BOOTENV_SIZE_apalis-imx6 = "0x2000"
-PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
-MENDER_FEATURES_ENABLE_append_apalis-imx6 = " mender-uboot mender-image-sd"
-MENDER_FEATURES_DISABLE_append_apalis-imx6 = " mender-grub mender-image-uefi"
-MENDER_FEATURES_ENABLE_append_colibri-imx7 = " mender-uboot mender-ubi"
-MENDER_FEATURES_DISABLE_append_colibri-imx7 = " mender-grub mender-image-sd mender-image-uefi"
-MENDER_FEATURES_ENABLE_append_colibri-imx7-emmc = " mender-uboot mender-image-sd"
-MENDER_FEATURES_DISABLE_append_colibri-imx7-emmc = " mender-grub mender-image-uefi"
-MENDER_FEATURES_ENABLE_append_colibri-imx8m = " mender-uboot mender-image-sd"
-MENDER_FEATURES_DISABLE_append_colibri-imx8m = " mender-grub mender-image-uefi"
-MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7 = "u-boot-nand.imx"
 
 GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "Mender.tga", "Max.tga", d)}"
 
@@ -324,11 +271,27 @@ MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id "
 MENDER_FEATURES_ENABLE_remove = " mender-growfs-data "
 
 #
+# Settings for Toradex boards
+#
+PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
+PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
+
+BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
+BOOTENV_SIZE_apalis-imx6 = "0x2000"
+PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
+
+MENDER_FEATURES_ENABLE_append_toradex = " mender-uboot mender-image-sd"
+MENDER_FEATURES_DISABLE_append_toradex = " mender-grub mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_colibri-imx7 = " mender-uboot mender-ubi"
+MENDER_FEATURES_DISABLE_append_colibri-imx7 = " mender-grub mender-image-sd mender-image-uefi"
+
+#
 # Settings for Variscite boards
 #
-PREFERRED_PROVIDER_u-boot-fw-utils_var-som-mx6 = "u-boot-fw-utils"
-PREFERRED_PROVIDER_virtual/bootloader-fw-utils_var-som-mx6 = "u-boot-fw-utils"
-PREFERRED_RPROVIDER_u-boot-fw-utils_var-som-mx6 = "u-boot-fw-utils"
+PREFERRED_PROVIDER_u-boot-fw-utils_variscite = "u-boot-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils_variscite = "u-boot-fw-utils"
+PREFERRED_PROVIDER_virtual/bootloader-fw-utils_variscite = "u-boot-fw-utils"
+
 UBOOT_CONFIG_var-som-mx6 = "sd"
 MENDER_UBOOT_STORAGE_DEVICE_var-som-mx6 = "0"
 MENDER_IMAGE_BOOTLOADER_FILE_var-som-mx6 = "u-boot-spl.img"
@@ -337,9 +300,6 @@ MENDER_PARTITION_ALIGNMENT_var-som-mx6 = "4194304"
 MENDER_STORAGE_DEVICE_var-som-mx6 = "/dev/mmcblk1"
 MENDER_BOOT_PART_SIZE_MB_var-som-mx6 = "0"
 
-PREFERRED_PROVIDER_u-boot-fw-utils_imx6ul-var-dart = "u-boot-fw-utils"
-PREFERRED_PROVIDER_virtual/bootloader-fw-utils_imx6ul-var-dart = "u-boot-fw-utils"
-PREFERRED_RPROVIDER_u-boot-fw-utils_imx6ul-var-dart = "u-boot-fw-utils"
 UBOOT_CONFIG_imx6ul-var-dart = "sd"
 MENDER_IMAGE_BOOTLOADER_FILE_imx6ul-var-dart = "u-boot-spl.img"
 MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx6ul-var-dart = "2"
@@ -362,13 +322,5 @@ IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-cli
 IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender-binary-delta", "", d)}"
 LICENSE_FLAGS_WHITELIST_append = " commercial_mender-binary-delta"
 FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0/:"
-
-# General settings
-PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot"
-PREFERRED_PROVIDER_u-boot ??= "u-boot"
-PREFERRED_PROVIDER_u-boot-fw-utils ??= "libubootenv"
-PREFERRED_PROVIDER_u-boot-fw-utils_mender-enabled ??= "u-boot-fw-utils-mender-auto-provided"
-PREFERRED_PROVIDER_nativesdk-u-boot-mkimage_mender-enabled ??= "nativesdk-u-boot-mender-tools"
-PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage_mender-enabled ??= "nativesdk-u-boot-mender-tools"
 
 ACCEPT_FSL_EULA = "1"
