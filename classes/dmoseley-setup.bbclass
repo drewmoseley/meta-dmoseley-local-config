@@ -4,7 +4,7 @@ OVERRIDES =. "dmoseley-setup:"
 # Setup custom overrides for vendor-specific BSP features
 OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7 colibri-imx7-emmc colibri-imx8m', 'toradex:', '', d)}"
 OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'var-som-mx6 imx6ul-var-dart imx8mm-var-dart imx8mn-var-som', 'variscite:', '', d)}"
-OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'intel-corei7-64 intel-core2-32 up-squared minnowboard genericx86 genericx86-64', 'intelarch:', '', d)}"
+OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'intel-corei7-64 intel-core2-32 up-squared minnowboard genericx86 genericx86-64 qemux86 qemux86-64', 'intelarch:', '', d)}"
 
 python() {
     # Add all possible dmoseley-local features here.
@@ -55,7 +55,7 @@ python() {
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
         bb.fatal("Building access-point requires networkmanager.")
 
-    if bb.utils.contains('DISTRO_FEATURES', 'mender-client-install', True, False, d):
+    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', True, False, d):
         numberOfServersConfigured=0
         for serverType in [ "demo-server", "prod-server", "hosted-server", "staging-server", "migrate-to-hosted" ]:
             if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-mender-" + serverType, True, False, d):
@@ -73,10 +73,12 @@ PREFERRED_PROVIDER_u-boot ?= "u-boot"
 PREFERRED_RPROVIDER_u-boot ?= "u-boot"
 PREFERRED_PROVIDER_u-boot-fw-utils ?= "libubootenv"
 PREFERRED_RPROVIDER_u-boot-fw-utils ?= "libubootenv"
-PREFERRED_PROVIDER_u-boot-fw-utils_mender-client-install ?= "u-boot-fw-utils-mender-auto-provided"
-PREFERRED_RPROVIDER_u-boot-fw-utils_mender-client-install ?= "u-boot-fw-utils-mender-auto-provided"
-PREFERRED_PROVIDER_nativesdk-u-boot-mkimage_mender-client-install ?= "nativesdk-u-boot-mender-tools"
-PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage_mender-client-install ?= "nativesdk-u-boot-mender-tools"
+PREFERRED_PROVIDER_nativesdk-u-boot-mkimage ?= "nativesdk-u-boot-tools"
+PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage ?= "nativesdk-u-boot-tools"
+PREFERRED_PROVIDER_u-boot-fw-utils_mender-enabled ?= "u-boot-fw-utils-mender-auto-provided"
+PREFERRED_RPROVIDER_u-boot-fw-utils_mender-enabled ?= "u-boot-fw-utils-mender-auto-provided"
+PREFERRED_PROVIDER_nativesdk-u-boot-mkimage_mender-enabled ?= "nativesdk-u-boot-mender-tools"
+PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage_mender-enabled ?= "nativesdk-u-boot-mender-tools"
 
 DMOSELEY_MENDER_BBCLASS_colibri-imx7 = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
@@ -143,15 +145,16 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
-IMAGE_FSTYPES_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
-IMAGE_FSTYPES_remove = "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
+IMAGE_FSTYPES_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
+IMAGE_FSTYPES_remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
 # Setup Mender disk sizes
+MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
-MENDER_STORAGE_TOTAL_SIZE_MB_intelarch ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB_intelarch ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7 = "512"
 MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
 MENDER_MTDPARTS_colibri-imx7 = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
@@ -196,7 +199,7 @@ IMAGE_INSTALL_append = " packagegroup-base "
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
 
 # Mender settings
-IMAGE_INSTALL_append = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", " drew-state-scripts mender-ipk", "", d)} "
+IMAGE_INSTALL_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
@@ -248,7 +251,7 @@ IMAGE_INSTALL_append = " \
 # Check for CVEs
 # inherit cve-check
 
-GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "Mender.tga", "Max.tga", d)}"
+GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "Mender.tga", "Max.tga", d)}"
 
 # I'm not sure why this cannot be calculated using bitbake variable inline python syntax
 # but when I do it that way, and SB is not enabled then the expansion is not done and the
@@ -318,8 +321,8 @@ DMOSELEY_DISPLAY_RESOLUTION_rpi ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"
 
 # Mender Commercial settings
-IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender-binary-delta", "", d)}"
+IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
+IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 LICENSE_FLAGS_WHITELIST_append = " commercial_mender-binary-delta"
 FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0/:"
 
