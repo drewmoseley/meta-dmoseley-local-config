@@ -67,18 +67,8 @@ python() {
 #
 # General U-Boot settings - to be overriden below by machine specific overrides
 #
-PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
-PREFERRED_RPROVIDER_virtual/bootloader ?= "u-boot"
-PREFERRED_PROVIDER_u-boot ?= "u-boot"
-PREFERRED_RPROVIDER_u-boot ?= "u-boot"
-PREFERRED_PROVIDER_u-boot-fw-utils ?= "libubootenv"
-PREFERRED_RPROVIDER_u-boot-fw-utils ?= "libubootenv"
-PREFERRED_PROVIDER_nativesdk-u-boot-mkimage ?= "nativesdk-u-boot-tools"
-PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage ?= "nativesdk-u-boot-tools"
-PREFERRED_PROVIDER_u-boot-fw-utils_mender-enabled ?= "u-boot-fw-utils-mender-auto-provided"
-PREFERRED_RPROVIDER_u-boot-fw-utils_mender-enabled ?= "u-boot-fw-utils-mender-auto-provided"
-PREFERRED_PROVIDER_nativesdk-u-boot-mkimage_mender-enabled ?= "nativesdk-u-boot-mender-tools"
-PREFERRED_RPROVIDER_nativesdk-u-boot-mkimage_mender-enabled ?= "nativesdk-u-boot-mender-tools"
+PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot"
+PREFERRED_PROVIDER_u-boot ??= "u-boot"
 
 DMOSELEY_MENDER_BBCLASS_colibri-imx7 = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
