@@ -260,8 +260,8 @@ IMAGE_BOOT_FILES_append_intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id "
-MENDER_FEATURES_ENABLE_remove = " mender-growfs-data "
+MENDER_FEATURES_ENABLE_append_dmoseley-mender = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_ENABLE_remove_dmoseley-mender = " mender-growfs-data "
 
 #
 # Settings for Toradex boards
@@ -273,10 +273,10 @@ BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
 BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
 
-MENDER_FEATURES_ENABLE_append_toradex = " mender-uboot mender-image-sd"
-MENDER_FEATURES_DISABLE_append_toradex = " mender-grub mender-image-uefi"
-MENDER_FEATURES_ENABLE_append_colibri-imx7 = " mender-uboot mender-ubi"
-MENDER_FEATURES_DISABLE_append_colibri-imx7 = " mender-grub mender-image-sd mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_toradex_dmoseley-mender = " mender-uboot mender-image-sd"
+MENDER_FEATURES_DISABLE_append_toradex_dmoseley-mender = " mender-grub mender-image-uefi"
+MENDER_FEATURES_ENABLE_append_colibri-imx7_dmoseley-mender = " mender-uboot mender-ubi"
+MENDER_FEATURES_DISABLE_append_colibri-imx7_dmoseley-mender = " mender-grub mender-image-sd mender-image-uefi"
 
 #
 # Settings for Variscite boards
