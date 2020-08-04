@@ -60,7 +60,7 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
-DMOSELEY_MENDER_BBCLASS_colibri-imx7 = "mender-full-ubi"
+DMOSELEY_MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
 DMOSELEY_MENDER_BBCLASS = "mender-full"
@@ -74,7 +74,7 @@ DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
 IMAGE_INSTALL_append_dmoseley-wifi = " \
     iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'colibri-imx7', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'colibri-imx7-nand', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
@@ -139,11 +139,11 @@ MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_up-squared ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7 = "512"
+MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7-nand = "512"
 MENDER_STORAGE_TOTAL_SIZE_MB_variscite = "2048"
-MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
-MENDER_MTDPARTS_colibri-imx7 = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
-MENDER_STORAGE_PEB_SIZE_colibri-imx7 = "131072"
+MENDER_MTDIDS_colibri-imx7-nand = "nand0=gpmi-nand"
+MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
+MENDER_STORAGE_PEB_SIZE_colibri-imx7-nand = "131072"
 
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append = " commercial "
@@ -285,11 +285,11 @@ MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE_colibri-imx7-emmc = "0"
-MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
-MENDER_MTDPARTS_colibri-imx7 = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
-MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7 = "u-boot-nand.imx"
-MENDER_PARTITION_ALIGNMENT_colibri-imx7 = "131072"
-KERNEL_DEVICETREE_colibri-imx7 = "imx7d-colibri-aster.dtb"
+MENDER_MTDIDS_colibri-imx7-nand = "nand0=gpmi-nand"
+MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
+MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
+MENDER_PARTITION_ALIGNMENT_colibri-imx7-nand = "131072"
+KERNEL_DEVICETREE_colibri-imx7-nand = "imx7d-colibri-aster.dtb"
 
 #
 # Settings for Variscite boards
@@ -343,7 +343,7 @@ BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender_%.bbappend
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
-DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7 ?= "800x480"
+DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7-nand ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7-emmc ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_rpi ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"

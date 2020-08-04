@@ -1,1 +1,1 @@
-FILESEXTRAPATHS_prepend_colibri-imx7 := "${THISDIR}/files:"
+FILESEXTRAPATHS_prepend_colibri-imx7-nand := "${THISDIR}/files:"
