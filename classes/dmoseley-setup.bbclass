@@ -130,6 +130,17 @@ IMAGE_FSTYPES_remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mend
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
+#
+# This is implemented as anonymous python to avoid defining it with machine-specific overrides.
+# The processing in mender-setup-ubi fails when using overrides as they are not applied until after
+# the sanity checks implemented there.
+#
+python() {
+    machine = d.getVar('MACHINE')
+    if (machine == "colibri-imx7-nand"):
+        d.setVar("MENDER_MTDIDS", "nand0=gpmi-nand")
+}
+
 # Setup Mender disk sizes
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
