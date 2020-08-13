@@ -260,8 +260,8 @@ IMAGE_BOOT_FILES_append_intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE_append_dmoseley-mender = " mender-persist-systemd-machine-id "
-MENDER_FEATURES_ENABLE_remove_dmoseley-mender = " mender-growfs-data "
+MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_DISABLE_append = " mender-growfs-data "
 
 #
 # Settings for Toradex boards
@@ -272,11 +272,17 @@ PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
 BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
 BOOTENV_SIZE_apalis-imx6 = "0x2000"
 PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
+MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7 = "u-boot-nand.imx"
 
-MENDER_FEATURES_ENABLE_append_toradex_dmoseley-mender = " mender-uboot mender-image-sd"
-MENDER_FEATURES_DISABLE_append_toradex_dmoseley-mender = " mender-grub mender-image-uefi"
-MENDER_FEATURES_ENABLE_append_colibri-imx7_dmoseley-mender = " mender-uboot mender-ubi"
-MENDER_FEATURES_DISABLE_append_colibri-imx7_dmoseley-mender = " mender-grub mender-image-sd mender-image-uefi"
+MENDER_FEATURES_ENABLE_append = " \
+    ${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7-emmc colibri-imx8m', 'mender-uboot mender-image', '', d)} \
+    ${@bb.utils.contains_any('MACHINE', 'colibri-imx7', 'mender-uboot mender-ubi', '', d)} \
+"
+
+MENDER_FEATURES_DISABLE_append = " \
+    ${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7-emmc colibri-imx8m', 'mender-grub mender-image-uefi', '', d)} \
+    ${@bb.utils.contains_any('MACHINE', 'colibri-imx7', 'mender-grub mender-image-sd mender-image-uefi', '', d)} \
+"
 
 #
 # Settings for Variscite boards
@@ -317,3 +323,17 @@ LICENSE_FLAGS_WHITELIST_append = " commercial_mender-binary-delta"
 FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.1.0/:"
 
 ACCEPT_FSL_EULA = "1"
+
+##### TODO
+#####
+##### BUILD_REPRODUCIBLE_BINARIES = "1"
+##### export PYTHONHASHSEED = "0"
+##### export PERL_HASH_SEED = "0"
+##### export TZ = 'UTC'
+##### export SOURCE_DATE_EPOCH ??= "1520598896"
+##### REPRODUCIBLE_TIMESTAMP_ROOTFS ??= "1520598896"
+##### 
+##### TOOLCHAIN = "clang"
+##### musl
+##### INHERIT += "buildhistory"
+##### BUILDHISTORY_COMMIT = "1"
