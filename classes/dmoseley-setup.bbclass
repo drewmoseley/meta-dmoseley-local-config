@@ -266,23 +266,24 @@ MENDER_FEATURES_DISABLE_append = " mender-growfs-data "
 #
 # Settings for Toradex boards
 #
-PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
-
-BOOTENV_SIZE_colibri-imx7 ?= "0x18000"
-BOOTENV_SIZE_apalis-imx6 = "0x2000"
-PROVIDES_pn-u-boot-toradex = "u-boot virtual/bootloader"
+MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
+PREFERRED_PROVIDER_u-boot_mender-grub_toradex = "u-boot"
+PREFERRED_PROVIDER_virtual/bootloader_mender-grub_toradex = "u-boot"
+IMAGE_CLASSES_append_toradex = " image_type_mender_tezi "
+IMAGE_FSTYPES_append_dmoseley-mender_toradex = " mender_tezi"
+IMAGE_FSTYPES_remove_dmoseley-mender_toradex = " teziimg"
+TORADEX_INCLUDE_FILE=""
+TORADEX_INCLUDE_FILE_toradex="conf/machine/include/${MACHINE}.inc"
+include ${TORADEX_INCLUDE_FILE}
+MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
+MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
+MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
+MENDER_UBOOT_STORAGE_DEVICE_colibri-imx7-emmc = "0"
+MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
+MENDER_MTDPARTS_colibri-imx7 = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
 MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7 = "u-boot-nand.imx"
-
-MENDER_FEATURES_ENABLE_append = " \
-    ${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7-emmc colibri-imx8m', 'mender-uboot mender-image', '', d)} \
-    ${@bb.utils.contains_any('MACHINE', 'colibri-imx7', 'mender-uboot mender-ubi', '', d)} \
-"
-
-MENDER_FEATURES_DISABLE_append = " \
-    ${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7-emmc colibri-imx8m', 'mender-grub mender-image-uefi', '', d)} \
-    ${@bb.utils.contains_any('MACHINE', 'colibri-imx7', 'mender-grub mender-image-sd mender-image-uefi', '', d)} \
-"
+MENDER_PARTITION_ALIGNMENT_colibri-imx7 = "131072"
+KERNEL_DEVICETREE_colibri-imx7 = "imx7d-colibri-aster.dtb"
 
 #
 # Settings for Variscite boards
