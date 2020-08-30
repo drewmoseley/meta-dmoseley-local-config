@@ -11,16 +11,16 @@ python() {
 SRC_URI += " \
     file://99-3dprinters.rules \
 "
-do_configure_append_mender-client-install() {
+do_configure_append_class-target_mender-client-install() {
     sed -i -e "s@${sysconfdir}/octoprint@/data${sysconfdir}/octoprint@" ${WORKDIR}/octoprint.service
 }
 
-do_install_append_dmoseley-setup() {
+do_install_append_class-target_dmoseley-setup() {
     install -d ${D}${sysconfdir}/udev/rules.d
     install -m 0644 ${WORKDIR}/99-3dprinters.rules ${D}${sysconfdir}/udev/rules.d
 }
 
-do_install_append_mender-client-install() {
+do_install_append_class-target_mender-client-install() {
     install -d ${D}/data/${sysconfdir}/
     mv ${D}/${sysconfdir}/${PN} ${D}/data/${sysconfdir}/${PN}
     install -d ${D}/data/home/
