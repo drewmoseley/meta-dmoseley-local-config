@@ -290,6 +290,7 @@ IMAGE_CLASSES_append = " ${IMAGE_TYPE_MENDER_TEZI} "
 IMAGE_FSTYPES_append_toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
 TORADEX_INCLUDE_FILE=""
 TORADEX_INCLUDE_FILE_toradex="conf/machine/include/${MACHINE}.inc"
+TORADEX_INCLUDE_FILE_colibri-imx7-nand="conf/machine/include/colibri-imx7.inc"
 TORADEX_INCLUDE_FILE_colibri-vf=""
 require ${TORADEX_INCLUDE_FILE}
 MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
@@ -300,7 +301,6 @@ MENDER_MTDIDS_colibri-imx7-nand = "nand0=gpmi-nand"
 MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
 MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
 MENDER_PARTITION_ALIGNMENT_colibri-imx7-nand = "131072"
-KERNEL_DEVICETREE_colibri-imx7-nand = "imx7d-colibri-aster.dtb"
 
 #
 # Settings for Variscite boards
