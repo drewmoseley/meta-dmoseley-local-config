@@ -22,7 +22,7 @@ python() {
         'dmoseley-access-point',         # Enable access point mode
         'dmoseley-fastboot',             # Fastboot mode
         'dmoseley-journal-upload',       # Enable systemd journal upload
-        'dmoseley-readonly',             # Use readonly
+        'dmoseley-readonly',             # Use readonly and squashfs
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
@@ -372,6 +372,11 @@ ACCEPT_FSL_EULA = "1"
 
 # Readonly settings
 EXTRA_IMAGE_FEATURES_append_dmoseley-readonly = " read-only-rootfs "
+WKS_FILE_dmoseley-readonly = "sdimage-squashfs.wks"
+PREFERRED_VERSION_u-boot = "2020.01"
+PREFERRED_VERSION_u-boot_dmoseley-readonly = "2020.10-rc3"
+IMAGE_FSTYPES_remove_dmoseley-readonly = "ext4 tar.xz"
+IMAGE_FSTYPES_append_dmoseley-readonly = " squashfs "
 
 ##### TODO
 #####
