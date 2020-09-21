@@ -27,6 +27,7 @@ python() {
         'dmoseley-access-point',         # Enable access point mode
         'dmoseley-fastboot',             # Fastboot mode
         'dmoseley-journal-upload',       # Enable systemd journal upload
+        'dmoseley-readonly',             # Use readonly
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
@@ -327,6 +328,9 @@ FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary
 EXTRA_IMAGE_FEATURES_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "read-only-rootfs", "", d)} "
 
 ACCEPT_FSL_EULA = "1"
+
+# Readonly settings
+EXTRA_IMAGE_FEATURES_append_dmoseley-readonly = " read-only-rootfs "
 
 ##### TODO
 #####
