@@ -8,7 +8,7 @@ MENDER_UPDATE_POLL_INTERVAL_SECONDS = "5"
 MENDER_INVENTORY_POLL_INTERVAL_SECONDS = "5"
 MENDER_RETRY_POLL_INTERVAL_SECONDS = "30"
 
-MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://aruba.home.moseleynet.net"
+MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://aruba.lab.moseleynet.net"
 MENDER_SERVER_URL_dmoseley-mender-staging-server = "https://staging.hosted.mender.io"
 MENDER_SERVER_URL_dmoseley-mender-hosted-server = "https://hosted.mender.io"
 MENDER_SERVER_URL_dmoseley-mender-migrate-to-hosted = ""
@@ -22,7 +22,7 @@ do_compile_append () {
     cat >> ${WORKDIR}/mender.conf <<-EOF
 	  , "Servers": [
 	    {"ServerURL": "https://hosted.mender.io"},
-	    {"ServerURL": "https://aruba.home.moseleynet.net"}
+	    {"ServerURL": "https://aruba.lab.moseleynet.net"}
 	  ]
 	EOF
     fi
