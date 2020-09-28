@@ -177,6 +177,7 @@ IMAGE_INSTALL_remove_intelarch = "kernel-devicetree"
 IMAGE_INSTALL_append = " libnss-mdns "
 IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
+IMAGE_INSTALL_append = " nano "
 
 EXTRA_IMAGE_FEATURES_append = " package-management "
 PACKAGE_FEED_URIS = "http://aruba.lab.moseleynet.net:5678"
