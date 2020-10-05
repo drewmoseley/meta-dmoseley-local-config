@@ -10,11 +10,6 @@ SRC_URI_append_dmoseley-setup = " \
     ${@bb.utils.contains_any('MACHINE', 'beaglebone-yocto raspberrypi2', 'file://wifi-drivers.cfg', '', d)} \
 "
 
-# Make sure filesystem support is not a module
-SRC_URI_append_dmoseley-readonly = " \
-    file://kernel-squashfs-builtin.cfg \
-"
-
 SERIAL_dmoseley-fastboot=""
 CMDLINE_append_dmoseley-setup = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
 
