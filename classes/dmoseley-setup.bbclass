@@ -278,7 +278,8 @@ IMAGE_CLASSES_append = " ${IMAGE_TYPE_MENDER_TEZI} "
 IMAGE_FSTYPES_append_toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
 TORADEX_INCLUDE_FILE=""
 TORADEX_INCLUDE_FILE_toradex="conf/machine/include/${MACHINE}.inc"
-include ${TORADEX_INCLUDE_FILE}
+TORADEX_INCLUDE_FILE_colibri-vf=""
+require ${TORADEX_INCLUDE_FILE}
 MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
