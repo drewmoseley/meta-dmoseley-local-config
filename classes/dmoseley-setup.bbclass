@@ -250,6 +250,8 @@ IMAGE_INSTALL_append = " \
     procps \
     util-linux \
 "
+IMAGE_INSTALL_remove_vexpress-qemu-flash = "image-display mender-binary-delta bind-utils iputils-tracepath iputils-traceroute6"
+
 
 # Check for CVEs
 # inherit cve-check
