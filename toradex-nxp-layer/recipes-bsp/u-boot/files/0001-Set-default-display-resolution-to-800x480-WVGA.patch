@@ -1,4 +1,4 @@
-From 272e0d2041f50c6927cc0655e55231a2d6e202d0 Mon Sep 17 00:00:00 2001
+From 63d99c2c5efb02fe10db279dd535fa3bd6c18ab4 Mon Sep 17 00:00:00 2001
 From: Alf-Rune Siqveland <alf.rune@northern.tech>
 Date: Tue, 28 Aug 2018 09:01:44 +0200
 Subject: [PATCH] Set default display resolution to 800x480 (WVGA)
@@ -9,13 +9,13 @@ Signed-off-by: Alf-Rune Siqveland <alf.rune@northern.tech>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/include/configs/colibri_imx7.h b/include/configs/colibri_imx7.h
-index 40173b18fa..5dda2e5a98 100644
+index 049b400049..a4a9bfdf70 100644
 --- a/include/configs/colibri_imx7.h
 +++ b/include/configs/colibri_imx7.h
-@@ -170,8 +170,9 @@
- 		"fatload ${interface} 0:1 ${loadaddr} " \
+@@ -174,8 +174,9 @@
  		"${board}/flash_blk.img && source ${loadaddr}\0" \
  	"splashpos=m,m\0" \
+ 	"splashimage=" __stringify(CONFIG_LOADADDR) "\0" \
 -	"videomode=video=ctfb:x:640,y:480,depth:18,pclk:39722,le:48,ri:16,up:33,lo:10,hs:96,vs:2,sync:0,vmode:0\0" \
 -	"updlevel=2\0"
 +	"videomode=video=ctfb:x:800,y:480,depth:18,pclk:39722,le:48,ri:16,up:33,lo:10,hs:96,vs:2,sync:0,vmode:0\0" \
@@ -25,5 +25,5 @@ index 40173b18fa..5dda2e5a98 100644
  /* Miscellaneous configurable options */
  
 -- 
-2.22.0
+2.28.0
 
