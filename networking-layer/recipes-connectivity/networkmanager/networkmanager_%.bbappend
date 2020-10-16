@@ -1,26 +1,26 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS_prepend_dmoseley-networkmanager := "${THISDIR}/files:"
 
-SRC_URI += " \
+SRC_URI_append_dmoseley-networkmanager = " \
      ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', 'file://DM_OE_AP', '', d)} \
 "
 
 SYSTEMD_AUTO_ENABLE_dmoseley-networkmanager = "enable"
 
-PACKAGECONFIG_remove = "dhclient"
-EXTRA_OECONF += " \
+PACKAGECONFIG_remove_dmoseley-networkmanager = "dhclient"
+EXTRA_OECONF_append_dmoseley-networkmanager = " \
 	--with-config-dhcp-default=internal \
 	--with-dhclient=no \
 	"
 
-FILES_${PN} += " \
+FILES_${PN}_append_dmoseley-networkmanager = " \
     ${@bb.utils.contains('PACKAGECONFIG', 'dhclient', '${sysconfdir}/resolv.conf', '', d)} \
 "
 
-PACKAGECONFIG_remove = " \
+PACKAGECONFIG_remove_dmoseley-networkmanager = " \
     ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', '', 'dnsmasq', d)} \
 "
 
-do_install_append() {
+do_install_append_dmoseley-networkmanager() {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-access-point','true','false',d)}; then
         # Default Access Point
         install -m 0600 ${WORKDIR}/DM_OE_AP ${D}${sysconfdir}/NetworkManager/system-connections

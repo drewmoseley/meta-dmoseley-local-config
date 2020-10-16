@@ -1,4 +1,3 @@
-SYSTEMD_AUTO_ENABLE = "disable"
 SYSTEMD_AUTO_ENABLE_dmoseley-access-point = "enable"
 
 do_install_append_dmoseley-access-point() {
