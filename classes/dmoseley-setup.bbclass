@@ -322,16 +322,21 @@ UBOOT_CONFIG_imx8mm-var-dart = "sd"
 MENDER_STORAGE_DEVICE_imx8mn-var-som = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_imx8mn-var-som = "1"
 UBOOT_CONFIG_imx8mm-var-dart = "sd"
+PREFERRED_VERSION_linux-variscite_imx8mm-var-dart = "5.4.3"
+PREFERRED_VERSION_imx-boot_imx8mm-var-dart = "0.2"
+PREFERRED_VERSION_linux-variscite_imx6ul-var-dart = "5.4.3"
+PREFERRED_PROVIDER_u-boot_mender-grub_variscite = "u-boot-variscite"
+PREFERRED_PROVIDER_virtual/bootloader_mender-grub_variscite = "u-boot-variscite"
 
 #
 # Settings for NXP IMX EVK boards
 #
-PREFERRED_PROVIDER_u-boot_mender-grub_imx = "u-boot-imx"
-PREFERRED_PROVIDER_virtual/bootloader_mender-grub_imx = "u-boot-imx"
-IMAGE_CLASSES_append_imx_dmoseley-mender = " mender-setup-imx "
-MENDER_BOOT_PART_SIZE_MB_imx = "256"
-MENDER_STORAGE_TOTAL_SIZE_MB_imx = "2048"
-MENDER_STORAGE_DEVICE_imx = "/dev/mmcblk2"
+PREFERRED_PROVIDER_u-boot_mender-grub_imx8mnddr4evk = "u-boot-imx"
+PREFERRED_PROVIDER_virtual/bootloader_mender-grub_imx8mnddr4evk = "u-boot-imx"
+IMAGE_CLASSES_append_imx8mnddr4evk_dmoseley-mender = " mender-setup-imx "
+MENDER_BOOT_PART_SIZE_MB_imx8mnddr4evk = "256"
+MENDER_STORAGE_TOTAL_SIZE_MB_imx8mnddr4evk = "2048"
+MENDER_STORAGE_DEVICE_imx8mnddr4evk = "/dev/mmcblk2"
 
 # This naming of the mender recipes is for zeus and newer
 BBMASK += "/meta-dmoseley-private/mender/recipes-mender/mender/mender_%.bbappend"
