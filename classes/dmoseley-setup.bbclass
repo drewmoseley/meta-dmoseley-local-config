@@ -234,7 +234,7 @@ IMAGE_INSTALL_append = " \
     findutils \
     iputils-ping \
     iputils-tracepath \
-    iputils-traceroute6 \
+    ${@bb.utils.contains("DISTRO_FEATURES", "ipv6", "iputils-traceroute6", "", d)} \
     iproute2 \
     less \
     ncurses-terminfo \
