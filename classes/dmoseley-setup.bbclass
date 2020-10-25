@@ -1,4 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -23,6 +23,9 @@ python() {
         'dmoseley-fastboot',             # Fastboot mode
         'dmoseley-journal-upload',       # Enable systemd journal upload
         'dmoseley-readonly',             # Use readonly
+        'dmoseley-labnetworks',          # Connect to caribbean-Lab
+        'dmoseley-homenetworks',         # Connect to caribbean
+        'dmoseley-mobilenetworks',       # Connect to tethered and mobile networks
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
