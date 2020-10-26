@@ -65,14 +65,6 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
-#
-# General U-Boot settings - to be overriden below by machine specific overrides
-#
-PREFERRED_PROVIDER_virtual/bootloader_mender-grub ??= "u-boot"
-PREFERRED_PROVIDER_u-boot_mender-grub ??= "u-boot"
-PREFERRED_PROVIDER_virtual/bootloader_mender-uboot ??= "u-boot"
-PREFERRED_PROVIDER_u-boot_mender-uboot ??= "u-boot"
-
 DMOSELEY_MENDER_BBCLASS_colibri-imx7 = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
@@ -272,8 +264,8 @@ MENDER_FEATURES_DISABLE_append = " mender-growfs-data "
 # Settings for Toradex boards
 #
 MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
-PREFERRED_PROVIDER_u-boot_mender-grub_toradex = "u-boot"
-PREFERRED_PROVIDER_virtual/bootloader_mender-grub_toradex = "u-boot"
+PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
+PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
 IMAGE_TYPE_MENDER_TEZI=""
 IMAGE_TYPE_MENDER_TEZI_toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
 IMAGE_CLASSES_append = " ${IMAGE_TYPE_MENDER_TEZI} "
