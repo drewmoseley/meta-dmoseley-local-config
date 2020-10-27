@@ -35,12 +35,14 @@ EOF
     #
     # Setup persistent systemd journaling.
     #
-    sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
-    sed -i -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
-    sed -i -e 's/.*Storage.*/Storage=persistent/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
-    sed -i -e 's/.*Compress.*/Compress=yes/' ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf
-    install -d ${D}/data/journal
-    install -d ${D}${sysconfdir}/tmpfiles.d
-    echo "L    /var/log/journal -    -    -     -   /data/journal" >> ${D}${sysconfdir}/tmpfiles.d/log-persist.conf
+    for conffile in ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf; do
+        sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' \
+               -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' $conffile
+        echo "Storage=persistent" >> $conffile
+        echo "Compress=yes" >> $conffile
+    done
+    [ -d ${D}/var/log/journal ] && rmdir ${D}/var/log/journal
+    install -d ${D}/data/journal ${D}${localstatedir}/log
+    ln -s /data/journal ${D}${localstatedir}/log/journal
 }
-FILES_${PN}_append_dmoseley-setup += "/data/journal ${sysconfdir}/tmpfiles.d/log-persist.conf"
+FILES_${PN}_append_dmoseley-setup = " /data/journal ${localstatedir}/log "

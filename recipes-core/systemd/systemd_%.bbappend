@@ -12,13 +12,14 @@ PACKAGECONFIG_append = " journal-upload "
 # and the fsck will be skipped.
 PACKAGECONFIG_append = " set-time-epoch"
 
-do_install_append() {
-    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','true','false',d)}; then
-        rm -f ${D}${sysconfdir}/systemd/system/getty.target.wants/getty@tty1.service
-    fi
+FILESEXTRAPATHS_prepend_dmoseley-setup := "${THISDIR}/files:"
+SRC_URI_append_dmoseley-fastboot = " file://0001-systemd-Disable-getty-service.patch "
 
-    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-journal-upload','true','false',d)}; then
-        sed -i -e 's@.*URL=*@URL=https://aruba.lab.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
-    fi
+do_install_append_dmoseley-journal-upload() {
+    sed -i -e 's@.*URL=*@URL=https://aruba.lab.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
 }
-FILES_${PN} += "/data/journal"
+FILES_${PN}_append_dmoseley-journal = " /data/journal "
+
+do_install_append_dmoseley-setup () {
+    [ -d ${D}/var/log/journal ] && rmdir ${D}/var/log/journal
+}
