@@ -1,0 +1,26 @@
+From 66775e93c32dedc5f081c6364f2e08647667f2e2 Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Sun, 25 Oct 2020 16:35:38 -0400
+Subject: [PATCH] webstorm: Remove duplicated setting.
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ mackup/applications/webstorm.cfg | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/mackup/applications/webstorm.cfg b/mackup/applications/webstorm.cfg
+index 9971d3a..610cd66 100644
+--- a/mackup/applications/webstorm.cfg
++++ b/mackup/applications/webstorm.cfg
+@@ -35,8 +35,6 @@ Library/Application Support/WebStorm2019.2
+ Library/Preferences/WebStorm2019.2
+ Library/Application Support/WebStorm2019.3
+ Library/Preferences/WebStorm2019.3
+-Library/Application Support/WebStorm2019.3
+-Library/Preferences/WebStorm2019.3
+ Library/Application Support/WebStorm2019.4
+ Library/Preferences/WebStorm2019.4
+ Library/Application Support/JetBrains/WebStorm2020.1
+-- 
+2.28.0
+

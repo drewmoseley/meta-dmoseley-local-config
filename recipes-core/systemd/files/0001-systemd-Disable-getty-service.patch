@@ -1,0 +1,26 @@
+From cacf001588966abdc8a34a8cb9063a56d59eaaeb Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Mon, 26 Oct 2020 15:34:46 -0400
+Subject: [PATCH] systemd: Disable getty service.
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ presets/90-systemd.preset | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/presets/90-systemd.preset b/presets/90-systemd.preset
+index 4009cbb96e..6dc3d0dd8b 100644
+--- a/presets/90-systemd.preset
++++ b/presets/90-systemd.preset
+@@ -15,7 +15,7 @@ enable remote-fs.target
+ enable remote-cryptsetup.target
+ enable machines.target
+ 
+-enable getty@.service
++disable getty@.service
+ enable systemd-timesyncd.service
+ enable systemd-networkd.service
+ enable systemd-resolved.service
+-- 
+2.28.0
+
