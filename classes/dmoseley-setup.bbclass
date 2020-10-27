@@ -26,6 +26,7 @@ python() {
         'dmoseley-labnetworks',          # Connect to caribbean-Lab
         'dmoseley-homenetworks',         # Connect to caribbean
         'dmoseley-mobilenetworks',       # Connect to tethered and mobile networks
+        'dmoseley-passwordless',         # Disable all password based logins; assumes ssh key-based authentication
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
