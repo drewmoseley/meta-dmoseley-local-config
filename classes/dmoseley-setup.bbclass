@@ -1,11 +1,6 @@
 DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi"
 OVERRIDES =. "dmoseley-setup:"
 
-# Setup custom overrides for vendor-specific BSP features
-OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'apalis-imx6 colibri-vf colibri-imx7 colibri-imx7-emmc colibri-imx8m', 'toradex:', '', d)}"
-OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'var-som-mx6 imx6ul-var-dart imx8mm-var-dart imx8mn-var-som', 'variscite:', '', d)}"
-OVERRIDES_prepend = "${@bb.utils.contains_any('MACHINE', 'intel-corei7-64 intel-core2-32 up-squared minnowboard genericx86 genericx86-64 qemux86 qemux86-64', 'intelarch:', '', d)}"
-
 python() {
     # Add all possible dmoseley-local features here.
     # Each one will also define the same string in OVERRIDES.
@@ -139,7 +134,9 @@ DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
-MENDER_STORAGE_TOTAL_SIZE_MB_intelarch ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB_up-squared ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7 = "512"
 MENDER_STORAGE_TOTAL_SIZE_MB_variscite = "2048"
 MENDER_MTDIDS_colibri-imx7 = "nand0=gpmi-nand"
@@ -168,7 +165,13 @@ VC4DTBO_rpi = "vc4-fkms-v3d"
 IMAGE_INSTALL_append = " kernel-image kernel-modules kernel-devicetree "
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "kernel-image kernel-modules kernel-devicetree"
 IMAGE_INSTALL_remove_qemuarm = "kernel-devicetree"
-IMAGE_INSTALL_remove_intelarch = "kernel-devicetree"
+IMAGE_INSTALL_remove_intel-corei7-64 = "kernel-devicetree"
+IMAGE_INSTALL_remove_up-squared = "kernel-devicetree"
+IMAGE_INSTALL_remove_minnowboard = "kernel-devicetree"
+IMAGE_INSTALL_remove_qemux86 = "kernel-devicetree"
+IMAGE_INSTALL_remove_qemux86-64 = "kernel-devicetree"
+IMAGE_INSTALL_remove_genericx86 = "kernel-devicetree"
+IMAGE_INSTALL_remove_genericx86-64 = "kernel-devicetree"
 IMAGE_INSTALL_append = " libnss-mdns "
 IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
 IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
@@ -263,6 +266,7 @@ MENDER_FEATURES_DISABLE_append = " mender-growfs-data "
 #
 # Settings for Toradex boards
 #
+OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') else ''}"
 MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
 PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
@@ -287,6 +291,7 @@ KERNEL_DEVICETREE_colibri-imx7 = "imx7d-colibri-aster.dtb"
 #
 # Settings for Variscite boards
 #
+OVERRIDES_prepend = "${@'variscite:' if 'var-' in d.getVar('MACHINE',True) else ''}"
 MENDER_IMAGE_BOOTLOADER_FILE_imx6ul-var-dart = "u-boot-spl.img"
 MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx6ul-var-dart = "2"
 MENDER_BOOT_PART_SIZE_MB_imx6ul-var-dart = "16"
