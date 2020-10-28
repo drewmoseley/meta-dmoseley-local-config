@@ -32,3 +32,5 @@ FILES_${PN}_append_mender-client-install = " /data "
 SYSTEMD_AUTO_ENABLE = "enable"
 CONFFILES_${PN}_remove_mender-client-install = "${sysconfdir}/octoprint/config.yaml"
 CONFFILES_${PN}_amend_mender-client-install = "/data/${sysconfdir}/octoprint/config.yaml"
+
+RDEPENDS_${PN}_append_dmoseley-setup = " python3-octoprint-themeify python3-octoprint-bedlevelvisualizer python3-octoprint-autoterminalinput python3-octoprint-octolapse "
