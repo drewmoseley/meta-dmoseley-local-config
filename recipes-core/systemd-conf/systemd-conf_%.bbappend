@@ -46,3 +46,5 @@ EOF
     ln -s /data/journal ${D}${localstatedir}/log/journal
 }
 FILES_${PN}_append_dmoseley-setup = " /data/journal ${localstatedir}/log "
+
+FILES_${PN}_append = " /var "
