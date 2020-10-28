@@ -14,6 +14,10 @@ do_compile_prepend() {
          *intel-corei7-64*:yes ) CONSOLE_ARGS="console=ttyUSB0,115200n8 quiet";;
          *beaglebone*:no       ) CONSOLE_ARGS="console=tty0 console=ttyS0,115200n8";;
          *beaglebone*:yes      ) CONSOLE_ARGS="quiet";;
+         *apalis*:no           ) CONSOLE_ARGS="console=ttymxc0,115200n8";;
+         *apalis*:yes          ) CONSOLE_ARGS="quiet";;
+         *colibri*:no          ) CONSOLE_ARGS="console=ttymxc0,115200n8";;
+         *colibri*:yes         ) CONSOLE_ARGS="quiet";;
          *:no                  ) bbwarn "Warning. Unknown machine configuration without fastboot, $MENDER_MACHINE";;
          *:yes                 ) bberror "Error. Unknown machine configuration with fastboot, $MENDER_MACHINE";;
     esac
