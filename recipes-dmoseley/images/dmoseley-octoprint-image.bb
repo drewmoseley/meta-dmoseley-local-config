@@ -11,8 +11,3 @@ IMAGE_LINGUAS="en-us"
 EXTRA_IMAGE_FEATURES += "read-only-rootfs ssh-server-openssh"
 
 IMAGE_INSTALL_append = " octoprint "
-
-ROOTFS_POSTPROCESS_COMMAND_append = " disable_octoprint_user_password;"
-disable_octoprint_user_password() {
-    sed -i -e 's@octoprint\:\!\:\(.*\)@octoprint\:\*\:\1@' ${IMAGE_ROOTFS}${sysconfdir}/shadow
-}
