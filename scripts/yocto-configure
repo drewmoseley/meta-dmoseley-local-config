@@ -223,6 +223,7 @@ if [ $(dncase "${BUILD_TYPE}") == "mender" ]; then
 	# DMOSELEY_FEATURES_append = " dmoseley-mender-demo-server "
 	# DMOSELEY_FEATURES_append = " dmoseley-mender-prod-server "
 	# DMOSELEY_FEATURES_append = " dmoseley-mender-staging-server "
+	# DMOSELEY_FEATURES_append = " dmoseley-mender-hosted-personal-account-server "
 	DMOSELEY_FEATURES_append = " dmoseley-mender-hosted-server "
 	EOF
 fi

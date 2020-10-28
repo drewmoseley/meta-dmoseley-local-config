@@ -17,6 +17,7 @@ python() {
         'dmoseley-mender-prod-server',   # Use an on-prem deployment of the Mender production server
         'dmoseley-mender-demo-server',   # Use the standard Mender demo server from the canned integration environment
         'dmoseley-mender-hosted-server', # Use hosted Mender
+        'dmoseley-mender-hosted-personal-account-server', # Use hosted Mender with drew@moseleynet.net account
         'dmoseley-mender-staging-server', # Use staging hosted Mender
         'dmoseley-mender-migrate-to-hosted',  # Migrate from production to hosted
         'dmoseley-access-point',         # Enable access point mode
@@ -57,7 +58,7 @@ python() {
 
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', True, False, d):
         numberOfServersConfigured=0
-        for serverType in [ "demo-server", "prod-server", "hosted-server", "staging-server", "migrate-to-hosted" ]:
+        for serverType in [ "demo-server", "prod-server", "hosted-server", "hosted-personal-account-server", "staging-server", "migrate-to-hosted" ]:
             if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-mender-" + serverType, True, False, d):
                 numberOfServersConfigured += 1
         if (numberOfServersConfigured != 1):

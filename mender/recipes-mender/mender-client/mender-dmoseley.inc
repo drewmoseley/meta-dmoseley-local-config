@@ -11,6 +11,7 @@ MENDER_RETRY_POLL_INTERVAL_SECONDS = "30"
 MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://aruba.lab.moseleynet.net"
 MENDER_SERVER_URL_dmoseley-mender-staging-server = "https://staging.hosted.mender.io"
 MENDER_SERVER_URL_dmoseley-mender-hosted-server = "https://hosted.mender.io"
+MENDER_SERVER_URL_dmoseley-mender-hosted-personal-account-server = "https://hosted.mender.io"
 MENDER_SERVER_URL_dmoseley-mender-migrate-to-hosted = ""
 
 do_compile_append () {
