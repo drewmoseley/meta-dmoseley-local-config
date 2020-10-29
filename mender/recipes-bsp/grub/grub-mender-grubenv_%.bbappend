@@ -18,6 +18,14 @@ do_compile_prepend() {
          *apalis*:yes          ) CONSOLE_ARGS="quiet";;
          *colibri*:no          ) CONSOLE_ARGS="console=ttymxc0,115200n8";;
          *colibri*:yes         ) CONSOLE_ARGS="quiet";;
+         *imx6ul-var-dart*:no  ) CONSOLE_ARGS="console=ttymxc0,115200n8";;
+         *imx6ul-var-dart*:yes ) CONSOLE_ARGS="quiet";;
+         *imx8mn-var-som*:no   ) CONSOLE_ARGS="console=ttymxc3,115200n8 earlycon=ec_imx6q,0x30a60000,115200";;
+         *imx8mn-var-som*:yes  ) CONSOLE_ARGS="quiet";;
+         *imx8mm-var-dart*:no  ) CONSOLE_ARGS="console=ttymxc0,115200n8 earlycon=ec_imx6q,0x30860000,115200";;
+         *imx8mm-var-dart*:yes ) CONSOLE_ARGS="quiet";;
+         *imx8*evk*:no         ) CONSOLE_ARGS="console=ttymxc1,115200n8 earlycon=ec_imx6q,0x30890000,115200";;
+         *imx8*evk*:yes        ) CONSOLE_ARGS="quiet";;
          *:no                  ) bbwarn "Warning. Unknown machine configuration without fastboot, $MENDER_MACHINE";;
          *:yes                 ) bberror "Error. Unknown machine configuration with fastboot, $MENDER_MACHINE";;
     esac
