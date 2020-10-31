@@ -134,6 +134,8 @@ DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
+MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_up-squared ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
@@ -260,8 +262,8 @@ IMAGE_BOOT_FILES_append_intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE_append = " mender-persist-systemd-machine-id "
-MENDER_FEATURES_DISABLE_append = " mender-growfs-data "
+MENDER_FEATURES_ENABLE_append_dmoseley-mender = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_DISABLE_append_dmoseley-mender = " mender-growfs-data "
 
 #
 # Settings for Toradex boards
@@ -270,6 +272,7 @@ OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colib
 MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
 PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
+PREFERRED_PROVIDER_virtual/dtb_toradex = "device-tree-overlays"
 IMAGE_TYPE_MENDER_TEZI=""
 IMAGE_TYPE_MENDER_TEZI_toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
 IMAGE_CLASSES_append = " ${IMAGE_TYPE_MENDER_TEZI} "
