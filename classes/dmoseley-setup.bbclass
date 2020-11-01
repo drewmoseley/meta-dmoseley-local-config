@@ -175,6 +175,7 @@ BOOT_DELAY_MS_rpi = "0"
 DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG_append = " \nlcd_rotate=2\n "
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
+KERNEL_DEVICETREE_append_dmoseley-setup = " overlays/gpio-shutdown.dtbo "
 
 # This is needed for the Pi Foundation Display to work with VC4.
 VC4DTBO_rpi = "vc4-fkms-v3d"

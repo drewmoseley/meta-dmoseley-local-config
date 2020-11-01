@@ -15,3 +15,5 @@ CMDLINE_prepend = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot'
 do_compile_prepend() {
     install -m 644 ${WORKDIR}/${LOGO} ${S}/drivers/video/logo/logo_linux_clut224.ppm
 }
+
+RPI_KERNEL_DEVICETREE_OVERLAYS_append_dmoseley-setup = " overlays/gpio-shutdown.dtbo "
