@@ -1,3 +1,2 @@
-SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0042", SYMLINK+="hc300"
-SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", ATTRS{bcdDevice}=="0260", SYMLINK+="aneta8"
-SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="6029", SYMLINK+="ender3"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="6029", ATTRS{serial}=="0C00400FAF6998A35E4051E0F50020C7", SYMLINK+="hc300"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="6029", ATTRS{serial}=="1400000CAF4824615D2829B9F50020C0", SYMLINK+="ender3"
