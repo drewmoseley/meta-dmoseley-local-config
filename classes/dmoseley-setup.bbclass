@@ -266,7 +266,7 @@ GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-m
 
 # I'm not sure why this cannot be calculated using bitbake variable inline python syntax
 # but when I do it that way, and SB is not enabled then the expansion is not done and the
-# shell eventually chokes on the unknown syntax."
+# shell eventually chokes on the unknown syntax.
 python () {
     splashfile = d.getVar("GRUB_SPLASH_IMAGE_FILE")
     extension = d.getVar("SB_FILE_EXT")
@@ -378,6 +378,11 @@ ACCEPT_FSL_EULA = "1"
 
 # Readonly settings
 EXTRA_IMAGE_FEATURES_append_dmoseley-readonly = " read-only-rootfs "
+
+# Enable splash screen (psplash)
+IMAGE_FEATURES_append_dmoseley-fastboot = " splash "
+PACKAGECONFIG_pn-sysvinit = "psplash-text-updates"
+QB_KERNEL_CMDLINE_APPEND_dmoseley-fastboot = " quiet vt.global_cursor_default=0 "
 
 ##### TODO
 #####
