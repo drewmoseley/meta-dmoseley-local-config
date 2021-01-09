@@ -4,3 +4,5 @@ SRC_URI_append_dmoseley-fastboot = " \
      file://0001-u-boot-Disable-serial-and-video-console-for-RpI.patch \
      file://0001-Force-BOOTDELAY-to-be-0.patch \
 "
+
+# SRC_URI_append_raspberrypi4 = " file://0001-rpi4-Enable-GENET-Ethernet-controller.patch"
