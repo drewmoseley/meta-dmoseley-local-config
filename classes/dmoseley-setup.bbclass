@@ -7,7 +7,9 @@ python() {
     dmoseley_local_features = {
         'dmoseley-setup',                # Basic setup -- flag for conditional settings
         'dmoseley-mender',               # Use mender
-        'dmoseley-systemd',              # Use systemd
+        'dmoseley-busybox',              # Use busybox for system initialization and dev management
+        'dmoseley-sysvinit',             # Use sysvinit for system initialization and dev management
+        'dmoseley-systemd',              # Use systemd for system initialization and dev management
         'dmoseley-networkd',             # Use systemd-networkd
         'dmoseley-networkmanager',       # Use networkmanager
         'dmoseley-connman',              # Use connman
@@ -37,8 +39,15 @@ python() {
                          % feature)
             d.setVar('OVERRIDES_append', ':%s' % feature)
 
+    numberOfInitSystemsConfigured=0
+    for initSystem in [ "busybox", "sysvinit", "systemd" ]:
+        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + initSystem, True, False, d):
+            numberOfInitSystemsConfigured += 1
+    if (numberOfInitSystemsConfigured != 1):
+        bb.fatal("Must specify exactly one init system.")
+
     numberOfNetworkManagersConfigured=0
-    for networkManager in [ "networkd", "networkmanager", "connman", "wifi-connect" ]:
+    for networkManager in [ "networkd", "networkmanager", "connman", "wifi-connect", "busybox" ]:
         if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + networkManager, True, False, d):
             numberOfNetworkManagersConfigured += 1
     if (numberOfNetworkManagersConfigured != 1):
@@ -93,11 +102,10 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
 KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
 IMAGE_BOOT_FILES_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
 
-# Enable systemd if required
-DISTRO_FEATURES_append = " ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'systemd', '', d)} "
-DISTRO_FEATURES_BACKFILL_CONSIDERED = "${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'sysvinit', '', d)}"
-VIRTUAL-RUNTIME_init_manager_dmoseley-systemd = "systemd"
-VIRTUAL-RUNTIME_initscripts_dmoseley-systemd = ""
+# Enable selected init system
+require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-sysvinit', 'conf/distro/include/init-manager-sysvinit.inc', '', d)}
+require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-busybox', 'conf/distro/include/init-manager-mdev-busybox.inc', '', d)}
+require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'conf/distro/include/init-manager-systemd.inc', '', d)}
 
 # Explicitly remove wifi from qemu buids
 DISTRO_FEATURES_remove_vexpress-qemu = "wifi"
