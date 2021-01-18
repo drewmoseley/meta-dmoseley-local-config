@@ -1,0 +1,12 @@
+<html lang="en">
+<head>
+<Title>Dead Simple Firmware Installer</Title>
+</head>
+<body>
+	<form action="upload.php" method="post" enctype="multipart/form-data">
+	<label for="firmware_image">Select the firmware image to deploy:</label>
+	<input type="file" name="firmware_image" id="firmware_image">
+	<input type="submit" value="Upload and Deploy">
+	</form>
+</body>
+</html>
