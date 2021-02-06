@@ -1,0 +1,26 @@
+From 985ff0bd8524e4913765ec0f2d15be8edee0cf87 Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Fri, 29 Jan 2021 15:15:45 -0500
+Subject: [PATCH] Update clap library version
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ Cargo.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Cargo.toml b/Cargo.toml
+index 4b27b8e..983e16e 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -6,7 +6,7 @@ description = "Easy WiFi setup for Linux devices from your mobile phone or lapto
+ 
+ [dependencies]
+ network-manager = "0.11"
+-clap = "2.24"
++clap = "2.31"
+ iron = "0.6"
+ iron-cors = "0.7"
+ staticfile = "0.5"
+-- 
+2.30.0
+

@@ -1,0 +1,87 @@
+From c31e8f207375d0b721b32999f5a03c52b05fae7f Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Fri, 29 Jan 2021 12:59:45 -0500
+Subject: [PATCH] Lock down URL library.
+
+Based on this report on github:
+    https://github.com/balena-io/wifi-connect/issues/349
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ Cargo.lock | 12 ++++++------
+ Cargo.toml |  1 +
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/Cargo.lock b/Cargo.lock
+index b3a59e4..83aba07 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -178,7 +178,7 @@ dependencies = [
+  "traitobject 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "typeable 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+  "unicase 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+- "url 1.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
++ "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+ 
+ [[package]]
+@@ -212,7 +212,7 @@ dependencies = [
+  "num_cpus 1.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "plugin 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+  "typemap 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
+- "url 1.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
++ "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+ 
+ [[package]]
+@@ -606,7 +606,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ dependencies = [
+  "iron 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "route-recognizer 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)",
+- "url 1.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
++ "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+ 
+ [[package]]
+@@ -667,7 +667,7 @@ dependencies = [
+  "iron 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "mount 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "time 0.1.40 (registry+https://github.com/rust-lang/crates.io-index)",
+- "url 1.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
++ "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+ 
+ [[package]]
+@@ -836,7 +836,7 @@ dependencies = [
+  "bodyparser 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "iron 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "plugin 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+- "url 1.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
++ "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+ 
+ [[package]]
+@@ -1007,7 +1007,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ "checksum unicode-xid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc72304796d0818e357ead4e000d19c9c174ab23dc11093ac919054d20a6a7fc"
+ "checksum unreachable 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "382810877fe448991dfc7f0dd6e3ae5d58088fd0ea5e35189655f84e6814fa56"
+ "checksum unsafe-any 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "f30360d7979f5e9c6e6cea48af192ea8fab4afb3cf72597154b8f08935bc9c7f"
+-"checksum url 1.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f808aadd8cfec6ef90e4a14eb46f24511824d1ac596b9682703c87056c8678b7"
++"checksum url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)" = "f808aadd8cfec6ef90e4a14eb46f24511824d1ac596b9682703c87056c8678b7"
+ "checksum urlencoded 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "0a52f50139118b60ae91af08bf15ed158817d34b91b9d24c11ffbe21195d33e3"
+ "checksum utf8-ranges 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "662fab6525a98beff2921d7f61a39e7d59e0b425ebc7d0d9e66d316e55124122"
+ "checksum vec_map 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)" = "05c78687fb1a80548ae3250346c3db86a80a7cdd77bda190189f2d0a0987c81a"
+diff --git a/Cargo.toml b/Cargo.toml
+index 4b27b8e..5db1c7a 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,6 +20,7 @@ params = "0.8"
+ log = "0.3"
+ env_logger = "0.4"
+ nix = "0.10"
++url = "1.7.2"
+ 
+ [dependencies.error-chain]
+ version = "0.11"
+-- 
+2.30.0
+
