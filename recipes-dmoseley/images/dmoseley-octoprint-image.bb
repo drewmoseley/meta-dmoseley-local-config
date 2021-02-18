@@ -3,7 +3,6 @@ LICENSE = "MIT"
 
 inherit core-image
 
-EXTRA_IMAGE_FEATURES_remove = "debug-tweaks"
 IMAGE_FSTYPES_remove = " tar.bz2 ext3 sdimg.bz2 "
 GLIBC_GENERATE_LOCALES="en_US.UTF-8"
 IMAGE_LINGUAS="en-us"
