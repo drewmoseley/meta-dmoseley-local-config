@@ -121,11 +121,6 @@ bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-rust)
 #
 case "${MACHINE}" in
     *raspberry* ) bitbake-layers add-layer "${BASEDIR}"/meta-raspberrypi;;
-    *udooneo*   )
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-distro)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-udoo)
-        ;;
     *colibri* | *apalis*  )
         bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
         bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-3rdparty)
@@ -134,20 +129,6 @@ case "${MACHINE}" in
         ;;
     *minnowboard* | *intel* )
         bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-intel)
-        ;;
-    *pico-imx* )
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-3rdparty)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-distro)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-edm-bsp-release)
-        ;;
-    *var* )
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-3rdparty)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-freescale-distro)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-variscite-fslc)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-swupdate)
-        bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-qt5)
         ;;
 esac
 
@@ -165,8 +146,6 @@ if [ "${BUILD_TYPE}" == "mender" ]; then
     case "${MACHINE}" in
         *colibri* | *apalis* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-toradex-nxp);;
         *beaglebone* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-beaglebone);;
-        *pico-imx* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-nxp);;
-        *var* ) bitbake-layers add-layer $(readlink -f "${BASEDIR}"/meta-mender-community/meta-mender-variscite);;
     esac
 
     # Additional update-modules
