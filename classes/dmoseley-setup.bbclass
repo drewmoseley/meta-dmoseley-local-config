@@ -297,7 +297,7 @@ MENDER_FEATURES_DISABLE_append_dmoseley-mender = " mender-growfs-data "
 #
 # Settings for Toradex boards
 #
-OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') else ''}"
+OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
 MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
 PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
@@ -311,6 +311,9 @@ TORADEX_INCLUDE_FILE_toradex="conf/machine/include/${MACHINE}.inc"
 TORADEX_INCLUDE_FILE_colibri-imx7-nand="conf/machine/include/colibri-imx7.inc"
 TORADEX_INCLUDE_FILE_colibri-vf=""
 TORADEX_INCLUDE_FILE_colibri-imx8x=""
+TORADEX_INCLUDE_FILE_apalis-imx8x=""
+TORADEX_INCLUDE_FILE_apalis-imx8=""
+TORADEX_INCLUDE_FILE_verdin-imx8mm=""
 require ${TORADEX_INCLUDE_FILE}
 MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
@@ -321,6 +324,9 @@ MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,15
 MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
 MENDER_PARTITION_ALIGNMENT_colibri-imx7-nand = "131072"
 IMX_DEFAULT_BSP_toradex="nxp"
+# This is needed when building on integration. With use-head-next you
+# always get the newest kernel. Without use-head-next your build may fail.
+MACHINEOVERRIDES_prepend_toradex="use-head-next:"
 
 #
 # Settings for Variscite boards
