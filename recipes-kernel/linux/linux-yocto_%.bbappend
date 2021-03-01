@@ -10,6 +10,9 @@ SRC_URI_append_dmoseley-setup = " \
     ${@bb.utils.contains_any('MACHINE', 'beaglebone-yocto raspberrypi2', 'file://wifi-drivers.cfg', '', d)} \
 "
 
+SRC_URI_append_beaglebone-yocto = " \
+    file://usb_eth_drivers_for_rootfs.cfg \
+"
 SERIAL_dmoseley-fastboot=""
 CMDLINE_append_dmoseley-setup = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
 
