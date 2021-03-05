@@ -6,6 +6,7 @@ LOGO_dmoseley-setup = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
 SRC_URI_append_dmoseley-setup = " \
     file://${LOGO} \
     file://enable_splash.cfg \
+    file://led.cfg \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','file://fastboot.cfg','',d)} \
     ${@bb.utils.contains_any('MACHINE', 'beaglebone-yocto raspberrypi2', 'file://wifi-drivers.cfg', '', d)} \
 "
