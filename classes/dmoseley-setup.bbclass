@@ -91,6 +91,7 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'colibri-imx7-nand', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
