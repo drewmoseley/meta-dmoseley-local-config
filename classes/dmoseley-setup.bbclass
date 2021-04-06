@@ -91,7 +91,7 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'colibri-imx7-nand', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
@@ -163,7 +163,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "4096"
 MENDER_STORAGE_TOTAL_SIZE_MB_up-squared ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7-nand = "512"
