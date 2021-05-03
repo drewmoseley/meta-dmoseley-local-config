@@ -198,6 +198,8 @@ IMAGE_INSTALL_remove_qemuarm = "kernel-devicetree"
 IMAGE_INSTALL_remove_intel-corei7-64 = "kernel-devicetree"
 IMAGE_INSTALL_remove_up-squared = "kernel-devicetree"
 IMAGE_INSTALL_remove_minnowboard = "kernel-devicetree"
+IMAGE_INSTALL_remove_riscv32 = "kernel-devicetree"
+IMAGE_INSTALL_remove_riscv64 = "kernel-devicetree"
 IMAGE_INSTALL_remove_qemux86 = "kernel-devicetree"
 IMAGE_INSTALL_remove_qemux86-64 = "kernel-devicetree"
 IMAGE_INSTALL_remove_genericx86 = "kernel-devicetree"
@@ -390,8 +392,8 @@ DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"
 IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL_append_x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-LICENSE_FLAGS_WHITELIST_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
-FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.2.0/:"
+LICENSE_FLAGS_WHITELIST_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "c]ommercial_mender-binary-delta", "", d)}"
+FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.2.1/:"
 
 ACCEPT_FSL_EULA = "1"
 
@@ -402,6 +404,9 @@ EXTRA_IMAGE_FEATURES_append_dmoseley-readonly = " read-only-rootfs "
 IMAGE_FEATURES_append_dmoseley-fastboot = " splash "
 PACKAGECONFIG_pn-sysvinit = "psplash-text-updates"
 QB_KERNEL_CMDLINE_APPEND_dmoseley-fastboot = " quiet vt.global_cursor_default=0 "
+
+# Make sure VFAT partition labels are not too long
+BOOTDD_VOLUME_ID_orange-pi-pc = "o-pi-pc"
 
 ##### TODO
 #####
