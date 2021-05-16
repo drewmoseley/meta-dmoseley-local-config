@@ -18,3 +18,15 @@ SRC_URI_append_dmoseley-fastboot = " file://0001-systemd-Disable-getty-service.p
 do_install_append_dmoseley-journal-upload() {
     sed -i -e 's@.*URL=*@URL=https://aruba.lab.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
 }
+
+# Setup persistent logging in the data partition with Mender
+SYSTEMD_SERVICE_${PN}_append_dmoseley-mender_dmoseley-persistent-logs = " var-log.mount "
+SRC_URI_append_dmoseley-mender_dmoseley-persistent-logs = " file://var-log.mount "
+SYSTEMD_AUTO_ENABLE_dmoseley-mender_dmoseley-persistent-logs = "enable"
+do_install_append_dmoseley-mender_dmoseley-persistent-logs() {
+    install -d ${D}/data/
+    mv ${D}${localstatedir}/log ${D}/data/log
+    install -d ${D}${systemd_unitdir}/system
+    install ${WORKDIR}/var-log.mount ${D}${systemd_unitdir}/system
+}
+FILES_${PN}_append_dmoseley-mender_dmoseley-persistent-logs = " /data/log "
