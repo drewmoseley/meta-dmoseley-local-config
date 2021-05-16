@@ -24,6 +24,7 @@ python() {
         'dmoseley-mender-migrate-to-hosted',  # Migrate from production to hosted
         'dmoseley-access-point',         # Enable access point mode
         'dmoseley-fastboot',             # Fastboot mode
+        'dmoseley-persistent-logs',      # Enable persistent storage for all logs
         'dmoseley-journal-upload',       # Enable systemd journal upload
         'dmoseley-readonly',             # Use readonly
         'dmoseley-labnetworks',          # Connect to caribbean-Lab
@@ -64,6 +65,11 @@ python() {
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', True, False, d) and \
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
         bb.fatal("Building access-point requires networkmanager.")
+
+    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-persistent-logs', True, False, d) and \
+       bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-readonly', True, False, d) and \
+       not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', True, False, d):
+        bb.fatal("Building with persistent logs and readonly root filesystem requires Mender.")
 
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', True, False, d):
         numberOfServersConfigured=0
@@ -408,6 +414,9 @@ QB_KERNEL_CMDLINE_APPEND_dmoseley-fastboot = " quiet vt.global_cursor_default=0 
 
 # Make sure VFAT partition labels are not too long
 BOOTDD_VOLUME_ID_orange-pi-pc = "o-pi-pc"
+
+# Log processing
+VOLATILE_LOG_DIR = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-persistent-logs", "no", "yes", d)}"
 
 ##### TODO
 #####

@@ -18,8 +18,3 @@ SRC_URI_append_dmoseley-fastboot = " file://0001-systemd-Disable-getty-service.p
 do_install_append_dmoseley-journal-upload() {
     sed -i -e 's@.*URL=*@URL=https://aruba.lab.moseleynet.net:19532@' ${D}${sysconfdir}/systemd/journal-upload.conf
 }
-FILES_${PN}_append_dmoseley-journal = " /data/journal "
-
-do_install_append_dmoseley-setup () {
-    [ -d ${D}/var/log/journal ] && rmdir ${D}/var/log/journal
-}

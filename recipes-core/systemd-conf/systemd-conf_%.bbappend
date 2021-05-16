@@ -32,19 +32,16 @@ EOF
         chmod 0644 ${D}${sysconfdir}/systemd/timesyncd.conf
     fi
 
-    #
-    # Setup persistent systemd journaling.
-    #
-    for conffile in ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf; do
-        sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' \
-               -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' $conffile
-        echo "Storage=persistent" >> $conffile
-        echo "Compress=yes" >> $conffile
-    done
-    [ -d ${D}/var/log/journal ] && rmdir ${D}/var/log/journal
-    install -d ${D}/data/journal ${D}${localstatedir}/log
-    ln -s /data/journal ${D}${localstatedir}/log/journal
+    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-persistent-logs','true','false',d)}; then
+        #
+        # Setup persistent systemd journaling.
+        #
+        for conffile in ${D}${systemd_unitdir}/journald.conf.d/00-${PN}.conf; do
+            sed -i -e 's/.*ForwardToSyslog.*/ForwardToSyslog=no/' \
+                   -e 's/.*RuntimeMaxUse.*/RuntimeMaxUse=64M/' $conffile
+            echo "SystemMaxUse=64M" >> $conffile
+            echo "Storage=persistent" >> $conffile
+            echo "Compress=yes" >> $conffile
+        done
+    fi
 }
-FILES_${PN}_append_dmoseley-setup = " /data/journal ${localstatedir}/log "
-
-FILES_${PN}_append = " /var "
