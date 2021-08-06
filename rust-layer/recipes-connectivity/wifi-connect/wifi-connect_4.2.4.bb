@@ -172,3 +172,4 @@ inherit systemd
 SYSTEMD_SERVICE_${PN} = " \
     ${PN}.service \
 "
+SYSTEMD_AUTO_ENABLE = "enable"
