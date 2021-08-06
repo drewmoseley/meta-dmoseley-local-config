@@ -80,6 +80,7 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
+DMOSELEY_MENDER_BBCLASS_colibri-imx6ull = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
@@ -150,17 +151,6 @@ IMAGE_FSTYPES_remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mend
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
-#
-# This is implemented as anonymous python to avoid defining it with machine-specific overrides.
-# The processing in mender-setup-ubi fails when using overrides as they are not applied until after
-# the sanity checks implemented there.
-#
-python() {
-    machine = d.getVar('MACHINE')
-    if (machine == "colibri-imx7-nand"):
-        d.setVar("MENDER_MTDIDS", "nand0=gpmi-nand")
-}
-
 # Setup Mender disk sizes
 MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
 MENDER_STORAGE_TOTAL_SIZE_MB_qemux86 ??= "2048"
@@ -172,10 +162,10 @@ MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "4096"
 MENDER_STORAGE_TOTAL_SIZE_MB_up-squared ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx6ull = "512"
 MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7-nand = "512"
 MENDER_STORAGE_TOTAL_SIZE_MB_variscite = "2048"
-MENDER_MTDIDS_colibri-imx7-nand = "nand0=gpmi-nand"
-MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
+MENDER_STORAGE_PEB_SIZE_colibri-imx6ull = "131072"
 MENDER_STORAGE_PEB_SIZE_colibri-imx7-nand = "131072"
 
 # Multimedia licensing
@@ -307,6 +297,17 @@ MENDER_FEATURES_DISABLE_append_dmoseley-mender = " mender-growfs-data "
 #
 # Settings for Toradex boards
 #
+
+#
+# This is implemented as anonymous python to avoid defining it with machine-specific overrides.
+# The processing in mender-setup-ubi fails when using overrides as they are not applied until after
+# the sanity checks implemented there.
+#
+python() {
+    machine = d.getVar('MACHINE')
+    if (machine == "colibri-imx7-nand") or (machine == "colibri-imx6ull"):
+        d.setVar("MENDER_MTDIDS", "nand0=gpmi-nand")
+}
 OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
 MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
 PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
@@ -329,7 +330,7 @@ MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE_colibri-imx7-emmc = "0"
-MENDER_MTDIDS_colibri-imx7-nand = "nand0=gpmi-nand"
+MENDER_MTDPARTS_colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
 MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
 MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
 MENDER_PARTITION_ALIGNMENT_colibri-imx7-nand = "131072"
@@ -337,6 +338,16 @@ IMX_DEFAULT_BSP_toradex="nxp"
 # This is needed when building on integration. With use-head-next you
 # always get the newest kernel. Without use-head-next your build may fail.
 MACHINEOVERRIDES_prepend_toradex="use-head-next:"
+# Comment/remove below to enable GRUB integration instead of U-Boot
+MENDER_FEATURES_ENABLE_append_toradex_dmoseley-mender = " mender-uboot mender-image-sd"
+MENDER_FEATURES_DISABLE_append_toradex_dmoseley-mender = " mender-grub mender-image-uefi"
+MENDER_FEATURES_ENABLE_remove_colibri-imx6ull_dmoseley-mender = " mender-image-sd"
+MENDER_FEATURES_ENABLE_remove_colibri-imx7-nand_dmoseley-mender = " mender-image-sd"
+MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_apalis-imx8 = "0"
+MENDER_BOOT_PART_SIZE_MB_apalis-imx8 = "32"
+OFFSET_SPL_PAYLOAD_apalis-imx8 = ""
+MENDER_STORAGE_DEVICE_apalis-imx8 = "/dev/mmcblk0"
+MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
 
 #
 # Settings for Variscite boards
@@ -356,8 +367,8 @@ MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx8mn-var-som = "64"
 MENDER_BOOT_PART_SIZE_MB_imx8mn-var-som = "16"
 IMAGE_BOOT_FILES_remove_imx8mn-var-som_dmoseley-mender = "${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
 do_image_sdimg[depends] += "${@bb.utils.contains('MACHINE', 'imx8mn-var-som', 'imx-boot:do_deploy', '', d)}"
-MENDER_FEATURES_ENABLE_append_variscite = " mender-image-sd "
-MENDER_FEATURES_DISABLE_append_variscite = " mender-image-uefi "
+MENDER_FEATURES_ENABLE_append_variscite_dmoseley-mender = " mender-image-sd "
+MENDER_FEATURES_DISABLE_append_variscite_dmoseley-mender = " mender-image-uefi "
 MACHINE_EXTRA_RDEPENDS_remove_variscite_dmoseley-mender = "u-boot-fw-utils"
 VARISCITE_UBOOT_ENV_IN_EMMC = "1"
 MENDER_STORAGE_DEVICE_imx6ul-var-dart = "/dev/mmcblk1"
