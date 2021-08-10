@@ -338,11 +338,8 @@ IMX_DEFAULT_BSP_toradex="nxp"
 # This is needed when building on integration. With use-head-next you
 # always get the newest kernel. Without use-head-next your build may fail.
 MACHINEOVERRIDES_prepend_toradex="use-head-next:"
-# Comment/remove below to enable GRUB integration instead of U-Boot
-MENDER_FEATURES_ENABLE_append_toradex_dmoseley-mender = " mender-uboot mender-image-sd"
-MENDER_FEATURES_DISABLE_append_toradex_dmoseley-mender = " mender-grub mender-image-uefi"
-MENDER_FEATURES_ENABLE_remove_colibri-imx6ull_dmoseley-mender = " mender-image-sd"
-MENDER_FEATURES_ENABLE_remove_colibri-imx7-nand_dmoseley-mender = " mender-image-sd"
+_MENDER_BOOTLOADER_DEFAULT_toradex = "mender-uboot"
+_MENDER_IMAGE_TYPE_DEFAULT_toradex = "${@bb.utils.contains_any('MACHINE', 'colibri-imx6ull colibri-imx7-nand','mender-image-ubi','mender-image-sd',d)}"
 MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_apalis-imx8 = "0"
 MENDER_BOOT_PART_SIZE_MB_apalis-imx8 = "32"
 OFFSET_SPL_PAYLOAD_apalis-imx8 = ""
