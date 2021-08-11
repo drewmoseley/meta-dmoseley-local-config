@@ -1,12 +1,12 @@
 #
 # Explicitly disable the systemd service using standard Yocto
 # mechanisms for systemd-networkd.  For systemd-networkd we then
-# manually create symlink in the do_install_append() below.
+# manually create symlink in the do_install:append() below.
 #
-SYSTEMD_AUTO_ENABLE_dmoseley-networkd = "enable"
-SYSTEMD_SERVICE_${PN}_append_dmoseley-networkd = " wpa_supplicant@${WIFI_IFACE}.service "
+SYSTEMD_AUTO_ENABLE:dmoseley-networkd = "enable"
+SYSTEMD_SERVICE:${PN}:append:dmoseley-networkd = " wpa_supplicant@${WIFI_IFACE}.service "
 
-do_install_append_dmoseley-networkd () {
+do_install:append:dmoseley-networkd () {
     #
     # Explicitly specify both nl80211 and wext to allow for fallback on older devices
     #

@@ -45,4 +45,4 @@ do_install() {
 
 INITSCRIPT_NAME = "shairport-sync"
 INITSCRIPT_PARAMS = "defaults"
-SYSTEMD_SERVICE_${PN} = "shairport-sync.service"
+SYSTEMD_SERVICE:${PN} = "shairport-sync.service"

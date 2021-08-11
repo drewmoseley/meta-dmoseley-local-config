@@ -1,9 +1,9 @@
 #
 # Setup lighttpd for dead simple image installer
 #
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-RDEPENDS_${PN} += "lighttpd-module-cgi \
+RDEPENDS:${PN} += "lighttpd-module-cgi \
                    lighttpd-module-fastcgi \
                    php-cgi \
                    bash"
@@ -14,9 +14,9 @@ SRC_URI += "file://deadsimple-installer.sh \
             file://upload.php \
             file://lighttpd-deadsimple-installer.conf"
 
-SRCREV_pn-lighttpd = "4d80679785d3ecf7b06548ba334aa63d6ef01d88"
+SRCREV:pn-lighttpd = "4d80679785d3ecf7b06548ba334aa63d6ef01d88"
 
-do_install_append() {
+do_install:append() {
 	install -m 0644 ${WORKDIR}/index.html.lighttpd.deadsimple-installer ${D}/www/pages/index.html
 
     install -m 0755 ${WORKDIR}/deadsimple-installer.sh ${D}/www/pages/deadsimple-installer.sh
@@ -28,4 +28,4 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/lighttpd-deadsimple-installer.conf ${D}${sysconfdir}/${PN}/${PN}.conf
 }
 
-FILES_${PN} += "${bindir}/cgibashopts ${sysconfdir}/${PN}.d/deadsimple-installer.conf"
+FILES:${PN} += "${bindir}/cgibashopts ${sysconfdir}/${PN}.d/deadsimple-installer.conf"

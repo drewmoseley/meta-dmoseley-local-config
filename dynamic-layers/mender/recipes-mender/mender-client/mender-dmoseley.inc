@@ -1,5 +1,5 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-SRC_URI_append = " \
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+SRC_URI:append = " \
      file://artifact-verify-key.pem \
      file://mender-inventory-yocto-buildinfo \
 "
@@ -8,13 +8,13 @@ MENDER_UPDATE_POLL_INTERVAL_SECONDS = "5"
 MENDER_INVENTORY_POLL_INTERVAL_SECONDS = "5"
 MENDER_RETRY_POLL_INTERVAL_SECONDS = "30"
 
-MENDER_SERVER_URL_dmoseley-mender-prod-server = "https://aruba.lab.moseleynet.net"
-MENDER_SERVER_URL_dmoseley-mender-staging-server = "https://staging.hosted.mender.io"
-MENDER_SERVER_URL_dmoseley-mender-hosted-server = "https://hosted.mender.io"
-MENDER_SERVER_URL_dmoseley-mender-hosted-personal-account-server = "https://hosted.mender.io"
-MENDER_SERVER_URL_dmoseley-mender-migrate-to-hosted = ""
+MENDER_SERVER_URL:dmoseley-mender-prod-server = "https://aruba.lab.moseleynet.net"
+MENDER_SERVER_URL:dmoseley-mender-staging-server = "https://staging.hosted.mender.io"
+MENDER_SERVER_URL:dmoseley-mender-hosted-server = "https://hosted.mender.io"
+MENDER_SERVER_URL:dmoseley-mender-hosted-personal-account-server = "https://hosted.mender.io"
+MENDER_SERVER_URL:dmoseley-mender-migrate-to-hosted = ""
 
-do_compile_append () {
+do_compile:append () {
     cat > ${WORKDIR}/mender.conf <<-EOF
 	{
 	  "StateScriptTimeoutSeconds": 100
@@ -32,7 +32,7 @@ do_compile_append () {
 	EOF
 }
 
-do_install_append () {
+do_install:append () {
     # install my additional inventory tools
     install -d ${D}/${datadir}/mender/inventory
     install -t ${D}/${datadir}/mender/inventory -m 0755 \
@@ -40,4 +40,4 @@ do_install_append () {
 
 }
 
-PACKAGECONFIG_append = " modules "
+PACKAGECONFIG:append = " modules "

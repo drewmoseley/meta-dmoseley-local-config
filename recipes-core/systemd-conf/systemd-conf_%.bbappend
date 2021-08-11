@@ -1,12 +1,12 @@
-FILESEXTRAPATHS_prepend_dmoseley-setup := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:"
 
-SRC_URI_append_dmoseley-setup = " \
+SRC_URI:append:dmoseley-setup = " \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','file://eth.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','file://en.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','file://wl.network', '', d)} \
 "
 
-FILES_${PN}_append_dmoseley-setup = " \
+FILES:${PN}:append:dmoseley-setup = " \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','${sysconfdir}/systemd/network/eth.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','${sysconfdir}/systemd/network/en.network', '', d)} \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','${sysconfdir}/systemd/network/wl.network', '', d)} \
@@ -14,7 +14,7 @@ FILES_${PN}_append_dmoseley-setup = " \
 "
 
 
-do_install_append_dmoseley-setup () {
+do_install:append:dmoseley-setup () {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd/network
         install -m 0644 ${WORKDIR}/eth.network ${D}${sysconfdir}/systemd/network

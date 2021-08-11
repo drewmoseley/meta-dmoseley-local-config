@@ -38,7 +38,7 @@ python() {
             if feature not in dmoseley_local_features:
                 bb.fatal("%s from DMOSELEY_FEATURES is not a valid local feature."
                          % feature)
-            d.setVar('OVERRIDES_append', ':%s' % feature)
+            d.setVar('OVERRIDES:append', ':%s' % feature)
 
     numberOfInitSystemsConfigured=0
     for initSystem in [ "busybox", "sysvinit", "systemd" ]:
@@ -80,33 +80,33 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
-OVERRIDES_prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') or d.getVar('MACHINE',True).startswith('vexpress-qemu') else ''}"
-DMOSELEY_FEATURES_remove_dmoseley-qemu = " dmoseley-wifi "
-DISTRO_FEATURES_remove_dmoseley-qemu = " wifi "
 
-DMOSELEY_MENDER_BBCLASS_colibri-imx6ull = "mender-full-ubi"
-DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
-DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
+OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') or d.getVar('MACHINE',True).startswith('vexpress-qemu') else ''}"
+DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
+DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
+
+DMOSELEY_MENDER_BBCLASS:colibri-imx6ull = "mender-full-ubi"
+DMOSELEY_MENDER_BBCLASS:vexpress-qemu-flash = "mender-full-ubi"
+DMOSELEY_MENDER_BBCLASS:qemux86-64-bios = "mender-full-bios"
 DMOSELEY_MENDER_BBCLASS = "mender-full"
 inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${DMOSELEY_MENDER_BBCLASS}', '', d)}
 
-IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client connman-conf "
-IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
-IMAGE_INSTALL_append_dmoseley-wifi-connect = " wifi-connect "
+IMAGE_INSTALL:append:dmoseley-connman = " connman connman-client connman-conf "
+IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
+IMAGE_INSTALL:append:dmoseley-wifi-connect = " wifi-connect "
 
-DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
-IMAGE_INSTALL_append_dmoseley-wifi = " \
+DISTRO_FEATURES:append:dmoseley-wifi = " wifi "
+IMAGE_INSTALL:append:dmoseley-wifi = " \
     iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
 "
 
-KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
-IMAGE_BOOT_FILES_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
+KERNEL_DEVICETREE:append:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
+IMAGE_BOOT_FILES:append:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
 
 # Enable selected init system
 require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-sysvinit', 'conf/distro/include/init-manager-sysvinit.inc', '', d)}
@@ -116,10 +116,10 @@ require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'conf/dist
 WIFI_IFACE ?= "wlan0"
 
 # Explicitly remove wifi from qemu buids
-DISTRO_FEATURES_remove_vexpress-qemu = "wifi"
-DISTRO_FEATURES_remove_vexpress-qemu-flash = "wifi"
-IMAGE_INSTALL_remove_vexpress-qemu = "iw wpa-supplicant"
-IMAGE_INSTALL_remove_vexpress-qemu-flash = "iw wpa-supplicant"
+DISTRO_FEATURES:remove:vexpress-qemu = "wifi"
+DISTRO_FEATURES:remove:vexpress-qemu-flash = "wifi"
+IMAGE_INSTALL:remove:vexpress-qemu = "iw wpa-supplicant"
+IMAGE_INSTALL:remove:vexpress-qemu-flash = "iw wpa-supplicant"
 
 # Cleanup FSTYPES
 IMAGE_FSTYPES_APPEND_MENDER = " \
@@ -144,38 +144,38 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
-IMAGE_FSTYPES_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
-IMAGE_FSTYPES_remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
+IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
+IMAGE_FSTYPES:remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
 # Setup Mender disk sizes
-MENDER_BOOT_PART_SIZE_MB_rpi ??= "40"
-MENDER_STORAGE_TOTAL_SIZE_MB_qemux86 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_qemux86-64 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_rpi ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
-MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "4096"
-MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx6ull = "512"
-MENDER_STORAGE_PEB_SIZE_colibri-imx6ull = "131072"
+MENDER_BOOT_PART_SIZE_MB:rpi ??= "40"
+MENDER_STORAGE_TOTAL_SIZE_MB:qemux86 ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB:qemux86-64 ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB:rpi ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB:beaglebone-yocto ??= "1024"
+MENDER_STORAGE_TOTAL_SIZE_MB:genericx86-64 ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB:genericx86 ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB:intel-corei7-64 ??= "4096"
+MENDER_STORAGE_TOTAL_SIZE_MB:minnowboard ??= "3072"
+MENDER_STORAGE_TOTAL_SIZE_MB:colibri-imx6ull = "512"
+MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
 
 # Multimedia licensing
-LICENSE_FLAGS_WHITELIST_append = " commercial "
+LICENSE_FLAGS_WHITELIST:append = " commercial "
 
 # RPI specifics
-IMAGE_INSTALL_append_rpi = " bluez5-noinst-tools "
-RPI_USE_U_BOOT_rpi = "1"
-ENABLE_UART_rpi = "1"
-DISABLE_OVERSCAN_rpi = "1"
-DISABLE_SPLASH = "1"
-BOOT_DELAY_rpi = "0"
-BOOT_DELAY_MS_rpi = "0"
-DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
-RPI_EXTRA_CONFIG_append = " \nlcd_rotate=2\n "
-SDIMG_ROOTFS_TYPE_rpi = "ext4"
+IMAGE_INSTALL:append:rpi = " bluez5-noinst-tools "
+RPI_USE_U_BOOT:rpi = "1"
+ENABLE_UART:rpi = "1"
+DISABLE_OVERSCAN:rpi = "1"
+DISABLE_SPLASH:rpi = "1"
+BOOT_DELAY:rpi = "0"
+BOOT_DELAY_MS:rpi = "0"
+DISABLE_RPI_BOOT_LOGO:rpi:dmoseley-fastboot = "1"
+RPI_EXTRA_CONFIG:rpi:append = " \nlcd_rotate=2\n "
+SDIMG_ROOTFS_TYPE:rpi = "ext4"
 _MENDER_BOOTLOADER_DEFAULT:rpi = "mender-uboot"
 GPU_MEM_256:rpi = "128"
 GPU_MEM_512:rpi = "196"
@@ -183,27 +183,27 @@ GPU_MEM_1024:rpi = "396"
 MACHINE_FEATURES:append:rpi = " vc4graphics "
 
 # This is needed for the Pi Foundation Display to work with VC4.
-VC4DTBO_rpi = "vc4-fkms-v3d"
+VC4DTBO:rpi = "vc4-fkms-v3d"
 
 # Other packages to install in _all_ images
-IMAGE_INSTALL_append = " kernel-image kernel-modules kernel-devicetree "
-IMAGE_INSTALL_remove_vexpress-qemu-flash = "kernel-image kernel-modules kernel-devicetree"
-IMAGE_INSTALL_remove_qemuarm = "kernel-devicetree"
-IMAGE_INSTALL_remove_qemuarm64 = "kernel-devicetree"
-IMAGE_INSTALL_remove_intel-corei7-64 = "kernel-devicetree"
-IMAGE_INSTALL_remove_minnowboard = "kernel-devicetree"
-IMAGE_INSTALL_remove_riscv32 = "kernel-devicetree"
-IMAGE_INSTALL_remove_riscv64 = "kernel-devicetree"
-IMAGE_INSTALL_remove_qemux86 = "kernel-devicetree"
-IMAGE_INSTALL_remove_qemux86-64 = "kernel-devicetree"
-IMAGE_INSTALL_remove_genericx86 = "kernel-devicetree"
-IMAGE_INSTALL_remove_genericx86-64 = "kernel-devicetree"
-IMAGE_INSTALL_append = " libnss-mdns "
-IMAGE_INSTALL_remove_vexpress-qemu = "libnss-mdns"
-IMAGE_INSTALL_remove_vexpress-qemu-flash = "libnss-mdns"
-IMAGE_INSTALL_append = " nano "
+IMAGE_INSTALL:append = " kernel-image kernel-modules kernel-devicetree "
+IMAGE_INSTALL:remove:vexpress-qemu-flash = "kernel-image kernel-modules kernel-devicetree"
+IMAGE_INSTALL:remove:qemuarm = "kernel-devicetree"
+IMAGE_INSTALL:remove:qemuarm64 = "kernel-devicetree"
+IMAGE_INSTALL:remove:intel-corei7-64 = "kernel-devicetree"
+IMAGE_INSTALL:remove:minnowboard = "kernel-devicetree"
+IMAGE_INSTALL:remove:riscv32 = "kernel-devicetree"
+IMAGE_INSTALL:remove:riscv64 = "kernel-devicetree"
+IMAGE_INSTALL:remove:qemux86 = "kernel-devicetree"
+IMAGE_INSTALL:remove:qemux86-64 = "kernel-devicetree"
+IMAGE_INSTALL:remove:genericx86 = "kernel-devicetree"
+IMAGE_INSTALL:remove:genericx86-64 = "kernel-devicetree"
+IMAGE_INSTALL:append = " libnss-mdns "
+IMAGE_INSTALL:remove:vexpress-qemu = "libnss-mdns"
+IMAGE_INSTALL:remove:vexpress-qemu-flash = "libnss-mdns"
+IMAGE_INSTALL:append = " nano "
 
-EXTRA_IMAGE_FEATURES_append = " package-management "
+EXTRA_IMAGE_FEATURES:append = " package-management "
 PACKAGE_FEED_URIS = "http://aruba.lab.moseleynet.net:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
@@ -211,11 +211,11 @@ PACKAGE_FEED_URIS = "http://aruba.lab.moseleynet.net:5678"
 # core-image-full-cmdline but it has some handy packages so let's include it by default.
 # If certain builds are size constrained this (as well as package-management) should be
 # removed.
-IMAGE_INSTALL_append = " packagegroup-base "
-IMAGE_INSTALL_remove_vexpress-qemu-flash = "packagegroup-base"
+IMAGE_INSTALL:append = " packagegroup-base "
+IMAGE_INSTALL:remove:vexpress-qemu-flash = "packagegroup-base"
 
 # Mender settings
-IMAGE_INSTALL_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " drew-state-scripts mender-ipk", "", d)} "
+IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
@@ -231,12 +231,12 @@ add_dmoseley_data() {
 ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
 
 # intel-corei7-64 Board extra settings
-SERIAL_CONSOLE_append_intel-corei7-64 = " ttyUSB0 "
-SERIAL_CONSOLES_append_intel-corei7-64 = " 115200;ttyUSB0 "
-KERNEL_CONSOLE_intel-corei7-64 = "ttyUSB0"
+SERIAL_CONSOLE:append:intel-corei7-64 = " ttyUSB0 "
+SERIAL_CONSOLES:append:intel-corei7-64 = " 115200;ttyUSB0 "
+KERNEL_CONSOLE:intel-corei7-64 = "ttyUSB0"
 
 # Disable console on VT/FB
-USE_VT_dmoseley-fastboot = "0"
+USE_VT:dmoseley-fastboot = "0"
 
 IMAGE_FEATURES += "hwcodecs"
 DISTRO_FEATURES:append = " egl opengl wayland pam "
@@ -244,7 +244,7 @@ PACKAGECONFIG:append:pn-qemu-system-native = " sdl gtk+ virglrenderer glx "
 PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl gtk+ virglrenderer glx "
 
 # Full versions of various utilities
-IMAGE_INSTALL_append = " \
+IMAGE_INSTALL:append = " \
     bind-utils \
     coreutils \
     findutils \
@@ -259,7 +259,7 @@ IMAGE_INSTALL_append = " \
     procps \
     util-linux \
 "
-IMAGE_INSTALL_remove_vexpress-qemu-flash = "image-display mender-binary-delta bind-utils iputils-tracepath iputils-traceroute6"
+IMAGE_INSTALL:remove:vexpress-qemu-flash = "image-display mender-binary-delta bind-utils iputils-tracepath iputils-traceroute6"
 
 
 # Check for CVEs
@@ -278,14 +278,14 @@ python () {
     else:
         d.setVar("EFI_SECUREBOOT_BOOT_FILES", "")
 }
-IMAGE_BOOT_FILES_append_intel-corei7-64 = " \
+IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
     ${GRUB_SPLASH_IMAGE_FILE} \
     unifont.pf2;EFI/BOOT/fonts/unifont.pf2 \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE_append_dmoseley-mender = " mender-persist-systemd-machine-id "
-MENDER_FEATURES_DISABLE_append_dmoseley-mender = " mender-growfs-data "
+MENDER_FEATURES_ENABLE:append:dmoseley-mender = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_DISABLE:append:dmoseley-mender = " mender-growfs-data "
 
 #
 # Settings for Toradex boards
@@ -301,83 +301,83 @@ python() {
     if (machine == "colibri-imx6ull"):
         d.setVar("MENDER_MTDIDS", "nand0=gpmi-nand")
 }
-OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
-MACHINE_BOOT_FILES_remove_mender-grub_toradex = "boot.scr"
-PREFERRED_PROVIDER_u-boot_toradex = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/bootloader_toradex = "u-boot-toradex"
-PREFERRED_PROVIDER_virtual/dtb_toradex = "device-tree-overlays"
+OVERRIDES:prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
+MACHINE_BOOT_FILES:remove:mender-grub_toradex = "boot.scr"
+PREFERRED_PROVIDER:u-boot_toradex = "u-boot-toradex"
+PREFERRED_PROVIDER:virtual/bootloader:toradex = "u-boot-toradex"
+PREFERRED_PROVIDER:virtual/dtb:toradex = "device-tree-overlays"
 IMAGE_TYPE_MENDER_TEZI=""
-IMAGE_TYPE_MENDER_TEZI_toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
-IMAGE_CLASSES_append = " ${IMAGE_TYPE_MENDER_TEZI} "
-IMAGE_FSTYPES_append_toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
+IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
+IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
+IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
 TORADEX_INCLUDE_FILE=""
-TORADEX_INCLUDE_FILE_toradex="conf/machine/include/${MACHINE}.inc"
-TORADEX_INCLUDE_FILE_colibri-imx8x=""
-TORADEX_INCLUDE_FILE_apalis-imx8x=""
-TORADEX_INCLUDE_FILE_apalis-imx8=""
-TORADEX_INCLUDE_FILE_verdin-imx8mm=""
-TORADEX_INCLUDE_FILE_verdin-imx8mp=""
+TORADEX_INCLUDE_FILE:toradex="conf/machine/include/${MACHINE}.inc"
+TORADEX_INCLUDE_FILE:colibri-imx8x=""
+TORADEX_INCLUDE_FILE:apalis-imx8x=""
+TORADEX_INCLUDE_FILE:apalis-imx8=""
+TORADEX_INCLUDE_FILE:verdin-imx8mm=""
+TORADEX_INCLUDE_FILE:verdin-imx8mp=""
 require ${TORADEX_INCLUDE_FILE}
 DISTROOVERRIDES_append_toradex = ":tdx"
 TORADEX_BSP_VERSION="toradex-bsp-5.6.0"
 TORADEX_MENDER_CLASS=""
-TORADEX_MENDER_CLASS_toradex="mender-toradex"
+TORADEX_MENDER_CLASS:toradex="mender-toradex"
 inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
-MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
-MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
-MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
-MENDER_UBOOT_STORAGE_DEVICE_colibri-imx7-emmc = "0"
-MENDER_MTDPARTS_colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
-IMX_DEFAULT_BSP_toradex_mx8="nxp"
+MENDER_STORAGE_DEVICE:apalis-imx6 = "/dev/mmcblk2"
+MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
+MENDER_STORAGE_DEVICE:colibri-imx7-emmc = "/dev/mmcblk0"
+MENDER_UBOOT_STORAGE_DEVICE:colibri-imx7-emmc = "0"
+MENDER_MTDPARTS:colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
+IMX_DEFAULT_BSP:toradex:mx8="nxp"
 # This is needed when building on integration. With use-head-next you
 # always get the newest kernel. Without use-head-next your build may fail.
-MACHINEOVERRIDES_prepend_toradex="use-head-next:"
+MACHINEOVERRIDES:prepend:toradex="use-head-next:"
 # Meta-virtualization brings this in but it doesn't work with linux-toradex
-KERNEL_FEATURES_remove_toradex="cfg/virtio.scc"
-_MENDER_BOOTLOADER_DEFAULT_toradex = "mender-uboot"
-_MENDER_IMAGE_TYPE_DEFAULT_toradex = "${@bb.utils.contains_any('MACHINE', 'colibri-imx6ull','mender-image-ubi','mender-image-sd',d)}"
-MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_apalis-imx8 = "0"
-MENDER_BOOT_PART_SIZE_MB_apalis-imx8 = "32"
-OFFSET_SPL_PAYLOAD_apalis-imx8 = ""
-MENDER_STORAGE_DEVICE_apalis-imx8 = "/dev/mmcblk0"
-MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
-WIFI_IFACE_toradex_dmoseley-systemd = "wlp1s0"
-WIFI_IFACE_toradex_dmoseley-connman = "mlan0"
-WIFI_IFACE_toradex_dmoseley-networkmanager = "wlp1s0"
-XSERVER_DRIVER_remove_toradex_mx8="xf86-video-imx-vivante"
+KERNEL_FEATURES:remove:toradex="cfg/virtio.scc"
+_MENDER_BOOTLOADER_DEFAULT:toradex = "mender-uboot"
+_MENDER_IMAGE_TYPE_DEFAULT:toradex = "${@bb.utils.contains_any('MACHINE','colibri-imx6ull','mender-image-ubi','mender-image-sd',d)}"
+MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET:apalis-imx8 = "0"
+MENDER_BOOT_PART_SIZE_MB:apalis-imx8 = "32"
+OFFSET_SPL_PAYLOAD:apalis-imx8 = ""
+MENDER_STORAGE_DEVICE:apalis-imx8 = "/dev/mmcblk0"
+MENDER_STORAGE_TOTAL_SIZE_MB:apalis-imx8 = "12288"
+WIFI_IFACE:toradex:dmoseley-systemd = "wlp1s0"
+WIFI_IFACE:toradex:dmoseley-connman = "mlan0"
+WIFI_IFACE:toradex:dmoseley-networkmanager = "wlp1s0"
+XSERVER_DRIVER:remove:toradex:mx8="xf86-video-imx-vivante"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
-DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7-emmc ?= "800x480"
-DMOSELEY_DISPLAY_RESOLUTION_rpi ?= "800x480"
-DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"
+DMOSELEY_DISPLAY_RESOLUTION:colibri-imx7-emmc ?= "800x480"
+DMOSELEY_DISPLAY_RESOLUTION:rpi ?= "800x480"
+DMOSELEY_DISPLAY_RESOLUTION:intel-corei7-64 ?= "800x600"
 
 # Mender Commercial settings
-IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL_append_x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-LICENSE_FLAGS_WHITELIST_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
-FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta/:"
+IMAGE_INSTALL:append:arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
+IMAGE_INSTALL:append:aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
+IMAGE_INSTALL:append:x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
+LICENSE_FLAGS_WHITELIST:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
+FILESEXTRAPATHS:prepend:pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta/:"
 
 ACCEPT_FSL_EULA = "1"
 
 # Readonly settings
-EXTRA_IMAGE_FEATURES_append_dmoseley-readonly = " read-only-rootfs "
+EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "
 
 # Enable splash screen (psplash)
-IMAGE_FEATURES_append_dmoseley-fastboot = " splash "
-PACKAGECONFIG_pn-sysvinit = "psplash-text-updates"
-QB_KERNEL_CMDLINE_APPEND_dmoseley-fastboot = " quiet vt.global_cursor_default=0 "
+IMAGE_FEATURES:append:dmoseley-fastboot = " splash "
+PACKAGECONFIG:pn-sysvinit = "psplash-text-updates"
+QB_KERNEL_CMDLINE_APPEND:dmoseley-fastboot = " quiet vt.global_cursor_default=0 "
 
 # Make sure VFAT partition labels are not too long
-BOOTDD_VOLUME_ID_orange-pi-pc = "o-pi-pc"
+BOOTDD_VOLUME_ID:orange-pi-pc = "o-pi-pc"
 
 # Log processing
 VOLATILE_LOG_DIR = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-persistent-logs", "no", "yes", d)}"
 
 # Graphical QEMU
-PACKAGECONFIG_append_pn-qemu-system-native = " sdl"
-PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+PACKAGECONFIG:append:pn-qemu-system-native = " sdl"
+PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
 
 ##### TODO
 #####

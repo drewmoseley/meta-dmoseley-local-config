@@ -1,8 +1,8 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append_intel-corei7-64 = " file://01_splash_mender_grub.cfg;subdir=git "
+SRC_URI:append:intel-corei7-64 = " file://01_splash_mender_grub.cfg;subdir=git "
 
-do_compile_prepend() {
+do_compile:prepend() {
     FASTBOOT="${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-fastboot', 'yes', 'no', d)}"
 
     # Determine the console settings

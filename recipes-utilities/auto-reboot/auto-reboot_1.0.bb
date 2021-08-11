@@ -10,8 +10,8 @@ LIC_FILES_CHKSUM = "file://${S}/../LICENSE;md5=e3fc50a88d0a364313df4b21ef20c29e"
 
 inherit systemd
 
-SYSTEMD_SERVICE_${PN} = "auto-reboot.service"
-FILES_${PN} += "${systemd_unitdir}/system/auto-reboot.service"
+SYSTEMD_SERVICE:${PN} = "auto-reboot.service"
+FILES:${PN} += "${systemd_unitdir}/system/auto-reboot.service"
 
 do_install() {
   install -d ${D}/${systemd_unitdir}/system

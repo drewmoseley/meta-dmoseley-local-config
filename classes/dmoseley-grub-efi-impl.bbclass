@@ -1,4 +1,4 @@
-GRUB_BUILDIN_append = " all_video gfxterm tga gfxterm_background"
+GRUB_BUILDIN:append = " all_video gfxterm tga gfxterm_background"
 
 SRC_URI += " \
     file://${GRUB_SPLASH_IMAGE_FILE} \
@@ -7,7 +7,7 @@ SRC_URI += " \
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'efi-secure-boot', 'user-key-store', '', d)}
 addtask dmoseley_sign after do_compile before do_install
-python do_dmoseley_sign_class-target() {
+python do_dmoseley_sign:class-target() {
     if bb.utils.contains('DISTRO_FEATURES', 'efi-secure-boot', True, False, d):
         uks_bl_sign("%s/unifont.pf2" % d.getVar('WORKDIR'), d)
         uks_bl_sign("%s/%s" % (d.getVar('WORKDIR'), d.getVar('GRUB_SPLASH_IMAGE_FILE')), d)
@@ -18,7 +18,7 @@ do_dmoseley_sign[prefuncs] += "${@'check_boot_public_key' if d.getVar('GRUB_SIGN
 python do_dmoseley_sign() {
 }
 
-do_deploy_append_class-target() {
+do_deploy:append:class-target() {
     if [ "${PN}" = "${BPN}" ]; then
         # Only install these files from the target package, and not the native one
         install -m 644 ${WORKDIR}/${GRUB_SPLASH_IMAGE_FILE} ${DEPLOYDIR}

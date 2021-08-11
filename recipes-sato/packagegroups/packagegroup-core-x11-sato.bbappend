@@ -1,8 +1,8 @@
 # Clear NETWORK_MANAGER by default
-NETWORK_MANAGER_dmoseley-setup = ""
-NETWORK_MANAGER_dmoseley-systemd = "systemd"
-NETWORK_MANAGER_dmoseley-connman = "connman-gnome"
-NETWORK_MANAGER_dmoseley-networkmanager = "networkmanager"
+NETWORK_MANAGER:dmoseley-setup = ""
+NETWORK_MANAGER:dmoseley-systemd = "systemd"
+NETWORK_MANAGER:dmoseley-connman = "connman-gnome"
+NETWORK_MANAGER:dmoseley-networkmanager = "networkmanager"
 
 # Extra multimedia stuff
-RDEPENDS_${PN}_append_dmoseley-setup = " mpv vlc "
+RDEPENDS:${PN}:append:dmoseley-setup = " mpv vlc "

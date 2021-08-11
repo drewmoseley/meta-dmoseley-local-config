@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI = "file://ArtifactRollback_Enter_00;subdir=${BPN}-${PV} \
            file://Download_Enter_00;subdir=${BPN}-${PV} \
@@ -23,4 +23,4 @@ do_compile() {
     cp Sync_Enter_00 ${MENDER_STATE_SCRIPTS_DIR}/
 }
 
-RDEPENDS_${PN}_append = " netcat "
+RDEPENDS:${PN}:append = " netcat "

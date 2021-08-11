@@ -1,7 +1,7 @@
-FILESEXTRAPATHS_prepend_dmoseley-setup := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:"
 
-SRC_URI_append = " file://init-live-deadsimple-installer.sh"
+SRC_URI:append = " file://init-live-deadsimple-installer.sh"
 
-do_install_append() {
+do_install:append() {
         install -m 0755 ${WORKDIR}/init-live-deadsimple-installer.sh ${D}/init
 }

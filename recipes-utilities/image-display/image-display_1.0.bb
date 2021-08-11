@@ -11,9 +11,9 @@ LIC_FILES_CHKSUM = "file://${S}/../LICENSE;md5=e3fc50a88d0a364313df4b21ef20c29e"
 
 inherit systemd
 
-SYSTEMD_SERVICE_${PN} = "${PN}.service"
-FILES_${PN} += "${systemd_unitdir}/system/${PN}.service"
-RDEPENDS_${PN} += "fbida"
+SYSTEMD_SERVICE:${PN} = "${PN}.service"
+FILES:${PN} += "${systemd_unitdir}/system/${PN}.service"
+RDEPENDS:${PN} += "fbida"
 LICENSE_FLAGS_WHITELIST += "commercial"
 
 IMAGE_DISPLAY_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "demo-image-unlocked.png", "Max.png", d)}"

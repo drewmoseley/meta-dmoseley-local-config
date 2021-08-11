@@ -1,2 +1,2 @@
-SYSTEMD_AUTO_ENABLE_dmoseley-connman = "enable"
-RDEPENDS_${PN}_append_dmoseley-connman = " ${PN}-conf "
+SYSTEMD_AUTO_ENABLE:dmoseley-connman = "enable"
+RDEPENDS:${PN}:append:dmoseley-connman = " ${PN}-conf "

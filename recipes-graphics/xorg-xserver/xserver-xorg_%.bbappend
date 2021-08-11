@@ -1,2 +1,2 @@
-XSERVER_RRECOMMENDS_remove_rpi = " xf86-input-libinput "
-XSERVER_RRECOMMENDS_append_rpi = " xf86-input-evdev "
+XSERVER_RRECOMMENDS:remove:rpi = " xf86-input-libinput "
+XSERVER_RRECOMMENDS:append:rpi = " xf86-input-evdev "

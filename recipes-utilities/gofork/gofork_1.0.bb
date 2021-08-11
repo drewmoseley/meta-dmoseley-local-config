@@ -5,9 +5,9 @@ LIC_FILES_CHKSUM="file://${WORKDIR}/LICENSE;md5=c9706ee45e2e5250f0086455b15ef297
 
 inherit go
 
-FILES_${PN} += "${bindir}/gofork"
+FILES:${PN} += "${bindir}/gofork"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI = " \
     file://gofork.go \
     file://LICENSE \

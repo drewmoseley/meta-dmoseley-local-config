@@ -1,9 +1,9 @@
-FILESEXTRAPATHS_prepend_dmoseley-setup := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:"
 
-LOGO_PREFIX_dmoseley-setup = "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender", "Max_Jojo", d)}"
-LOGO_dmoseley-setup = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
+LOGO_PREFIX:dmoseley-setup = "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender", "Max_Jojo", d)}"
+LOGO:dmoseley-setup = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
 
-SRC_URI_append_dmoseley-setup = " \
+SRC_URI:append:dmoseley-setup = " \
     file://${LOGO} \
     file://enable_splash.cfg \
     file://led.cfg \
@@ -11,12 +11,12 @@ SRC_URI_append_dmoseley-setup = " \
     ${@bb.utils.contains_any('MACHINE', 'beaglebone-yocto raspberrypi2', 'file://wifi-drivers.cfg', '', d)} \
 "
 
-SRC_URI_append_beaglebone-yocto = " \
+SRC_URI:append:beaglebone-yocto = " \
     file://usb_eth_drivers_for_rootfs.cfg \
 "
-SERIAL_dmoseley-fastboot=""
-CMDLINE_append_dmoseley-setup = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
+SERIAL:dmoseley-fastboot=""
+CMDLINE:append:dmoseley-setup = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
 
-do_compile_prepend_dmoseley-setup() {
+do_compile:prepend:dmoseley-setup() {
     install -m 644 ${WORKDIR}/${LOGO} ${S}/drivers/video/logo/logo_linux_clut224.ppm
 }

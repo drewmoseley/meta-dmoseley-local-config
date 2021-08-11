@@ -1,1 +1,1 @@
-PACKAGECONFIG_remove_rpi = "dc1394"
+PACKAGECONFIG:remove:rpi = "dc1394"

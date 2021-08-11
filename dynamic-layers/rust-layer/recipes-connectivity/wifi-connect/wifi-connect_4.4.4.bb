@@ -144,12 +144,12 @@ LICENSE = "Apache-2.0"
 
 DEPENDS = "libdbus-c++"
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     networkmanager \
     dnsmasq \
     "
 
-do_install_append () {
+do_install:append () {
     install -d ${D}${datadir}/wifi-connect/ui
     cp -r ${S}/ui/build/* ${D}${datadir}/wifi-connect/ui
 
@@ -165,7 +165,7 @@ do_install_append () {
     install -m 0755 ${WORKDIR}/95-wifi-connect.rules ${D}${sysconfdir}/udev/rules.d/
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${datadir}/ui \
     ${systemd_unitdir}/system/wifi-connect.service \
     ${sysconfdir}/udev/rules.d/95-wifi-connect.rules \
@@ -173,7 +173,7 @@ FILES_${PN} += " \
 
 inherit systemd
 
-SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains('DISTRO_FEATURES','systemd','wifi-connect.service','',d)}"
+SYSTEMD_SERVICE:${PN} = "${@bb.utils.contains('DISTRO_FEATURES','systemd','wifi-connect.service','',d)}"
 
 # Always leave this disabled. It will be explicitly enabled via udev rules when the USB wifi dongle is connected
 SYSTEMD_AUTO_ENABLE = "disable"

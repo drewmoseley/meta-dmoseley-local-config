@@ -13,5 +13,5 @@ SRC_URI = " \
 "
 SRCREV = "e71c12903d9ada84bceed1bed5a680a1e486c55d"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=9965f885e44bff7f6acc3721e3ad090a"
-RDEPENDS_${PN} += "git python3-docopt "
+RDEPENDS:${PN} += "git python3-docopt "
 
