@@ -81,7 +81,6 @@ python() {
 }
 
 DMOSELEY_MENDER_BBCLASS_colibri-imx6ull = "mender-full-ubi"
-DMOSELEY_MENDER_BBCLASS_colibri-imx7-nand = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
 DMOSELEY_MENDER_BBCLASS = "mender-full"
@@ -95,16 +94,11 @@ DISTRO_FEATURES_append_dmoseley-wifi = " wifi "
 IMAGE_INSTALL_append_dmoseley-wifi = " \
     iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'colibri-imx7-nand', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'overo', 'linux-firmware-wl12xx linux-firmware-wl18xx wl18xx-fw', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi-cm', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'udooneo', 'linux-firmware-wl18xx', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'imx7dsabresd', 'linux-firmware-rtl8192cu', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'up-squared', 'linux-firmware-rtl8188 kernel-module-r8188eu', '', d)} \
 "
 
 KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
@@ -135,9 +129,7 @@ IMAGE_FSTYPES_REMOVE_MENDER = " \
 IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ext4 tar.xz \
     ${@bb.utils.contains("MACHINE", "beaglebone-yocto", "jffs2.bmap", "", d)} \
-    ${@bb.utils.contains("MACHINE", "colibri-vf", "wic.bmap", "", d)} \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic", "", d)} \
-    ${@bb.utils.contains("MACHINE", "udooneo", "wic.bmap", "", d)} \
 "
 IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ext3 \
@@ -160,13 +152,9 @@ MENDER_STORAGE_TOTAL_SIZE_MB_beaglebone-yocto ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86-64 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_genericx86 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_intel-corei7-64 ??= "4096"
-MENDER_STORAGE_TOTAL_SIZE_MB_up-squared ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_minnowboard ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx6ull = "512"
-MENDER_STORAGE_TOTAL_SIZE_MB_colibri-imx7-nand = "512"
-MENDER_STORAGE_TOTAL_SIZE_MB_variscite = "2048"
 MENDER_STORAGE_PEB_SIZE_colibri-imx6ull = "131072"
-MENDER_STORAGE_PEB_SIZE_colibri-imx7-nand = "131072"
 
 # Multimedia licensing
 LICENSE_FLAGS_WHITELIST_append = " commercial "
@@ -193,7 +181,6 @@ IMAGE_INSTALL_remove_vexpress-qemu-flash = "kernel-image kernel-modules kernel-d
 IMAGE_INSTALL_remove_qemuarm = "kernel-devicetree"
 IMAGE_INSTALL_remove_qemuarm64 = "kernel-devicetree"
 IMAGE_INSTALL_remove_intel-corei7-64 = "kernel-devicetree"
-IMAGE_INSTALL_remove_up-squared = "kernel-devicetree"
 IMAGE_INSTALL_remove_minnowboard = "kernel-devicetree"
 IMAGE_INSTALL_remove_riscv32 = "kernel-devicetree"
 IMAGE_INSTALL_remove_riscv64 = "kernel-devicetree"
@@ -232,11 +219,6 @@ add_dmoseley_data() {
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
-
-# Up Squared Board extra settings
-SERIAL_CONSOLE_append_up-squared = " ttyS1 "
-SERIAL_CONSOLES_append_up-squared = " 115200;ttyS1 "
-MENDER_STORAGE_DEVICE_up-squared = "/dev/sda"
 
 # intel-corei7-64 Board extra settings
 SERIAL_CONSOLE_append_intel-corei7-64 = " ttyUSB0 "
@@ -305,7 +287,7 @@ MENDER_FEATURES_DISABLE_append_dmoseley-mender = " mender-growfs-data "
 #
 python() {
     machine = d.getVar('MACHINE')
-    if (machine == "colibri-imx7-nand") or (machine == "colibri-imx6ull"):
+    if (machine == "colibri-imx6ull"):
         d.setVar("MENDER_MTDIDS", "nand0=gpmi-nand")
 }
 OVERRIDES_prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
@@ -319,8 +301,6 @@ IMAGE_CLASSES_append = " ${IMAGE_TYPE_MENDER_TEZI} "
 IMAGE_FSTYPES_append_toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
 TORADEX_INCLUDE_FILE=""
 TORADEX_INCLUDE_FILE_toradex="conf/machine/include/${MACHINE}.inc"
-TORADEX_INCLUDE_FILE_colibri-imx7-nand="conf/machine/include/colibri-imx7.inc"
-TORADEX_INCLUDE_FILE_colibri-vf=""
 TORADEX_INCLUDE_FILE_colibri-imx8x=""
 TORADEX_INCLUDE_FILE_apalis-imx8x=""
 TORADEX_INCLUDE_FILE_apalis-imx8=""
@@ -331,71 +311,20 @@ MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE_colibri-imx7-emmc = "0"
 MENDER_MTDPARTS_colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
-MENDER_MTDPARTS_colibri-imx7-nand = "gpmi-nand:512k(mx7-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,512k(u-boot-env),-(ubi)"
-MENDER_IMAGE_BOOTLOADER_FILE_colibri-imx7-nand = "u-boot-nand.imx"
-MENDER_PARTITION_ALIGNMENT_colibri-imx7-nand = "131072"
 IMX_DEFAULT_BSP_toradex="nxp"
 # This is needed when building on integration. With use-head-next you
 # always get the newest kernel. Without use-head-next your build may fail.
 MACHINEOVERRIDES_prepend_toradex="use-head-next:"
 _MENDER_BOOTLOADER_DEFAULT_toradex = "mender-uboot"
-_MENDER_IMAGE_TYPE_DEFAULT_toradex = "${@bb.utils.contains_any('MACHINE', 'colibri-imx6ull colibri-imx7-nand','mender-image-ubi','mender-image-sd',d)}"
+_MENDER_IMAGE_TYPE_DEFAULT_toradex = "${@bb.utils.contains_any('MACHINE', 'colibri-imx6ull','mender-image-ubi','mender-image-sd',d)}"
 MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_apalis-imx8 = "0"
 MENDER_BOOT_PART_SIZE_MB_apalis-imx8 = "32"
 OFFSET_SPL_PAYLOAD_apalis-imx8 = ""
 MENDER_STORAGE_DEVICE_apalis-imx8 = "/dev/mmcblk0"
 MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
 
-#
-# Settings for Variscite boards
-#
-OVERRIDES_prepend = "${@'variscite:' if 'var-' in d.getVar('MACHINE',True) else ''}"
-MENDER_IMAGE_BOOTLOADER_FILE_imx6ul-var-dart = "u-boot-spl.img"
-MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx6ul-var-dart = "2"
-MENDER_BOOT_PART_SIZE_MB_imx6ul-var-dart = "16"
-IMAGE_BOOT_FILES_remove_imx6ul-var-dart_dmoseley-mender = "${KERNEL_IMAGETYPE} ${KERNEL_DEVICETREE}"
-MENDER_IMAGE_BOOTLOADER_FILE_imx8mm-var-dart = "imx-boot"
-MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx8mm-var-dart = "66"
-MENDER_BOOT_PART_SIZE_MB_imx8mm-var-dart = "16"
-IMAGE_BOOT_FILES_remove_imx8mm-var-dart_dmoseley-mender = "${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
-do_image_sdimg[depends] += "${@bb.utils.contains('MACHINE', 'imx8mm-var-dart', 'imx-boot:do_deploy', '', d)}"
-MENDER_IMAGE_BOOTLOADER_FILE_imx8mn-var-som = "imx-boot"
-MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_imx8mn-var-som = "64"
-MENDER_BOOT_PART_SIZE_MB_imx8mn-var-som = "16"
-IMAGE_BOOT_FILES_remove_imx8mn-var-som_dmoseley-mender = "${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
-do_image_sdimg[depends] += "${@bb.utils.contains('MACHINE', 'imx8mn-var-som', 'imx-boot:do_deploy', '', d)}"
-MENDER_FEATURES_ENABLE_append_variscite_dmoseley-mender = " mender-image-sd "
-MENDER_FEATURES_DISABLE_append_variscite_dmoseley-mender = " mender-image-uefi "
-MACHINE_EXTRA_RDEPENDS_remove_variscite_dmoseley-mender = "u-boot-fw-utils"
-VARISCITE_UBOOT_ENV_IN_EMMC = "1"
-MENDER_STORAGE_DEVICE_imx6ul-var-dart = "/dev/mmcblk1"
-MENDER_UBOOT_STORAGE_DEVICE_imx6ul-var-dart = "1"
-UBOOT_CONFIG_imx6ul-var-dart = "sd"
-MENDER_STORAGE_DEVICE_imx8mm-var-dart = "/dev/mmcblk2"
-MENDER_UBOOT_STORAGE_DEVICE_imx8mm-var-dart = "1"
-UBOOT_CONFIG_imx8mm-var-dart = "sd"
-MENDER_STORAGE_DEVICE_imx8mn-var-som = "/dev/mmcblk2"
-MENDER_UBOOT_STORAGE_DEVICE_imx8mn-var-som = "1"
-UBOOT_CONFIG_imx8mm-var-dart = "sd"
-PREFERRED_VERSION_linux-variscite_imx8mm-var-dart = "5.4.3"
-PREFERRED_VERSION_imx-boot_imx8mm-var-dart = "0.2"
-PREFERRED_VERSION_linux-variscite_imx6ul-var-dart = "5.4.3"
-PREFERRED_PROVIDER_u-boot_mender-grub_variscite = "u-boot-variscite"
-PREFERRED_PROVIDER_virtual/bootloader_mender-grub_variscite = "u-boot-variscite"
-
-#
-# Settings for NXP IMX EVK boards
-#
-PREFERRED_PROVIDER_u-boot_mender-grub_imx8mnddr4evk = "u-boot-imx"
-PREFERRED_PROVIDER_virtual/bootloader_mender-grub_imx8mnddr4evk = "u-boot-imx"
-IMAGE_CLASSES_append_imx8mnddr4evk_dmoseley-mender = " mender-setup-imx "
-MENDER_BOOT_PART_SIZE_MB_imx8mnddr4evk = "256"
-MENDER_STORAGE_TOTAL_SIZE_MB_imx8mnddr4evk = "2048"
-MENDER_STORAGE_DEVICE_imx8mnddr4evk = "/dev/mmcblk2"
-
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
-DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7-nand ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_colibri-imx7-emmc ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_rpi ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION_intel-corei7-64 ?= "800x600"
