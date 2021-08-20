@@ -1,7 +1,7 @@
 [connection]
 id=DM_OE_AP
 type=wifi
-interface-name=wlan0
+interface-name=@WIFI_IFACE@
 
 [wifi]
 mode=ap

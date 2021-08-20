@@ -109,6 +109,8 @@ require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-sysvinit', 'conf/dis
 require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-busybox', 'conf/distro/include/init-manager-mdev-busybox.inc', '', d)}
 require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'conf/distro/include/init-manager-systemd.inc', '', d)}
 
+WIFI_IFACE ?= "wlan0"
+
 # Explicitly remove wifi from qemu buids
 DISTRO_FEATURES_remove_vexpress-qemu = "wifi"
 DISTRO_FEATURES_remove_vexpress-qemu-flash = "wifi"
@@ -322,6 +324,7 @@ MENDER_BOOT_PART_SIZE_MB_apalis-imx8 = "32"
 OFFSET_SPL_PAYLOAD_apalis-imx8 = ""
 MENDER_STORAGE_DEVICE_apalis-imx8 = "/dev/mmcblk0"
 MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
+WIFI_IFACE_toradex = "wlp1s0"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
