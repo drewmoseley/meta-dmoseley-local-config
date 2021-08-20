@@ -326,6 +326,7 @@ MENDER_STORAGE_DEVICE_apalis-imx8 = "/dev/mmcblk0"
 MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
 WIFI_IFACE_toradex_dmoseley-systemd = "wlp1s0"
 WIFI_IFACE_toradex_dmoseley-connman = "mlan0"
+WIFI_IFACE_toradex_dmoseley-networkmanager = "wlp1s0"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
