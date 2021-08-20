@@ -8,3 +8,7 @@ Tethering=false
 [WiFi]
 Enable=true
 Tethering=false
+
+[Bluetooth]
+Enable=true
+Tethering=false

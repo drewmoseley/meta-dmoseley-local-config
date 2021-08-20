@@ -86,7 +86,7 @@ DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
 DMOSELEY_MENDER_BBCLASS = "mender-full"
 inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${DMOSELEY_MENDER_BBCLASS}', '', d)}
 
-IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client "
+IMAGE_INSTALL_append_dmoseley-connman = " connman connman-client connman-conf "
 IMAGE_INSTALL_append_dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
 IMAGE_INSTALL_append_dmoseley-wifi-connect = " wifi-connect "
 
@@ -324,7 +324,8 @@ MENDER_BOOT_PART_SIZE_MB_apalis-imx8 = "32"
 OFFSET_SPL_PAYLOAD_apalis-imx8 = ""
 MENDER_STORAGE_DEVICE_apalis-imx8 = "/dev/mmcblk0"
 MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
-WIFI_IFACE_toradex = "wlp1s0"
+WIFI_IFACE_toradex_dmoseley-systemd = "wlp1s0"
+WIFI_IFACE_toradex_dmoseley-connman = "mlan0"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
