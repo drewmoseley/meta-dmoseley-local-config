@@ -244,6 +244,7 @@ IMAGE_INSTALL_append = " \
     iputils-tracepath \
     ${@bb.utils.contains("DISTRO_FEATURES", "ipv6", "iputils-traceroute6", "", d)} \
     iproute2 \
+    iproute2-ss \
     less \
     ncurses-terminfo \
     net-tools \
