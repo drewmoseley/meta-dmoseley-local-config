@@ -11,16 +11,12 @@ log() {
 }
 
 log "$(cat /etc/mender/artifact_info): $(basename "$0") was called!"
-RC=${OK}
-if [ -e /data/disallow-download ]; then
-    log "Found /data/disallow-download"
-    RC=ABORT
-fi
 
-if [ -e /data/reboot-while-downloading ]; then
-    log "Found /data/reboot-while-downloading"
+RC=${OK}
+if [ -e /data/reboot-after-downloading ]; then
+    log "Found /data/reboot-after-downloading"
     RC=${RETRY_LATER}
-    (sleep 15 && sudo /sbin/reboot) &
+    (sleep 5 && sudo /sbin/reboot) &
 fi
 
 log "Exiting $(basename "$0") with RC ${RC}"
