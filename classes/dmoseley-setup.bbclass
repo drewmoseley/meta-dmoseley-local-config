@@ -80,6 +80,10 @@ python() {
             bb.fatal("Must specify exactly one server type.")
 }
 
+OVERRIDES_prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') or d.getVar('MACHINE',True).startswith('vexpress-qemu') else ''}"
+DMOSELEY_FEATURES_remove_dmoseley-qemu = " dmoseley-wifi "
+DISTRO_FEATURES_remove_dmoseley-qemu = " wifi "
+
 DMOSELEY_MENDER_BBCLASS_colibri-imx6ull = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS_qemux86-64-bios = "mender-full-bios"
@@ -172,7 +176,6 @@ BOOT_DELAY_MS_rpi = "0"
 DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG_append = " \nlcd_rotate=2\n "
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
-KERNEL_DEVICETREE_append_dmoseley-setup_rpi = " overlays/gpio-shutdown.dtbo "
 
 # This is needed for the Pi Foundation Display to work with VC4.
 VC4DTBO_rpi = "vc4-fkms-v3d"
@@ -226,9 +229,6 @@ ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
 SERIAL_CONSOLE_append_intel-corei7-64 = " ttyUSB0 "
 SERIAL_CONSOLES_append_intel-corei7-64 = " 115200;ttyUSB0 "
 KERNEL_CONSOLE_intel-corei7-64 = "ttyUSB0"
-
-# Graphical display demo
-IMAGE_INSTALL_append = " image-display "
 
 # Disable console on VT/FB
 USE_VT_dmoseley-fastboot = "0"
@@ -357,6 +357,10 @@ BOOTDD_VOLUME_ID_orange-pi-pc = "o-pi-pc"
 
 # Log processing
 VOLATILE_LOG_DIR = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-persistent-logs", "no", "yes", d)}"
+
+# Graphical QEMU
+PACKAGECONFIG_append_pn-qemu-system-native = " sdl"
+PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
 
 ##### TODO
 #####
