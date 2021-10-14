@@ -308,6 +308,7 @@ TORADEX_INCLUDE_FILE_colibri-imx8x=""
 TORADEX_INCLUDE_FILE_apalis-imx8x=""
 TORADEX_INCLUDE_FILE_apalis-imx8=""
 TORADEX_INCLUDE_FILE_verdin-imx8mm=""
+TORADEX_INCLUDE_FILE_verdin-imx8mp=""
 require ${TORADEX_INCLUDE_FILE}
 MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
