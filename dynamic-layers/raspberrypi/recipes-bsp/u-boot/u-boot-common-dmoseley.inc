@@ -15,6 +15,7 @@ PE = "1"
 SRCREV = "050acee119b3757fee3bd128f55d720fdd9bb890"
 
 SRC_URI = "git://git.denx.de/u-boot.git \
+           file://enable-fitimage.cfg \
           "
 
 S = "${WORKDIR}/git"
