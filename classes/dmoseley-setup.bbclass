@@ -341,7 +341,7 @@ IMAGE_INSTALL_append_arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley
 IMAGE_INSTALL_append_aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL_append_x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 LICENSE_FLAGS_WHITELIST_append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
-FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta-1.2.1/:"
+FILESEXTRAPATHS_prepend_pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta/:"
 
 ACCEPT_FSL_EULA = "1"
 
