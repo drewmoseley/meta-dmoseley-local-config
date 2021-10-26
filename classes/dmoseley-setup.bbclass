@@ -310,6 +310,9 @@ TORADEX_INCLUDE_FILE_apalis-imx8=""
 TORADEX_INCLUDE_FILE_verdin-imx8mm=""
 TORADEX_INCLUDE_FILE_verdin-imx8mp=""
 require ${TORADEX_INCLUDE_FILE}
+TORADEX_MENDER_CLASS=""
+TORADEX_MENDER_CLASS_toradex="mender-toradex"
+inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
 MENDER_STORAGE_DEVICE_apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE_apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE_colibri-imx7-emmc = "/dev/mmcblk0"
