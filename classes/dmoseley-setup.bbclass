@@ -105,8 +105,8 @@ IMAGE_INSTALL_append_dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
 "
 
-KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
-IMAGE_BOOT_FILES_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb "
+KERNEL_DEVICETREE_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
+IMAGE_BOOT_FILES_append_beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
 
 # Enable selected init system
 require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-sysvinit', 'conf/distro/include/init-manager-sysvinit.inc', '', d)}
