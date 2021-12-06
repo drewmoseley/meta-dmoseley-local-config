@@ -3,7 +3,7 @@
 # Run wifi-connect periodically
 #
 
-WIFI_CONNECTED=$(/sbin/iwgetid -r)
+WIFI_CONNECTED=$(/usr/sbin/iw wlan0 link | grep SSID | awk '{print $2}')
 if [ -z ${WIFI_CONNECTED} ]; then
     echo No wifi connection. Launching wifi-connect
     wifi-connect -u /usr/share/wifi-connect/ui/
