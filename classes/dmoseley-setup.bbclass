@@ -322,6 +322,8 @@ IMX_DEFAULT_BSP_toradex="nxp"
 # This is needed when building on integration. With use-head-next you
 # always get the newest kernel. Without use-head-next your build may fail.
 MACHINEOVERRIDES_prepend_toradex="use-head-next:"
+# Meta-virtualization brings this in but it doesn't work with linux-toradex
+KERNEL_FEATURES_remove_toradex="cfg/virtio.scc"
 _MENDER_BOOTLOADER_DEFAULT_toradex = "mender-uboot"
 _MENDER_IMAGE_TYPE_DEFAULT_toradex = "${@bb.utils.contains_any('MACHINE', 'colibri-imx6ull','mender-image-ubi','mender-image-sd',d)}"
 MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET_apalis-imx8 = "0"
