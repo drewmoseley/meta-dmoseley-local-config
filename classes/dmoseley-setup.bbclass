@@ -177,6 +177,10 @@ DISABLE_RPI_BOOT_LOGO_dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG_append = " \nlcd_rotate=2\n "
 SDIMG_ROOTFS_TYPE_rpi = "ext4"
 _MENDER_BOOTLOADER_DEFAULT:rpi = "mender-uboot"
+GPU_MEM_256:rpi = "128"
+GPU_MEM_512:rpi = "196"
+GPU_MEM_1024:rpi = "396"
+MACHINE_FEATURES:append:rpi = " vc4graphics "
 
 # This is needed for the Pi Foundation Display to work with VC4.
 VC4DTBO_rpi = "vc4-fkms-v3d"
@@ -235,6 +239,9 @@ KERNEL_CONSOLE_intel-corei7-64 = "ttyUSB0"
 USE_VT_dmoseley-fastboot = "0"
 
 IMAGE_FEATURES += "hwcodecs"
+DISTRO_FEATURES:append = " egl opengl wayland pam "
+PACKAGECONFIG:append:pn-qemu-system-native = " sdl gtk+ virglrenderer glx "
+PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl gtk+ virglrenderer glx "
 
 # Full versions of various utilities
 IMAGE_INSTALL_append = " \
