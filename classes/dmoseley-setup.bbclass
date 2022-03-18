@@ -342,6 +342,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB_apalis-imx8 = "12288"
 WIFI_IFACE_toradex_dmoseley-systemd = "wlp1s0"
 WIFI_IFACE_toradex_dmoseley-connman = "mlan0"
 WIFI_IFACE_toradex_dmoseley-networkmanager = "wlp1s0"
+XSERVER_DRIVER_remove_toradex_mx8="xf86-video-imx-vivante"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
