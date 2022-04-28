@@ -4,7 +4,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 DEPENDS += "qtbase qtdeclarative"
-RDEPENDS_${PN}-tools += "qtquickcontrols2-qmlplugins cantarell-fonts"
+RDEPENDS:${PN}-tools += "qtquickcontrols2-qmlplugins cantarell-fonts"
 
 SRCREV = "${AUTOREV}"
 SRC_URI = "git://github.com/shigmas/BasicQuick.git;protocol=https"

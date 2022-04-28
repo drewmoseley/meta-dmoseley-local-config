@@ -2,7 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 python() {
     if bb.utils.contains('DISTRO_FEATURES', 'mender-client-install', True, False, d):
-        userAddVarName="USERADD_PARAM_%s" % d.getVar("PN")
+        userAddVarName="USERADD_PARAM:%s" % d.getVar("PN")
         userAddVarValue=d.getVar(userAddVarName)
         userAddNewValue=userAddVarValue.replace("%s/lib/octoprint/" % d.getVar("localstatedir"), "/data/home/octoprint")
         d.setVar(userAddVarName, userAddNewValue)
