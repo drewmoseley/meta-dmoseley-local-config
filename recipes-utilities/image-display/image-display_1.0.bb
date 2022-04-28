@@ -14,7 +14,7 @@ inherit systemd
 SYSTEMD_SERVICE:${PN} = "${PN}.service"
 FILES:${PN} += "${systemd_unitdir}/system/${PN}.service"
 RDEPENDS:${PN} += "fbida"
-LICENSE_FLAGS_WHITELIST += "commercial"
+LICENSE_FLAGS_ACCEPTED += "commercial"
 
 IMAGE_DISPLAY_IMAGE_FILE ?= "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "demo-image-unlocked.png", "Max.png", d)}"
 

@@ -163,7 +163,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB:colibri-imx6ull = "512"
 MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
 
 # Multimedia licensing
-LICENSE_FLAGS_WHITELIST:append = " commercial "
+LICENSE_FLAGS_ACCEPTED:append = " commercial "
 
 # RPI specifics
 IMAGE_INSTALL:append:rpi = " bluez5-noinst-tools "
@@ -250,7 +250,7 @@ IMAGE_INSTALL:append = " \
     findutils \
     iputils-ping \
     iputils-tracepath \
-    ${@bb.utils.contains("DISTRO_FEATURES", "ipv6", "iputils-traceroute6", "", d)} \
+    traceroute \
     iproute2 \
     iproute2-ss \
     less \
@@ -259,7 +259,7 @@ IMAGE_INSTALL:append = " \
     procps \
     util-linux \
 "
-IMAGE_INSTALL:remove:vexpress-qemu-flash = "image-display mender-binary-delta bind-utils iputils-tracepath iputils-traceroute6"
+IMAGE_INSTALL:remove:vexpress-qemu-flash = "image-display mender-binary-delta bind-utils iputils-tracepath"
 
 
 # Check for CVEs
@@ -357,7 +357,7 @@ DMOSELEY_DISPLAY_RESOLUTION:intel-corei7-64 ?= "800x600"
 IMAGE_INSTALL:append:arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL:append:aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL:append:x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-LICENSE_FLAGS_WHITELIST:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
+LICENSE_FLAGS_ACCEPTED:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
 FILESEXTRAPATHS:prepend:pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta/:"
 
 ACCEPT_FSL_EULA = "1"
