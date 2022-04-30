@@ -7,7 +7,7 @@ DEPENDS += "qtbase qtdeclarative"
 RDEPENDS:${PN}-tools += "qtquickcontrols2-qmlplugins cantarell-fonts"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://github.com/shigmas/BasicQuick.git;protocol=https"
+SRC_URI = "git://github.com/shigmas/BasicQuick.git;protocol=https;branch=master"
 S = "${WORKDIR}/git"
 
 require recipes-qt/qt5/qt5.inc
