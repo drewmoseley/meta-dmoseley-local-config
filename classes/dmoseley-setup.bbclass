@@ -329,7 +329,6 @@ MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE:colibri-imx7-emmc = "/dev/mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE:colibri-imx7-emmc = "0"
 MENDER_MTDPARTS:colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
-IMX_DEFAULT_BSP:toradex:mx8="nxp"
 # This is needed when building on integration. With use-head-next you
 # always get the newest kernel. Without use-head-next your build may fail.
 MACHINEOVERRIDES:prepend:toradex="use-head-next:"
