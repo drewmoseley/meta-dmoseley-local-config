@@ -291,25 +291,21 @@ MENDER_FEATURES_DISABLE:append:dmoseley-mender = " mender-growfs-data "
 # Settings for Toradex boards
 #
 
-#
-# This is implemented as anonymous python to avoid defining it with machine-specific overrides.
-# The processing in mender-setup-ubi fails when using overrides as they are not applied until after
-# the sanity checks implemented there.
-#
-python() {
-    machine = d.getVar('MACHINE')
-    if (machine == "colibri-imx6ull"):
-        d.setVar("MENDER_MTDIDS", "nand0=gpmi-nand")
-}
+# We set this varible using this syntax rather than a proper override due to the order of operations.
+# If we use an override, that does not get applied until after the logic in mender-setup-ubi which
+# causes a parse failure. Unfortunately if we end up with more raw NAND boards this logic will
+# need to be beefed up but fortunately that does not seem likely
+MENDER_MTDIDS = "${@bb.utils.contains('MACHINE', 'colibri-imx6ull', 'nand0=gpmi-nand', '', d)}"
+
 OVERRIDES:prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
 MACHINE_BOOT_FILES:remove:mender-grub_toradex = "boot.scr"
 PREFERRED_PROVIDER:u-boot_toradex = "u-boot-toradex"
 PREFERRED_PROVIDER:virtual/bootloader:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER:virtual/dtb:toradex = "device-tree-overlays"
-IMAGE_TYPE_MENDER_TEZI=""
-IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
-IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
-IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
+#IMAGE_TYPE_MENDER_TEZI=""
+#IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
+#IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
+#IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
 # This is not available yet on the honister branch
 #TORADEX_INCLUDE_FILE=""
 #TORADEX_INCLUDE_FILE:toradex="conf/machine/include/${MACHINE}.inc"
@@ -319,11 +315,11 @@ IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmos
 #TORADEX_INCLUDE_FILE:verdin-imx8mm=""
 #TORADEX_INCLUDE_FILE:verdin-imx8mp=""
 #require ${TORADEX_INCLUDE_FILE}
-DISTROOVERRIDES_append_toradex = ":tdx"
+DISTROOVERRIDES:append:toradex = ":tdx"
 #TORADEX_BSP_VERSION="toradex-bsp-5.6.0"
-TORADEX_MENDER_CLASS=""
-TORADEX_MENDER_CLASS:toradex="mender-toradex"
-inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
+#TORADEX_MENDER_CLASS=""
+#TORADEX_MENDER_CLASS:toradex="mender-toradex"
+#inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
 MENDER_STORAGE_DEVICE:apalis-imx6 = "/dev/mmcblk2"
 MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE:colibri-imx7-emmc = "/dev/mmcblk0"
