@@ -320,6 +320,7 @@ TORADEX_MENDER_CLASS=""
 TORADEX_MENDER_CLASS:toradex="mender-toradex"
 inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
 MENDER_STORAGE_DEVICE:apalis-imx6 = "/dev/mmcblk2"
+TEZI_STORAGE_DEVICE:apalis-imx6 = "mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE:colibri-imx7-emmc = "/dev/mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE:colibri-imx7-emmc = "0"
