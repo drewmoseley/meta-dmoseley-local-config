@@ -299,9 +299,9 @@ MENDER_MTDIDS = "${@bb.utils.contains('MACHINE', 'colibri-imx6ull', 'nand0=gpmi-
 
 OVERRIDES:prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
 MACHINE_BOOT_FILES:remove:mender-grub_toradex = "boot.scr"
-PREFERRED_PROVIDER:u-boot_toradex = "u-boot-toradex"
-PREFERRED_PROVIDER:virtual/bootloader:toradex = "u-boot-toradex"
-PREFERRED_PROVIDER:virtual/dtb:toradex = "device-tree-overlays"
+PREFERRED_PROVIDER_u-boot:toradex = "u-boot-toradex"
+PREFERRED_PROVIDER_virtual/bootloader:toradex = "u-boot-toradex"
+PREFERRED_PROVIDER_virtual/dtb:toradex = "device-tree-overlays"
 IMAGE_TYPE_MENDER_TEZI=""
 IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
 IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
