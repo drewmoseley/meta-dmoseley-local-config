@@ -22,6 +22,7 @@ python() {
         'dmoseley-mender-hosted-personal-account-server', # Use hosted Mender with drew@moseleynet.net account
         'dmoseley-mender-staging-server', # Use staging hosted Mender
         'dmoseley-mender-migrate-to-hosted',  # Migrate from production to hosted
+        'dmoseley-partuuid',             # Use partuuids with Mender
         'dmoseley-access-point',         # Enable access point mode
         'dmoseley-fastboot',             # Fastboot mode
         'dmoseley-persistent-logs',      # Enable persistent storage for all logs
@@ -379,6 +380,14 @@ PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
 # Set wpebackend
 PREFERRED_PROVIDER_virtual/wpebackend = "wpebackend-fdo"
 PREFERRED_RPROVIDER_virtual/wpebackend = "wpebackend-fdo"
+
+# Mender partUUID
+# Random UUID's generated using the 'uuidgen -r' command
+MENDER_FEATURES_ENABLE:append:dmoseley-partuuid = " mender-partuuid "
+MENDER_BOOT_PART:dmoseley-partuuid = "/dev/disk/by-partuuid/b81ffd37-7d11-443a-8891-05e88ee63212"
+MENDER_ROOTFS_PART_A:dmoseley-partuuid = "/dev/disk/by-partuuid/30cd164a-f210-414e-acee-261caeadf9dc"
+MENDER_ROOTFS_PART_B:dmoseley-partuuid = "/dev/disk/by-partuuid/69e4bb57-1f5e-4c9b-b9ae-534eaa0f632f"
+MENDER_DATA_PART:dmoseley-partuuid = "/dev/disk/by-partuuid/46c92b29-30cf-4572-9a73-d80ed802c26e"
 
 ##### TODO
 #####
