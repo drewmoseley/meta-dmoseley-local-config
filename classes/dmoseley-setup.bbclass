@@ -298,6 +298,18 @@ MENDER_FEATURES_DISABLE:append:dmoseley-mender = " mender-growfs-data "
 # need to be beefed up but fortunately that does not seem likely
 MENDER_MTDIDS = "${@bb.utils.contains('MACHINE', 'colibri-imx6ull', 'nand0=gpmi-nand', '', d)}"
 
+DISTROOVERRIDES:append:apalis-imx6 = ":upstream"
+DISTROOVERRIDES:append:colibri-imx6 = ":upstream"
+DISTROOVERRIDES:append:colibri-imx6ull = ":upstream"
+DISTROOVERRIDES:append:colibri-imx6ull-emmc = ":upstream"
+DISTROOVERRIDES:append:colibri-imx7 = ":upstream"
+DISTROOVERRIDES:append:colibri-imx7-emmc = ":upstream"
+IMX_DEFAULT_BSP:apalis-imx6 = "mainline"
+IMX_DEFAULT_BSP:colibri-imx6 = "mainline"
+IMX_DEFAULT_BSP:colibri-imx6ull = "mainline"
+IMX_DEFAULT_BSP:colibri-imx6ull-emmc = "mainline"
+IMX_DEFAULT_BSP:colibri-imx7 = "mainline"
+IMX_DEFAULT_BSP:colibri-imx7-ennc = "mainline"
 OVERRIDES:prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
 MACHINE_BOOT_FILES:remove:mender-grub_toradex = "boot.scr"
 PREFERRED_PROVIDER_u-boot:toradex = "u-boot-toradex"
@@ -316,7 +328,7 @@ TORADEX_INCLUDE_FILE:verdin-imx8mm=""
 TORADEX_INCLUDE_FILE:verdin-imx8mp=""
 require ${TORADEX_INCLUDE_FILE}
 DISTROOVERRIDES:append:toradex = ":tdx"
-TORADEX_BSP_VERSION="toradex-bsp-5.6.0"
+TORADEX_BSP_VERSION="toradex-bsp-6.0.0"
 TORADEX_MENDER_CLASS=""
 TORADEX_MENDER_CLASS:toradex="mender-toradex"
 inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
@@ -326,9 +338,6 @@ MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
 MENDER_STORAGE_DEVICE:colibri-imx7-emmc = "/dev/mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE:colibri-imx7-emmc = "0"
 MENDER_MTDPARTS:colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
-# This is needed when building on integration. With use-head-next you
-# always get the newest kernel. Without use-head-next your build may fail.
-MACHINEOVERRIDES:prepend:toradex="use-head-next:"
 # Meta-virtualization brings this in but it doesn't work with linux-toradex
 KERNEL_FEATURES:remove:toradex="cfg/virtio.scc"
 _MENDER_BOOTLOADER_DEFAULT:toradex = "mender-uboot"
