@@ -354,8 +354,9 @@ DMOSELEY_DISPLAY_RESOLUTION:intel-corei7-64 ?= "800x600"
 IMAGE_INSTALL:append:arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL:append:aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
 IMAGE_INSTALL:append:x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-LICENSE_FLAGS_ACCEPTED:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-binary-delta", "", d)}"
-FILESEXTRAPATHS:prepend:pn-mender-binary-delta := "/work2/dmoseley/mender-binary-delta/:"
+LICENSE_FLAGS_ACCEPTED:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-yocto-layer-license", "", d)}"
+SRC_URI:pn-mender-binary-delta = "file:///work2/dmoseley/mender-binary-delta/mender-binary-delta-1.4.1.tar.xz"
+
 
 ACCEPT_FSL_EULA = "1"
 
