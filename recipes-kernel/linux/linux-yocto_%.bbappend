@@ -8,7 +8,7 @@ SRC_URI:append:dmoseley-setup = " \
     file://enable_splash.cfg \
     file://led.cfg \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','file://fastboot.cfg','',d)} \
-    ${@bb.utils.contains_any('MACHINE', 'beaglebone-yocto raspberrypi2', 'file://wifi-drivers.cfg', '', d)} \
+    ${@bb.utils.contains_any('MACHINE', 'beaglebone-yocto raspberrypi2', 'file://wifi-drivers.cfg file://nfsd.cfg', '', d)} \
 "
 
 SRC_URI:append:beaglebone-yocto = " \
