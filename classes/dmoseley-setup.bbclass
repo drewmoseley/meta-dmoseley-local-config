@@ -97,8 +97,9 @@ IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager networkmanager-n
 IMAGE_INSTALL:append:dmoseley-wifi-connect = " wifi-connect "
 
 DISTRO_FEATURES:append:dmoseley-wifi = " wifi "
+# Add wifi for beaglebone since we will use either a bbb wireless or a USB dongle
+MACHINE_FEATURES:append:dmoseley-wifi:beaglebone-yocto = " wifi "
 IMAGE_INSTALL:append:dmoseley-wifi = " \
-    iw wpa-supplicant \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
@@ -167,7 +168,6 @@ MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
 LICENSE_FLAGS_ACCEPTED:append = " commercial "
 
 # RPI specifics
-IMAGE_INSTALL:append:rpi = " bluez5-noinst-tools "
 RPI_USE_U_BOOT:rpi = "1"
 ENABLE_UART:rpi = "1"
 DISABLE_OVERSCAN:rpi = "1"
