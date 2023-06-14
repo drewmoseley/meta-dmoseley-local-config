@@ -328,7 +328,7 @@ TORADEX_INCLUDE_FILE:verdin-imx8mm=""
 TORADEX_INCLUDE_FILE:verdin-imx8mp=""
 require ${TORADEX_INCLUDE_FILE}
 DISTROOVERRIDES:append:toradex = ":tdx"
-TORADEX_BSP_VERSION="toradex-bsp-6.0.0"
+TORADEX_BSP_VERSION="toradex-bsp-6.2.0"
 TORADEX_MENDER_CLASS=""
 TORADEX_MENDER_CLASS:toradex="mender-toradex"
 inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
