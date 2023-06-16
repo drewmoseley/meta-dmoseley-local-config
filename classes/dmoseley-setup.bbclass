@@ -176,9 +176,6 @@ DISABLE_RPI_BOOT_LOGO:rpi:dmoseley-fastboot = "1"
 RPI_EXTRA_CONFIG:rpi:append = " \nlcd_rotate=2\n "
 SDIMG_ROOTFS_TYPE:rpi = "ext4"
 _MENDER_BOOTLOADER_DEFAULT:rpi = "mender-uboot"
-GPU_MEM_256:rpi = "128"
-GPU_MEM_512:rpi = "196"
-GPU_MEM_1024:rpi = "396"
 LICENSE_FLAGS_ACCEPTED:append:rpi = " synaptics-killswitch "
 
 # Other packages to install in _all_ images
