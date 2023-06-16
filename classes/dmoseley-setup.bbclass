@@ -179,10 +179,7 @@ _MENDER_BOOTLOADER_DEFAULT:rpi = "mender-uboot"
 GPU_MEM_256:rpi = "128"
 GPU_MEM_512:rpi = "196"
 GPU_MEM_1024:rpi = "396"
-MACHINE_FEATURES:append:rpi = " vc4graphics "
-
-# This is needed for the Pi Foundation Display to work with VC4.
-VC4DTBO:rpi = "vc4-fkms-v3d"
+LICENSE_FLAGS_ACCEPTED:append:rpi = " synaptics-killswitch "
 
 # Other packages to install in _all_ images
 IMAGE_INSTALL:append = " kernel-image kernel-modules kernel-devicetree "
