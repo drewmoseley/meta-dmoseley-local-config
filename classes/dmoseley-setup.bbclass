@@ -102,9 +102,7 @@ MACHINE_FEATURES:append:dmoseley-wifi:beaglebone-yocto = " wifi "
 IMAGE_INSTALL:append:dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'raspberrypi0-wifi', 'linux-firmware-rpidistro-bcm43430', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'raspberrypi3', 'linux-firmware-rpidistro-bcm43430', '', d)} \
 "
 
 KERNEL_DEVICETREE:append:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
