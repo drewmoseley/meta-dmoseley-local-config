@@ -394,6 +394,9 @@ EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "
 IMAGE_FEATURES:append:dmoseley-fastboot = " splash "
 PACKAGECONFIG:pn-sysvinit = "psplash-text-updates"
 QB_KERNEL_CMDLINE_APPEND:dmoseley-fastboot = " quiet vt.global_cursor_default=0 "
+APPEND:append:dmoseley-fastboot = " quiet vt.global_cursor_default=0 "
+QB_KERNEL_CMDLINE_APPEND:append = " net.ifnames=0 "
+APPEND:append = " net.ifnames=0 "
 
 # Make sure VFAT partition labels are not too long
 BOOTDD_VOLUME_ID:orange-pi-pc = "o-pi-pc"
