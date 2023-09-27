@@ -391,6 +391,8 @@ MENDER_ROOTFS_PART_A:dmoseley-partuuid = "/dev/disk/by-partuuid/30cd164a-f210-41
 MENDER_ROOTFS_PART_B:dmoseley-partuuid = "/dev/disk/by-partuuid/69e4bb57-1f5e-4c9b-b9ae-534eaa0f632f"
 MENDER_DATA_PART:dmoseley-partuuid = "/dev/disk/by-partuuid/46c92b29-30cf-4572-9a73-d80ed802c26e"
 
+inherit image-buildinfo
+
 ##### TODO
 #####
 ##### BUILD_REPRODUCIBLE_BINARIES = "1"
