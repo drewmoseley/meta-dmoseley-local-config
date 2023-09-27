@@ -10,6 +10,7 @@ SRC_URI += " \
     file://input_net.conf \
     file://input_osinfo.conf \
     file://input_thermal.conf \
+    file://output_logstash.conf \
 "
 
 do_install:append() {
@@ -17,6 +18,7 @@ do_install:append() {
     sed -i -e 's/@FLEET_SERVER_URI@/${FLEET_SERVER_URI}/g' ${D}${sysconfdir}/td-agent-bit/*.conf
     echo '' >> ${D}${sysconfdir}/td-agent-bit/td-agent-bit.conf
     echo '@INCLUDE input_*.conf' >> ${D}${sysconfdir}/td-agent-bit/td-agent-bit.conf
+    echo '@INCLUDE output_*.conf' >> ${D}${sysconfdir}/td-agent-bit/td-agent-bit.conf
 }
 
 SYSTEMD_AUTO_ENABLE = "enable"
