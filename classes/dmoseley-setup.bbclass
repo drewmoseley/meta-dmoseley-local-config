@@ -105,7 +105,8 @@ IMAGE_INSTALL:append:dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
 "
 
-KERNEL_DEVICETREE:append:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
+KERNEL_DEVICETREE:prepend:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
+KERNEL_DEVICETREE:remove:beaglebone-yocto = " am335x-bone.dtb am335x-bonegreen.dtb "
 IMAGE_BOOT_FILES:append:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
 
 # Enable selected init system
