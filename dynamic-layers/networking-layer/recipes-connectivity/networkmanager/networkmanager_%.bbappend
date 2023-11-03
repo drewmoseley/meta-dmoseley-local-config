@@ -1,7 +1,13 @@
-FILESEXTRAPATHS:prepend:dmoseley-networkmanager := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend:dmoseley-networkmanager := "${THISDIR}/files:/work/dmoseley/local/:"
 
 SRC_URI:append:dmoseley-networkmanager = " \
      ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', 'file://DM_OE_AP.in', '', d)} \
+"
+SRC_URI:append:dmoseley-labnetworks:dmoseley-networkmanager = " \
+    file://caribbean-Lab.nmconnection \
+"
+SRC_URI:append:dmoseley-homenetworks:dmoseley-networkmanager = " \
+    file://caribbean.nmconnection \
 "
 
 SYSTEMD_AUTO_ENABLE:dmoseley-networkmanager = "enable"
@@ -28,5 +34,10 @@ do_install:append:dmoseley-networkmanager() {
     fi
     if ${@bb.utils.contains('PACKAGECONFIG', 'dhclient', 'true', 'false', d)}; then
         ln -s ../run/NetworkManager/resolv.conf ${D}${sysconfdir}/resolv.conf
+    fi
+    if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkmanager','true','false',d)}; then
+        # Setup my standard connection profiles
+        install -d ${D}${sysconfdir}/NetworkManager/system-connections
+        install -m 0600 ${WORKDIR}/*.nmconnection ${D}${sysconfdir}/NetworkManager/system-connections
     fi
 }
