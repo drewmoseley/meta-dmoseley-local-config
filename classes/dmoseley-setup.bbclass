@@ -26,7 +26,6 @@ python() {
         'dmoseley-access-point',         # Enable access point mode
         'dmoseley-fastboot',             # Fastboot mode
         'dmoseley-persistent-logs',      # Enable persistent storage for all logs
-        'dmoseley-journal-upload',       # Enable systemd journal upload
         'dmoseley-readonly',             # Use readonly
         'dmoseley-labnetworks',          # Connect to caribbean-Lab
         'dmoseley-homenetworks',         # Connect to caribbean
