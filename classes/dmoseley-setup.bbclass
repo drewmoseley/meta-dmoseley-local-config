@@ -393,6 +393,8 @@ MENDER_DATA_PART:dmoseley-partuuid = "/dev/disk/by-partuuid/46c92b29-30cf-4572-9
 
 inherit image-buildinfo
 
+MENDER_ARTIFACT_SIGNING_KEY = "/work/dmoseley/local/mender-artifact-signing-private.key"
+
 ##### TODO
 #####
 ##### BUILD_REPRODUCIBLE_BINARIES = "1"
