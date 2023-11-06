@@ -360,10 +360,6 @@ BOOTDD_VOLUME_ID:orange-pi-pc = "o-pi-pc"
 # Log processing
 VOLATILE_LOG_DIR = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-persistent-logs", "no", "yes", d)}"
 
-# Graphical QEMU
-PACKAGECONFIG:append:pn-qemu-system-native = " sdl"
-PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
-
 # Set wpebackend
 PREFERRED_PROVIDER_virtual/wpebackend = "wpebackend-fdo"
 PREFERRED_RPROVIDER_virtual/wpebackend = "wpebackend-fdo"
