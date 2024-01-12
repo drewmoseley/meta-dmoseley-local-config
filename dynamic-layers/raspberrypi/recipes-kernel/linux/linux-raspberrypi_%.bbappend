@@ -6,6 +6,7 @@ LOGO = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
 SRC_URI:append:rpi = " \
     file://${LOGO} \
     file://enable_splash.cfg \
+    file://0001-Fix-invalid-localversion-string.patch \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','file://fastboot.cfg','',d)} \
 "
 
