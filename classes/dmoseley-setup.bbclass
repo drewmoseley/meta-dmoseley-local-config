@@ -297,10 +297,11 @@ IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmo
 IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
 IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
 TORADEX_INCLUDE_FILE=""
-TORADEX_INCLUDE_FILE:toradex="conf/machine/include/${MACHINE}.inc"
+TORADEX_INCLUDE_FILE:toradex="conf/machine/${MACHINE}.inc"
 TORADEX_INCLUDE_FILE:colibri-imx8x=""
 TORADEX_INCLUDE_FILE:apalis-imx8x=""
 TORADEX_INCLUDE_FILE:apalis-imx8=""
+TORADEX_INCLUDE_FILE:verdin-am62=""
 TORADEX_INCLUDE_FILE:verdin-imx8mm=""
 TORADEX_INCLUDE_FILE:verdin-imx8mp=""
 require ${TORADEX_INCLUDE_FILE}
