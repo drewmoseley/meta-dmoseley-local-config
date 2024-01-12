@@ -152,6 +152,7 @@ LICENSE_FLAGS_ACCEPTED:append = " commercial "
 
 # RPI specifics
 RPI_USE_U_BOOT:rpi = "1"
+RPI_USE_U_BOOT:raspberrypi5 = "0"
 ENABLE_UART:rpi = "1"
 DISABLE_OVERSCAN:rpi = "1"
 DISABLE_SPLASH:rpi = "1"
