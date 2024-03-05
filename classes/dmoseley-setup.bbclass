@@ -213,11 +213,11 @@ ROOTFS_POSTPROCESS_COMMAND += "add_dmoseley_data ; "
 SERIAL_CONSOLE:append:intel-corei7-64 = " ttyUSB0 "
 SERIAL_CONSOLES:append:intel-corei7-64 = " 115200;ttyUSB0 "
 KERNEL_CONSOLE:intel-corei7-64 = "ttyUSB0"
+IMAGE_FEATURES:append:intel-corei7-64 = " hwcodecs "
 
 # Disable console on VT/FB
 USE_VT:dmoseley-fastboot = "0"
 
-IMAGE_FEATURES += "hwcodecs"
 DISTRO_FEATURES:append = " egl opengl wayland pam "
 PACKAGECONFIG:append:pn-qemu-system-native = " sdl gtk+ virglrenderer glx "
 PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl gtk+ virglrenderer glx "
