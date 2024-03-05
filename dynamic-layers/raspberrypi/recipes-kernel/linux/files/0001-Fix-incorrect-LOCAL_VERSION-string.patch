@@ -1,0 +1,23 @@
+From e343728894883c3c8fb2c111f1cce52094bd39ad Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew@moseleynet.net>
+Date: Mon, 26 Feb 2024 18:05:28 -0500
+Subject: [PATCH] Fix incorrect LOCAL_VERSION string
+
+Signed-off-by: Drew Moseley <drew@moseleynet.net>
+---
+ arch/arm64/configs/bcm2712_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/bcm2712_defconfig b/arch/arm64/configs/bcm2712_defconfig
+index 4f9134bdcdbe..3dab3b754e22 100644
+--- a/arch/arm64/configs/bcm2712_defconfig
++++ b/arch/arm64/configs/bcm2712_defconfig
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-v8_16k"
++CONFIG_LOCALVERSION="-v8-16k"
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+-- 
+2.41.0
+
