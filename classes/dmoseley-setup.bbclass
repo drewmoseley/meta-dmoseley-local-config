@@ -46,18 +46,22 @@ python dmoseley_features_handler() {
         bb.fatal("Must specify exactly one init system.")
 
     numberOfUpdatersConfigured=0
+    updatersConfigured = ""
     for updater in [ "mender", "swupdate", "rauc", "ostree" ]:
         if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + updater, True, False, d):
             numberOfUpdatersConfigured += 1
+            updatersConfigured += " " + updater
     if (numberOfUpdatersConfigured > 1):
-        bb.fatal("Must specify zero or one updaters.")
+        bb.fatal("Must specify zero or one updaters: %s." % updatersConfigured)
 
     numberOfNetworkManagersConfigured=0
+    networkManagersConfigured=""
     for networkManager in [ "networkd", "networkmanager", "connman", "wifi-connect", "busybox" ]:
         if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + networkManager, True, False, d):
             numberOfNetworkManagersConfigured += 1
+            networkManagersConfigured += " " + networkManager
     if (numberOfNetworkManagersConfigured != 1):
-        bb.fatal("Must specify exactly one network manager.")
+        bb.fatal("Must specify exactly one network manager: %s." % networkManagersConfigured)
 
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkd', True, False, d) and \
        not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', True, False, d):
