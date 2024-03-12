@@ -82,6 +82,12 @@ OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith(
 DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
 
+DMOSELEY_UPDATER = "none"
+DMOSELEY_UPDATER:dmoseley-mender = "mender"
+DMOSELEY_UPDATER:dmoseley-swupdate = "swupdate"
+DMOSELEY_UPDATER:dmoseley-rauc = "rauc"
+DMOSELEY_UPDATER:dmoseley-ostree = "ostree"
+
 DMOSELEY_MENDER_BBCLASS:colibri-imx6ull = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS:vexpress-qemu-flash = "mender-full-ubi"
 DMOSELEY_MENDER_BBCLASS:qemux86-64-bios = "mender-full-bios"
