@@ -7,6 +7,9 @@ python() {
     dmoseley_local_features = {
         'dmoseley-setup',                # Basic setup -- flag for conditional settings
         'dmoseley-mender',               # Use mender
+        'dmoseley-ostree',               # Use ostree
+        'dmoseley-rauc',                 # Use rauc
+        'dmoseley-swupdate',             # Use swupdate
         'dmoseley-busybox',              # Use busybox for system initialization and dev management
         'dmoseley-sysvinit',             # Use sysvinit for system initialization and dev management
         'dmoseley-systemd',              # Use systemd for system initialization and dev management
@@ -39,6 +42,13 @@ python() {
             numberOfInitSystemsConfigured += 1
     if (numberOfInitSystemsConfigured != 1):
         bb.fatal("Must specify exactly one init system.")
+
+    numberOfUpdatersConfigured=0
+    for updater in [ "mender", "swupdate", "rauc", "ostree" ]:
+        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + updater, True, False, d):
+            numberOfUpdatersConfigured += 1
+    if (numberOfUpdatersConfigured > 1):
+        bb.fatal("Must specify zero or one updaters.")
 
     numberOfNetworkManagersConfigured=0
     for networkManager in [ "networkd", "networkmanager", "connman", "wifi-connect", "busybox" ]:
