@@ -360,6 +360,9 @@ SRC_URI:pn-mender-binary-delta = "file:///work2/dmoseley/mender-binary-delta/men
 
 ACCEPT_FSL_EULA = "1"
 
+# SWUpdate settings
+IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-swupdate", "swupdate swupdate-gui", "", d)}"
+
 # Readonly settings
 EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "
 
