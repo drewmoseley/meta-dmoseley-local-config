@@ -1,7 +1,9 @@
 DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks"
 OVERRIDES =. "dmoseley-setup:"
 
-python() {
+addhandler dmoseley_features_handler
+dmoseley_features_handler[eventmask] = "bb.event.ParseCompleted"
+python dmoseley_features_handler() {
     # Add all possible dmoseley-local features here.
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
