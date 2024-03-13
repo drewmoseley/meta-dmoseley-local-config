@@ -1,4 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-partuuid"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -19,7 +19,6 @@ python() {
         'dmoseley-wifi-connect',         # Use wifi-connect
         'dmoseley-wifi',                 # Use wifi and install device firmware blobs
         'dmoseley-localntp',             # Use a custom local NTP server
-        'dmoseley-partuuid',             # Use partuuids with Mender
         'dmoseley-access-point',         # Enable access point mode
         'dmoseley-fastboot',             # Fastboot mode
         'dmoseley-persistent-logs',      # Enable persistent storage for all logs
@@ -296,7 +295,7 @@ IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE:append:dmoseley-mender = " mender-persist-systemd-machine-id "
+MENDER_FEATURES_ENABLE:append:dmoseley-mender = " mender-persist-systemd-machine-id mender-partuuid "
 MENDER_FEATURES_DISABLE:append:dmoseley-mender = " mender-growfs-data "
 
 #
@@ -404,7 +403,6 @@ PREFERRED_RPROVIDER_virtual/wpebackend = "wpebackend-fdo"
 
 # Mender partUUID
 # Random UUID's generated using the 'uuidgen -r' command
-MENDER_FEATURES_ENABLE:append:dmoseley-partuuid = " mender-partuuid "
 MENDER_BOOT_PART:dmoseley-partuuid = "/dev/disk/by-partuuid/b81ffd37-7d11-443a-8891-05e88ee63212"
 MENDER_ROOTFS_PART_A:dmoseley-partuuid = "/dev/disk/by-partuuid/30cd164a-f210-414e-acee-261caeadf9dc"
 MENDER_ROOTFS_PART_B:dmoseley-partuuid = "/dev/disk/by-partuuid/69e4bb57-1f5e-4c9b-b9ae-534eaa0f632f"
