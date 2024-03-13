@@ -85,20 +85,16 @@ DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
 
 def dmoseley_get_mender_bbclass(d):
-    # This function is only called when dmoseley-updater-mender is set so no need to check for it explicitly
+    updater = d.getVar('UPDATER')
     machine = d.getVar('MACHINE')
-    if machine == "colibri-imx6ull":
+    if updater != "mender":
+        return ""
+    elif machine == "colibri-imx6ull":
         return "mender-full-ubi"
     else:
         return "mender-full"
 
-DMOSELEY_MENDER_BBCLASS:dmoseley-updater-mender = "${@dmoseley_get_mender_bbclass(d)}"
-DMOSELEY_MENDER_BBCLASS = ""
-# because of the above machinations with the bbclass specification, somehow we can get a parser error
-# due to this variable not be available at parse time.  Go ahead and define it here (HACK) with a
-# soft default
-MENDER_EFI_LOADER ??= ""
-require ${DMOSELEY_MENDER_BBCLASS}
+inherit ${@dmoseley_get_mender_bbclass(d)}
 
 IMAGE_INSTALL:append:dmoseley-connman = " connman connman-client connman-conf "
 IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
