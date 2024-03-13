@@ -1,4 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-updater-${UPDATER}"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -6,10 +6,11 @@ python() {
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
         'dmoseley-setup',                # Basic setup -- flag for conditional settings
-        'dmoseley-mender',               # Use mender
-        'dmoseley-ostree',               # Use ostree
-        'dmoseley-rauc',                 # Use rauc
-        'dmoseley-swupdate',             # Use swupdate
+        'dmoseley-updater-none',         # No updater
+        'dmoseley-updater-mender',       # Use mender
+        'dmoseley-updater-ostree',       # Use ostree
+        'dmoseley-updater-rauc',         # Use rauc
+        'dmoseley-updater-swupdate',     # Use swupdate
         'dmoseley-busybox',              # Use busybox for system initialization and dev management
         'dmoseley-sysvinit',             # Use sysvinit for system initialization and dev management
         'dmoseley-systemd',              # Use systemd for system initialization and dev management
@@ -45,7 +46,7 @@ python() {
     numberOfUpdatersConfigured=0
     updatersConfigured = ""
     for updater in [ "mender", "swupdate", "rauc", "ostree" ]:
-        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + updater, True, False, d):
+        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-updater-" + updater, True, False, d):
             numberOfUpdatersConfigured += 1
             updatersConfigured += " " + updater
     if (numberOfUpdatersConfigured > 1):
@@ -74,7 +75,7 @@ python() {
 
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-persistent-logs', True, False, d) and \
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-readonly', True, False, d) and \
-       not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', True, False, d):
+       not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-updater-mender', True, False, d):
         bb.fatal("Building with persistent logs and readonly root filesystem requires Mender.")
 }
 
@@ -84,14 +85,14 @@ DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
 
 def dmoseley_get_mender_bbclass(d):
-    # This function is only called when dmoseley-mender is set so no need to check for it explicitly
+    # This function is only called when dmoseley-updater-mender is set so no need to check for it explicitly
     machine = d.getVar('MACHINE')
     if machine == "colibri-imx6ull":
         return "mender-full-ubi"
     else:
         return "mender-full"
 
-DMOSELEY_MENDER_BBCLASS:dmoseley-mender = "${@dmoseley_get_mender_bbclass(d)}"
+DMOSELEY_MENDER_BBCLASS:dmoseley-updater-mender = "${@dmoseley_get_mender_bbclass(d)}"
 DMOSELEY_MENDER_BBCLASS = ""
 # because of the above machinations with the bbclass specification, somehow we can get a parser error
 # due to this variable not be available at parse time.  Go ahead and define it here (HACK) with a
@@ -146,8 +147,8 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
-IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
-IMAGE_FSTYPES:remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
+IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
+IMAGE_FSTYPES:remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
@@ -208,7 +209,7 @@ PACKAGE_FEED_URIS = "http://aruba.lab.moseleynet.net:5678"
 IMAGE_INSTALL:append = " packagegroup-base "
 
 # Mender settings
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " drew-state-scripts mender-ipk", "", d)} "
+IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", " drew-state-scripts mender-ipk", "", d)} "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
@@ -257,7 +258,7 @@ IMAGE_INSTALL:append = " \
 # Check for CVEs
 # inherit cve-check
 
-GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "Mender.tga", "Max.tga", d)}"
+GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "Mender.tga", "Max.tga", d)}"
 
 # I'm not sure why this cannot be calculated using bitbake variable inline python syntax
 # but when I do it that way, and SB is not enabled then the expansion is not done and the
@@ -276,8 +277,8 @@ IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE:append:dmoseley-mender = " mender-persist-systemd-machine-id mender-partuuid "
-MENDER_FEATURES_DISABLE:append:dmoseley-mender = " mender-growfs-data "
+MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-partuuid "
+MENDER_FEATURES_DISABLE:append:dmoseley-updater-mender = " mender-growfs-data "
 
 #
 # Settings for Toradex boards
@@ -307,9 +308,9 @@ PREFERRED_PROVIDER_u-boot:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/dtb:toradex = "device-tree-overlays"
 IMAGE_TYPE_MENDER_TEZI=""
-IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "image_type_mender_tezi", "", d)}"
+IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "image_type_mender_tezi", "", d)}"
 IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
-IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender_tezi", "", d)}"
+IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender_tezi", "", d)}"
 TORADEX_INCLUDE_FILE=""
 TORADEX_INCLUDE_FILE:toradex="conf/machine/include/${MACHINE}.inc"
 TORADEX_INCLUDE_FILE:colibri-imx8x=""
@@ -323,7 +324,7 @@ DISTROOVERRIDES:append:toradex = ":tdx"
 TORADEX_BSP_VERSION="toradex-bsp-6.2.0"
 TORADEX_MENDER_CLASS=""
 TORADEX_MENDER_CLASS:toradex="mender-toradex"
-inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${TORADEX_MENDER_CLASS}', '', d)}
+inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-updater-mender', '${TORADEX_MENDER_CLASS}', '', d)}
 MENDER_STORAGE_DEVICE:apalis-imx6 = "/dev/mmcblk2"
 TEZI_STORAGE_DEVICE:apalis-imx6 = "mmcblk0"
 MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
@@ -352,17 +353,17 @@ DMOSELEY_DISPLAY_RESOLUTION:rpi ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION:intel-corei7-64 ?= "800x600"
 
 # Mender Commercial settings
-IMAGE_INSTALL:append:arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL:append:aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL:append:x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "mender-binary-delta", "", d)}"
-LICENSE_FLAGS_ACCEPTED:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", "commercial_mender-yocto-layer-license", "", d)}"
+IMAGE_INSTALL:append:arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender-binary-delta", "", d)}"
+IMAGE_INSTALL:append:aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender-binary-delta", "", d)}"
+IMAGE_INSTALL:append:x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender-binary-delta", "", d)}"
+LICENSE_FLAGS_ACCEPTED:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "commercial_mender-yocto-layer-license", "", d)}"
 SRC_URI:pn-mender-binary-delta = "file:///work2/dmoseley/mender-binary-delta/mender-binary-delta-1.4.1.tar.xz"
 
 
 ACCEPT_FSL_EULA = "1"
 
 # SWUpdate settings
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-swupdate", "swupdate swupdate-gui", "", d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "swupdate swupdate-gui", "", d)}"
 
 # Readonly settings
 EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "

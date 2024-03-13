@@ -15,13 +15,13 @@ FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:"
 SRC_URI:append:dmoseley-fastboot = " file://0001-systemd-Disable-getty-service.patch "
 
 # Setup persistent logging in the data partition with Mender
-SYSTEMD_SERVICE:${PN}:append:dmoseley-mender:dmoseley-persistent-logs = " var-log.mount "
-SRC_URI:append:dmoseley-mender_dmoseley-persistent-logs = " file://var-log.mount "
-SYSTEMD_AUTO_ENABLE:dmoseley-mender:dmoseley-persistent-logs = "enable"
-do_install:append:dmoseley-mender_dmoseley-persistent-logs() {
+SYSTEMD_SERVICE:${PN}:append:dmoseley-updater-mender:dmoseley-persistent-logs = " var-log.mount "
+SRC_URI:append:dmoseley-updater-mender_dmoseley-persistent-logs = " file://var-log.mount "
+SYSTEMD_AUTO_ENABLE:dmoseley-updater-mender:dmoseley-persistent-logs = "enable"
+do_install:append:dmoseley-updater-mender_dmoseley-persistent-logs() {
     install -d ${D}/data/
     mv ${D}${localstatedir}/log ${D}/data/log
     install -d ${D}${systemd_unitdir}/system
     install ${WORKDIR}/var-log.mount ${D}${systemd_unitdir}/system
 }
-FILES:${PN}:append:dmoseley-mender:dmoseley-persistent-logs = " /data/log "
+FILES:${PN}:append:dmoseley-updater-mender:dmoseley-persistent-logs = " /data/log "
