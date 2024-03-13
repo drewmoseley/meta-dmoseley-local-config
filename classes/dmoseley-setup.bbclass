@@ -79,7 +79,7 @@ python() {
 }
 
 
-OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') or d.getVar('MACHINE',True).startswith('vexpress-qemu') else ''}"
+OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') else ''}"
 DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
 
@@ -93,8 +93,6 @@ def dmoseley_get_mender_bbclass(d):
     # This function is only called when dmoseley-mender is set so no need to check for it explicitly
     machine = d.getVar('MACHINE')
     if machine == "colibri-imx6ull":
-        return "mender-full-ubi"
-    elif machine == "vexpress-qemu-flash":
         return "mender-full-ubi"
     else:
         return "mender-full"
@@ -130,12 +128,6 @@ require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-busybox', 'conf/dist
 require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'conf/distro/include/init-manager-systemd.inc', '', d)}
 
 WIFI_IFACE ?= "wlan0"
-
-# Explicitly remove wifi from qemu buids
-DISTRO_FEATURES:remove:vexpress-qemu = "wifi"
-DISTRO_FEATURES:remove:vexpress-qemu-flash = "wifi"
-IMAGE_INSTALL:remove:vexpress-qemu = "iw wpa-supplicant"
-IMAGE_INSTALL:remove:vexpress-qemu-flash = "iw wpa-supplicant"
 
 # Cleanup FSTYPES
 IMAGE_FSTYPES_APPEND_MENDER = " \
@@ -198,7 +190,6 @@ LICENSE_FLAGS_ACCEPTED:append:rpi = " synaptics-killswitch "
 
 # Other packages to install in _all_ images
 IMAGE_INSTALL:append = " kernel-image kernel-modules kernel-devicetree "
-IMAGE_INSTALL:remove:vexpress-qemu-flash = "kernel-image kernel-modules kernel-devicetree"
 IMAGE_INSTALL:remove:qemuarm = "kernel-devicetree"
 IMAGE_INSTALL:remove:qemuarm64 = "kernel-devicetree"
 IMAGE_INSTALL:remove:intel-corei7-64 = "kernel-devicetree"
@@ -210,8 +201,6 @@ IMAGE_INSTALL:remove:qemux86-64 = "kernel-devicetree"
 IMAGE_INSTALL:remove:genericx86 = "kernel-devicetree"
 IMAGE_INSTALL:remove:genericx86-64 = "kernel-devicetree"
 IMAGE_INSTALL:append = " libnss-mdns "
-IMAGE_INSTALL:remove:vexpress-qemu = "libnss-mdns"
-IMAGE_INSTALL:remove:vexpress-qemu-flash = "libnss-mdns"
 IMAGE_INSTALL:append = " nano "
 
 EXTRA_IMAGE_FEATURES:append = " package-management "
@@ -223,7 +212,6 @@ PACKAGE_FEED_URIS = "http://aruba.lab.moseleynet.net:5678"
 # If certain builds are size constrained this (as well as package-management) should be
 # removed.
 IMAGE_INSTALL:append = " packagegroup-base "
-IMAGE_INSTALL:remove:vexpress-qemu-flash = "packagegroup-base"
 
 # Mender settings
 IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mender", " drew-state-scripts mender-ipk", "", d)} "
@@ -270,7 +258,6 @@ IMAGE_INSTALL:append = " \
     procps \
     util-linux \
 "
-IMAGE_INSTALL:remove:vexpress-qemu-flash = "image-display mender-binary-delta bind-utils iputils-tracepath"
 
 
 # Check for CVEs
