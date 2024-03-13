@@ -92,11 +92,23 @@ DMOSELEY_UPDATER:dmoseley-swupdate = "swupdate"
 DMOSELEY_UPDATER:dmoseley-rauc = "rauc"
 DMOSELEY_UPDATER:dmoseley-ostree = "ostree"
 
-DMOSELEY_MENDER_BBCLASS:colibri-imx6ull = "mender-full-ubi"
-DMOSELEY_MENDER_BBCLASS:vexpress-qemu-flash = "mender-full-ubi"
-DMOSELEY_MENDER_BBCLASS:qemux86-64-bios = "mender-full-bios"
-DMOSELEY_MENDER_BBCLASS = "mender-full"
-inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-mender', '${DMOSELEY_MENDER_BBCLASS}', '', d)}
+def dmoseley_get_mender_bbclass(d):
+    # This function is only called when dmoseley-mender is set so no need to check for it explicitly
+    machine = d.getVar('MACHINE')
+    if machine == "colibri-imx6ull":
+        return "mender-full-ubi"
+    elif machine == "vexpress-qemu-flash":
+        return "mender-full-ubi"
+    else:
+        return "mender-full"
+
+DMOSELEY_MENDER_BBCLASS:dmoseley-mender = "${@dmoseley_get_mender_bbclass(d)}"
+DMOSELEY_MENDER_BBCLASS = ""
+# because of the above machinations with the bbclass specification, somehow we can get a parser error
+# due to this variable not be available at parse time.  Go ahead and define it here (HACK) with a
+# soft default
+MENDER_EFI_LOADER ??= ""
+require ${DMOSELEY_MENDER_BBCLASS}
 
 IMAGE_INSTALL:append:dmoseley-connman = " connman connman-client connman-conf "
 IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
