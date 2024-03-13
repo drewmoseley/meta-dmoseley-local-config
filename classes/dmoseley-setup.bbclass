@@ -83,12 +83,6 @@ OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith(
 DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
 
-DMOSELEY_UPDATER = "none"
-DMOSELEY_UPDATER:dmoseley-mender = "mender"
-DMOSELEY_UPDATER:dmoseley-swupdate = "swupdate"
-DMOSELEY_UPDATER:dmoseley-rauc = "rauc"
-DMOSELEY_UPDATER:dmoseley-ostree = "ostree"
-
 def dmoseley_get_mender_bbclass(d):
     # This function is only called when dmoseley-mender is set so no need to check for it explicitly
     machine = d.getVar('MACHINE')
