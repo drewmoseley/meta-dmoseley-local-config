@@ -1,4 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-partuuid"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -166,7 +166,7 @@ IMAGE_FSTYPES:remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-mend
 
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 
-# Setup Mender disk sizes
+# Setup Mender
 MENDER_BOOT_PART_SIZE_MB:rpi ??= "64"
 MENDER_STORAGE_TOTAL_SIZE_MB:qemux86 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB:qemux86-64 ??= "2048"
@@ -178,6 +178,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB:intel-corei7-64 ??= "4096"
 MENDER_STORAGE_TOTAL_SIZE_MB:minnowboard ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB:colibri-imx6ull = "512"
 MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
+MENDER_ARTIFACT_NAME = "${BRANCH}-target-image-1.0"
 
 # Multimedia licensing
 LICENSE_FLAGS_ACCEPTED:append = " commercial "
