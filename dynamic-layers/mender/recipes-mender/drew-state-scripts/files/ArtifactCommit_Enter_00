@@ -17,7 +17,7 @@ if [ -e /data/force-rollback ]; then
     exit ${ABORT}
 fi
 
-nc 8.8.8.8 53 > /dev/null 2>&1
+ping -w 1 -c 1 8.8.8.8 > /dev/null 2>&1
 if [ $? != 0 ]; then
     exit ${RETRY_LATER}
 fi
