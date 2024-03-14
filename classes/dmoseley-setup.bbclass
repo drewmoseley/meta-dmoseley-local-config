@@ -274,8 +274,7 @@ IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-partuuid "
-MENDER_FEATURES_DISABLE:append:dmoseley-updater-mender = " mender-growfs-data "
+MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-partuuid mender-growfs-data "
 
 #
 # Settings for Toradex boards
