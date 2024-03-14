@@ -282,7 +282,7 @@ IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-partuuid mender-growfs-data "
+MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-growfs-data "
 
 #
 # Settings for Toradex boards
@@ -386,13 +386,6 @@ VOLATILE_LOG_DIR = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-persiste
 # Set wpebackend
 PREFERRED_PROVIDER_virtual/wpebackend = "wpebackend-fdo"
 PREFERRED_RPROVIDER_virtual/wpebackend = "wpebackend-fdo"
-
-# Mender partUUID
-# Random UUID's generated using the 'uuidgen -r' command
-MENDER_BOOT_PART = "/dev/disk/by-partuuid/b81ffd37-7d11-443a-8891-05e88ee63212"
-MENDER_ROOTFS_PART_A = "/dev/disk/by-partuuid/30cd164a-f210-414e-acee-261caeadf9dc"
-MENDER_ROOTFS_PART_B = "/dev/disk/by-partuuid/69e4bb57-1f5e-4c9b-b9ae-534eaa0f632f"
-MENDER_DATA_PART = "/dev/disk/by-partuuid/46c92b29-30cf-4572-9a73-d80ed802c26e"
 
 inherit image-buildinfo
 
