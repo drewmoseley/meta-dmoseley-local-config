@@ -160,7 +160,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB:intel-corei7-64 ??= "4096"
 MENDER_STORAGE_TOTAL_SIZE_MB:minnowboard ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB:colibri-imx6ull = "512"
 MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
-MENDER_ARTIFACT_NAME = "${BRANCH}-target-image-1.0"
+MENDER_ARTIFACT_NAME = "${YOCTO_BRANCH}-target-image-1.0"
 
 # Multimedia licensing
 LICENSE_FLAGS_ACCEPTED:append = " commercial "
