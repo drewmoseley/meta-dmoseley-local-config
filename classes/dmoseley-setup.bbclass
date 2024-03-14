@@ -369,6 +369,8 @@ ACCEPT_FSL_EULA = "1"
 # SWUpdate settings
 IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "swupdate", "", d)}"
 IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", " ext4.gz", "", d)} "
+WKS_FILE:rpi:dmoseley-updater-swupdate = "ts-raspberrypi.wks"
+
 # Readonly settings
 EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "
 
