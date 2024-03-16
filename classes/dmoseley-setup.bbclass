@@ -96,6 +96,7 @@ def dmoseley_get_mender_bbclass(d):
 
 inherit ${@dmoseley_get_mender_bbclass(d)}
 
+IMAGE_INSTALL:append:dmoseley-systemd = " systemd-analyze "
 IMAGE_INSTALL:append:dmoseley-connman = " connman connman-client connman-conf "
 IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager networkmanager-nmtui "
 IMAGE_INSTALL:append:dmoseley-wifi-connect = " wifi-connect "
