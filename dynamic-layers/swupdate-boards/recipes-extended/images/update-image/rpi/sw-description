@@ -12,7 +12,7 @@ software =
 						filename = "core-image-full-cmdline-@@MACHINE@@.ext4.zck.zckheader";
 						device = "/dev/mmcblk0p2";
                         properties: {
-                            url = "http://aruba.lab.moseleynet.net:5678/core-image-full-cmdline-@@MACHINE@@.ext4.zck";
+                            url = "http://192.168.17.41:5678/core-image-full-cmdline-@@MACHINE@@.ext4.zck";
                             chain = "raw";
                             source = "/dev/mmcblk0p3";
                         }
@@ -36,7 +36,7 @@ software =
 						filename = "core-image-full-cmdline-@@MACHINE@@.ext4.zck.zckheader";
 						device = "/dev/mmcblk0p3";
                         properties: {
-                            url = "http://aruba.lab.moseleynet.net:5678/core-image-full-cmdline-@@MACHINE@@.ext4.zck";
+                            url = "http://192.168.17.41:5678/core-image-full-cmdline-@@MACHINE@@.ext4.zck";
                             chain = "raw";
                             source = "/dev/mmcblk0p2";
                         }

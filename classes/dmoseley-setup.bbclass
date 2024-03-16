@@ -204,7 +204,7 @@ IMAGE_INSTALL:append = " libnss-mdns "
 IMAGE_INSTALL:append = " nano "
 
 EXTRA_IMAGE_FEATURES:append = " package-management "
-PACKAGE_FEED_URIS = "http://aruba.lab.moseleynet.net:5678"
+PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
 # MACHINE_EXTRA_RRECOMMENDS.  This is not included by default in core-image-minimal and
