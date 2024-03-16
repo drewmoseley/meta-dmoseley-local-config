@@ -368,7 +368,7 @@ ACCEPT_FSL_EULA = "1"
 
 # SWUpdate settings
 IMAGE_CLASSES += "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "image_types_zchunk", "", d)}"
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "swupdate swupdate-www libubootenv-bin", "", d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "swupdate swupdate-www swupdate-progress libubootenv-bin", "", d)}"
 IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", " ext4.gz ext4.zck ext4.zck.zckheader ", "", d)} "
 WKS_FILE:rpi:dmoseley-updater-swupdate = "ts-raspberrypi.wks"
 
