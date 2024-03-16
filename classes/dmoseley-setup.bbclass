@@ -72,11 +72,6 @@ python() {
     if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', True, False, d) and \
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
         bb.fatal("Building access-point requires networkmanager.")
-
-    if bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-persistent-logs', True, False, d) and \
-       bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-readonly', True, False, d) and \
-       not bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-updater-mender', True, False, d):
-        bb.fatal("Building with persistent logs and readonly root filesystem requires Mender.")
 }
 
 
