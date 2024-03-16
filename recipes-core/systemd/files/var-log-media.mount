@@ -1,0 +1,11 @@
+[Unit]
+Description=Persistent Log Storage Bind Mount
+
+[Mount]
+What=/media/log
+Where=/var/log
+Type=none
+Options=bind
+
+[Install]
+WantedBy=local-fs.target
