@@ -203,6 +203,7 @@ IMAGE_INSTALL:remove:genericx86 = "kernel-devicetree"
 IMAGE_INSTALL:remove:genericx86-64 = "kernel-devicetree"
 IMAGE_INSTALL:append = " libnss-mdns "
 IMAGE_INSTALL:append = " nano "
+IMAGE_INSTALL:append = " strace "
 
 EXTRA_IMAGE_FEATURES:append = " package-management "
 PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
