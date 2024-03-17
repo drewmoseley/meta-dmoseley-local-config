@@ -32,11 +32,11 @@ SYSTEMD_SERVICE:${PN}:append:dmoseley-updater-swupdate:dmoseley-persistent-logs 
 SRC_URI:append:dmoseley-updater-swupdate:dmoseley-persistent-logs = " file://var-log-media.mount "
 SYSTEMD_AUTO_ENABLE:dmoseley-updater-swupdate:dmoseley-persistent-logs = "enable"
 do_install:append:dmoseley-updater-swupdate:dmoseley-persistent-logs() {
-    install -d ${D}/media/
-    mv ${D}${localstatedir}/log ${D}/media/log
-    install -d ${D}${systemd_unitdir}/system
     install ${WORKDIR}/var-log-media.mount ${D}${systemd_unitdir}/system/var-log.mount
     sed -i -e 's/^#Storage=auto/Storage=persistent/g' ${D}${sysconfdir}/systemd/journald.conf
+
+    # Make sure the log directory exists in persistent data partition
+    install -d ${D}${sysconfdir}/tmpfiles.d
+    echo "d    /media/log   0777 root root - -" >> ${D}${sysconfdir}/tmpfiles.d/logdir-persistent.conf
 }
-FILES:${PN}:append:dmoseley-updater-swupdate:dmoseley-persistent-logs = " /media/log "
-QA_EMPTY_DIRS:remove:dmoseley-updater-swupdate:dmoseley-persistent-logs = " /media "
+FILES:${PN}:append:dmoseley-updater-swupdate:dmoseley-persistent-logs = " ${sysconfdir}/tmpfiles.d/logdir-persistent.conf "
