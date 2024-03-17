@@ -78,6 +78,8 @@ python() {
 OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') else ''}"
 DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
+ROOT_HOME:dmoseley-updater-mender = "/data/home/root"
+ROOT_HOME:dmoseley-updater-swupdate = "/media/home/root"
 
 def dmoseley_get_mender_bbclass(d):
     updater = d.getVar('UPDATER')
