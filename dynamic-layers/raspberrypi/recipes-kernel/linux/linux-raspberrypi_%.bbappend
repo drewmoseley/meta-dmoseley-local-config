@@ -6,6 +6,9 @@ LOGO = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
 SRC_URI:append = " \
     file://modules.cfg \
 "
+SRC_URI:append:dmoseley-updater-rauc = " \
+    file://rauc-dmoseley.cfg \
+"
 SRC_URI:append:rpi = " \
     file://${LOGO} \
     file://enable_splash.cfg \
