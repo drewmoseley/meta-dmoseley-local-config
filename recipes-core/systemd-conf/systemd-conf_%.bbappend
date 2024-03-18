@@ -70,3 +70,15 @@ do_install:append:dmoseley-updater-swupdate:dmoseley-persistent-logs() {
     echo "d    /media/log   0777 root root - -" >> ${D}${sysconfdir}/tmpfiles.d/logdir-persistent.conf
 }
 FILES:${PN}:append:dmoseley-updater-swupdate:dmoseley-persistent-logs = " ${sysconfdir}/tmpfiles.d/logdir-persistent.conf "
+
+# Setup persistent logging in the data partition with Rauc
+SYSTEMD_SERVICE:${PN}:append:dmoseley-updater-rauc:dmoseley-persistent-logs = " var-log.mount "
+SRC_URI:append:dmoseley-updater-rauc:dmoseley-persistent-logs = " file://var-log.mount "
+SYSTEMD_AUTO_ENABLE:dmoseley-updater-rauc:dmoseley-persistent-logs = "enable"
+do_install:append:dmoseley-updater-rauc:dmoseley-persistent-logs() {
+    install -d ${D}/data/
+    mv ${D}${localstatedir}/log ${D}/data/log
+    install -d ${D}${systemd_unitdir}/system
+    install ${WORKDIR}/var-log.mount ${D}${systemd_unitdir}/system
+}
+FILES:${PN}:append:dmoseley-updater-rauc:dmoseley-persistent-logs = " /data/log "
