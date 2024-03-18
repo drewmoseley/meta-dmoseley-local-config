@@ -280,6 +280,8 @@ IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
 "
 
 MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-growfs-data "
+CMDLINE_ROOTFS:remove:dmoseley-updater-mender = "root=/dev/mmcblk0p2"
+CMDLINE_ROOTFS:append:dmoseley-updater-mender = " root=\${mender_kernel_root} "
 
 #
 # Settings for Toradex boards
