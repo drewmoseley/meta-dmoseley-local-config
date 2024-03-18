@@ -213,9 +213,6 @@ PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
 # removed.
 IMAGE_INSTALL:append = " packagegroup-base "
 
-# Mender settings
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", " drew-state-scripts mender-ipk", "", d)} "
-
 add_dmoseley_data() {
    local buildhost=$(hostname)
    case $(hostname) in
