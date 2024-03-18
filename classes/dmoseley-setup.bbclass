@@ -1,4 +1,5 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-updater-${UPDATER}"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-updater-${UPDATER} \
+                     ${@'' if '${UPDATER}' == 'none' else 'dmoseley-updater-any'}"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -6,6 +7,7 @@ python() {
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
         'dmoseley-setup',                # Basic setup -- flag for conditional settings
+        'dmoseley-updater-any',          # Any updater
         'dmoseley-updater-none',         # No updater
         'dmoseley-updater-mender',       # Use mender
         'dmoseley-updater-ostree',       # Use ostree
@@ -73,7 +75,6 @@ python() {
        bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-networkmanager', False, True, d):
         bb.fatal("Building access-point requires networkmanager.")
 }
-
 
 OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') else ''}"
 DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
