@@ -151,7 +151,7 @@ DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
 MENDER_BOOT_PART_SIZE_MB:rpi ??= "64"
 MENDER_STORAGE_TOTAL_SIZE_MB:qemux86 ??= "2048"
 MENDER_STORAGE_TOTAL_SIZE_MB:qemux86-64 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB:rpi ??= "2048"
+MENDER_STORAGE_TOTAL_SIZE_MB:rpi ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB:beaglebone-yocto ??= "1024"
 MENDER_STORAGE_TOTAL_SIZE_MB:genericx86-64 ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB:genericx86 ??= "3072"
@@ -160,6 +160,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB:minnowboard ??= "3072"
 MENDER_STORAGE_TOTAL_SIZE_MB:colibri-imx6ull = "512"
 MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
 MENDER_ARTIFACT_NAME ??= "${YOCTO_BRANCH}-target-image-1.0"
+IMAGE_ROOTFS_SIZE:dmoseley-updater-mender = "1048576"
 
 # Multimedia licensing
 LICENSE_FLAGS_ACCEPTED:append = " commercial "
@@ -370,6 +371,7 @@ IMAGE_CLASSES += "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-sw
 IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "swupdate swupdate-www swupdate-progress libubootenv-bin", "", d)}"
 IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", " ext4.gz ext4.zck ext4.zck.zckheader ", "", d)} "
 WKS_FILE:rpi:dmoseley-updater-swupdate = "ts-raspberrypi.wks"
+IMAGE_ROOTFS_SIZE:dmoseley-updater-swupdate = "1048576"
 
 # Rauc settings
 DISTRO_FEATURES += "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "rauc", "", d)}"
