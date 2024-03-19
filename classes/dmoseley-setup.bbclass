@@ -373,14 +373,17 @@ WKS_FILE:rpi:dmoseley-updater-swupdate = "ts-raspberrypi.wks"
 
 # Rauc settings
 DISTRO_FEATURES += "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "rauc", "", d)}"
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "rauc rauc-grow-data-part", "", d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "rauc rauc-grow-data-part casync", "", d)}"
 IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "ext4", "", d)}"
 WKS_FILE:rpi:dmoseley-updater-rauc = "sdimage-dual-raspberrypi.wks.in"
 RAUC_KEYRING_FILE:dmoseley-updater-rauc = "/work/dmoseley/local/rauc-example-ca/ca.cert.pem"
 RAUC_KEY_FILE:dmoseley-updater-rauc = "/work/dmoseley/local/rauc-example-ca/private/development-1.key.pem"
 RAUC_CERT_FILE:dmoseley-updater-rauc = "/work/dmoseley/local/rauc-example-ca/development-1.cert.pem"
 RAUC_SLOT_rootfs:dmoseley-updater-rauc = "core-image-full-cmdline"
+RAUC_SLOT_rootfs[adaptive] = "block-hash-index"
 RAUC_BUNDLE_FORMAT:dmoseley-updater-rauc = "verity"
+RAUC_CASYNC_BUNDLE:dmoseley-updater-rauc = "1"
+IMAGE_ROOTFS_SIZE:dmoseley-updater-rauc = "1048576"
 
 # Readonly settings
 EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "
