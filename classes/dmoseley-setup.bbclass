@@ -29,6 +29,7 @@ python() {
         'dmoseley-labnetworks',          # Connect to caribbean-Lab
         'dmoseley-homenetworks',         # Connect to caribbean
         'dmoseley-passwordless',         # Disable all password based logins; assumes ssh key-based authentication
+        'dmoseley-ptest',                # Enable all ptest configs
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
@@ -408,6 +409,9 @@ PREFERRED_RPROVIDER_virtual/wpebackend = "wpebackend-fdo"
 inherit image-buildinfo
 
 MENDER_ARTIFACT_SIGNING_KEY = "/work/dmoseley/local/mender-artifact-signing-private.key"
+
+DISTRO_FEATURES:append:dmoseley-ptest = " ptest "
+EXTRA_IMAGE_FEATURES:append:dmoseley-ptest = " ptest-pkgs "
 
 ##### TODO
 #####
