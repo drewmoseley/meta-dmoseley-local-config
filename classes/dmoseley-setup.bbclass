@@ -238,8 +238,8 @@ IMAGE_FEATURES:append:intel-corei7-64 = " hwcodecs "
 USE_VT:dmoseley-fastboot = "0"
 
 DISTRO_FEATURES:append = " egl opengl wayland pam "
-PACKAGECONFIG:append:pn-qemu-system-native = " sdl gtk+ virglrenderer glx "
-PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl gtk+ virglrenderer glx "
+PACKAGECONFIG:append:pn-qemu-system-native = " sdl gtk+ virglrenderer epoxy "
+PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl gtk+ virglrenderer epoxy "
 
 # Full versions of various utilities
 IMAGE_INSTALL:append = " \
