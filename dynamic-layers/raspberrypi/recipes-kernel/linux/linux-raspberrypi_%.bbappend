@@ -14,9 +14,6 @@ SRC_URI:append:rpi = " \
     file://enable_splash.cfg \
     ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','file://fastboot.cfg','',d)} \
 "
-SRC_URI:append:raspberrypi5 = " \
-    file://0001-Fix-incorrect-LOCAL_VERSION-string.patch \
-"
 SERIAL:dmoseley-fastboot=""
 CMDLINE:prepend = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
 
