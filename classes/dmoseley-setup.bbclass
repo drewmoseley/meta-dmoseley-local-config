@@ -190,7 +190,8 @@ MENDER_DTB_NAME_FORCE:raspberrypi4 = "bcm2711-rpi-4-b.dtb"
 MENDER_DTB_NAME_FORCE:raspberrypi4-64 = "broadcom/bcm2711-rpi-4-b.dtb"
 
 # Other packages to install in _all_ images
-IMAGE_INSTALL:append = " kernel-image kernel-modules kernel-devicetree "
+IMAGE_INSTALL:append = " kernel-image kernel-modules kernel-devicetree"
+IMAGE_INSTALL:append:dmoseley-updater-none = " expand-wic-partition"
 IMAGE_INSTALL:remove:qemuarm = "kernel-devicetree"
 IMAGE_INSTALL:remove:qemuarm64 = "kernel-devicetree"
 IMAGE_INSTALL:remove:intel-corei7-64 = "kernel-devicetree"
