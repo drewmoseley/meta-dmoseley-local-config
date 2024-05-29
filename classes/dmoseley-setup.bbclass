@@ -413,6 +413,9 @@ MENDER_ARTIFACT_SIGNING_KEY = "/work/dmoseley/local/mender-artifact-signing-priv
 DISTRO_FEATURES:append:dmoseley-ptest = " ptest "
 EXTRA_IMAGE_FEATURES:append:dmoseley-ptest = " ptest-pkgs "
 
+DISTRO_FEATURES:append = " virtualization "
+IMAGE_INSTALL:append = " docker "
+
 ##### TODO
 #####
 ##### BUILD_REPRODUCIBLE_BINARIES = "1"
