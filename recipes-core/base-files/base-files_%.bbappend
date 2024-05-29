@@ -11,8 +11,3 @@ do_install:append:dmoseley-updater-swupdate() {
     install -d ${D}${sysconfdir}/tmpfiles.d
     echo "d    ${ROOT_HOME}   0700 root root - -" >> ${D}${sysconfdir}/tmpfiles.d/root-persistent-home.conf
 }
-
-do_install:append:dmoseley-updater-none:rpi() {
-    # Setup systemd-growfs
-    sed -i -e 's@\(/dev/root.*\)defaults\(.*\)$@\1x-systemd.growfs\2@' ${D}${sysconfdir}/fstab
-}
