@@ -69,3 +69,12 @@ FILES:${PN}:append:dmoseley-updater-any:dmoseley-persistent-logs = " \
     /${PERSISTENT_DIR_NAME}/log ${systemd_unitdir}/system/var-log.mount \
     ${sysconfdir}/tmpfiles.d/logdir-persistent.conf \
 "
+
+SRC_URI:append:dmoseley-updater-none:dmoseley-systemd = " file://systemd-growfs-root-override.conf "
+# Make sure to expand the rootfs partition.
+# systemd-growfs-root will then expand the filesystem
+do_install:append:dmoseley-updater-none:dmoseley-systemd() {
+    install -d ${D}${sysconfdir}/systemd/system/systemd-growfs-root.service.d
+    install -m 0644 ${WORKDIR}/systemd-growfs-root-override.conf ${D}${sysconfdir}/systemd/system/systemd-growfs-root.service.d/override.conf
+}
+FILES:${PN}:append:dmoseley-updater-none:dmoseley-systemd = " ${sysconfdir}/systemd/system/systemd-growfs-root.service.d/override.conf "

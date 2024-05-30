@@ -204,6 +204,7 @@ IMAGE_INSTALL:remove:genericarm64 = "kernel-devicetree"
 IMAGE_INSTALL:append = " libnss-mdns "
 IMAGE_INSTALL:append = " nano "
 IMAGE_INSTALL:append = " strace "
+IMAGE_INSTALL:append = " parted "
 
 EXTRA_IMAGE_FEATURES:append = " package-management "
 PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
