@@ -416,6 +416,11 @@ EXTRA_IMAGE_FEATURES:append:dmoseley-ptest = " ptest-pkgs "
 DISTRO_FEATURES:append = " virtualization "
 IMAGE_INSTALL:append = " docker "
 
+BB_GENERATE_MIRROR_TARBALLS ?= "0"
+BB_GENERATE_SHALLOW_TARBALLS ?= "0"
+BB_GIT_SHALLOW ?= "1"
+BB_GIT_SHALLOW_DEPTH ?= "1"
+
 ##### TODO
 #####
 ##### BUILD_REPRODUCIBLE_BINARIES = "1"
