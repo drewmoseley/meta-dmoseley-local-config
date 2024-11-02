@@ -96,6 +96,7 @@ def dmoseley_get_mender_bbclass(d):
 inherit ${@dmoseley_get_mender_bbclass(d)}
 
 IMAGE_INSTALL:append:dmoseley-systemd = " systemd-analyze "
+IMAGE_INSTALL:append:dmoseley-networkd = " wpa-supplicant "
 IMAGE_INSTALL:append:dmoseley-connman = " connman connman-client connman-conf "
 IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager "
 IMAGE_INSTALL:append:dmoseley-wifi-connect = " wifi-connect "
@@ -103,8 +104,10 @@ IMAGE_INSTALL:append:dmoseley-wifi-connect = " wifi-connect "
 DISTRO_FEATURES:append:dmoseley-wifi = " wifi "
 # Add wifi for beaglebone since we will use either a bbb wireless or a USB dongle
 MACHINE_FEATURES:append:dmoseley-wifi:beaglebone-yocto = " wifi "
+MACHINE_FEATURES:append:dmoseley-wifi:beaglebone = " wifi "
 IMAGE_INSTALL:append:dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'beaglebone', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
 "
