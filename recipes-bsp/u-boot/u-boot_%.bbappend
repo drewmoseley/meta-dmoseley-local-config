@@ -6,6 +6,7 @@ SRC_URI:append:dmoseley-fastboot = " \
 "
 
 SRC_URI:append:beaglebone-yocto = " \
+    file://0001-ARM-dts-am335x-pocketbeagle-choose-tick-timer.patch \
     file://enable-usb-eth-88179.cfg \
     file://enable-ums-command.cfg \
 "
