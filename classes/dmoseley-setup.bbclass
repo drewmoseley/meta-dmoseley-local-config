@@ -283,7 +283,7 @@ APPEND:append = " net.ifnames=0 "
 BOOTDD_VOLUME_ID:orange-pi-pc = "o-pi-pc"
 
 # Log processing
-VOLATILE_LOG_DIR = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-persistent-logs", "no", "yes", d)}"
+FILESYSTEM_PERMS_TABLES:remove:dmoseley-persistent-logs =  "files/fs-perms-volatile-log.txt"
 
 # Set wpebackend
 PREFERRED_PROVIDER_virtual/wpebackend = "wpebackend-fdo"
