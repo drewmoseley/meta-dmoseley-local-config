@@ -29,7 +29,7 @@ PACKAGECONFIG:remove:dmoseley-networkmanager = " \
 do_install:append:dmoseley-networkmanager() {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-access-point','true','false',d)}; then
         # Default Access Point
-        install -m 0600 ${WORKDIR}/DM_OE_AP.in ${D}${sysconfdir}/NetworkManager/system-connections/DM_OE_AP
+        install -m 0600 ${UNPACKDIR}/DM_OE_AP.in ${D}${sysconfdir}/NetworkManager/system-connections/DM_OE_AP
         sed -i -e 's~@WIFI_IFACE@~${WIFI_IFACE}~g' ${D}${sysconfdir}/NetworkManager/system-connections/DM_OE_AP
     fi
     if ${@bb.utils.contains('PACKAGECONFIG', 'dhclient', 'true', 'false', d)}; then
@@ -38,6 +38,6 @@ do_install:append:dmoseley-networkmanager() {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkmanager','true','false',d)}; then
         # Setup my standard connection profiles
         install -d ${D}${sysconfdir}/NetworkManager/system-connections
-        install -m 0600 ${WORKDIR}/*.nmconnection ${D}${sysconfdir}/NetworkManager/system-connections
+        install -m 0600 ${UNPACKDIR}/*.nmconnection ${D}${sysconfdir}/NetworkManager/system-connections
     fi
 }

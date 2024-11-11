@@ -11,6 +11,6 @@ SRC_URI:append:beaglebone-yocto = " \
     file://enable-ums-command.cfg \
 "
 do_configure:append:beaglebone-yocto() {
-    cat ${WORKDIR}/enable-usb-eth-88179.cfg >> ${B}/.configure                                       
-    cat ${WORKDIR}/enable-ums-command.cfg >> ${B}/.configure                                       
+    cat ${UNPACKDIR}/enable-usb-eth-88179.cfg >> ${B}/.configure                                       
+    cat ${UNPACKDIR}/enable-ums-command.cfg >> ${B}/.configure                                       
 }

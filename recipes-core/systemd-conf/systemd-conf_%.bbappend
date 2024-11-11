@@ -19,9 +19,9 @@ FILES:${PN}:append:dmoseley-setup = " \
 do_install:append:dmoseley-setup () {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd/network
-        install -m 0644 ${WORKDIR}/eth.network ${D}${sysconfdir}/systemd/network
-        install -m 0644 ${WORKDIR}/en.network ${D}${sysconfdir}/systemd/network
-        install -m 0644 ${WORKDIR}/wl.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${UNPACKDIR}/eth.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${UNPACKDIR}/en.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${UNPACKDIR}/wl.network ${D}${sysconfdir}/systemd/network
     fi
 
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','true','false',d)}; then
