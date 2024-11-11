@@ -19,9 +19,9 @@ FILES:${PN}:append:dmoseley-setup = " \
 do_install:append:dmoseley-setup () {
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-networkd','true','false',d)}; then
         install -d ${D}${sysconfdir}/systemd/network
-        install -m 0644 ${WORKDIR}/eth.network ${D}${sysconfdir}/systemd/network
-        install -m 0644 ${WORKDIR}/en.network ${D}${sysconfdir}/systemd/network
-        install -m 0644 ${WORKDIR}/wl.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${UNPACKDIR}/eth.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${UNPACKDIR}/en.network ${D}${sysconfdir}/systemd/network
+        install -m 0644 ${UNPACKDIR}/wl.network ${D}${sysconfdir}/systemd/network
     fi
 
     if ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-localntp','true','false',d)}; then
@@ -59,7 +59,7 @@ SYSTEMD_AUTO_ENABLE = "disable"
 SYSTEMD_AUTO_ENABLE:dmoseley-updater-any:dmoseley-persistent-logs = "enable"
 do_install:append:dmoseley-updater-any:dmoseley-persistent-logs() {
     install -d ${D}${systemd_unitdir}/system
-    install ${WORKDIR}/var-log-${PERSISTENT_DIR_NAME}.mount ${D}${systemd_unitdir}/system/var-log.mount
+    install ${UNPACKDIR}/var-log-${PERSISTENT_DIR_NAME}.mount ${D}${systemd_unitdir}/system/var-log.mount
 
     # Make sure the log directory exists in persistent data partition
     install -d ${D}${sysconfdir}/tmpfiles.d
@@ -75,6 +75,6 @@ SRC_URI:append:dmoseley-updater-none:dmoseley-systemd = " file://systemd-growfs-
 # systemd-growfs-root will then expand the filesystem
 do_install:append:dmoseley-updater-none:dmoseley-systemd() {
     install -d ${D}${sysconfdir}/systemd/system/systemd-growfs-root.service.d
-    install -m 0644 ${WORKDIR}/systemd-growfs-root-override.conf ${D}${sysconfdir}/systemd/system/systemd-growfs-root.service.d/override.conf
+    install -m 0644 ${UNPACKDIR}/systemd-growfs-root-override.conf ${D}${sysconfdir}/systemd/system/systemd-growfs-root.service.d/override.conf
 }
 FILES:${PN}:append:dmoseley-updater-none:dmoseley-systemd = " ${sysconfdir}/systemd/system/systemd-growfs-root.service.d/override.conf "

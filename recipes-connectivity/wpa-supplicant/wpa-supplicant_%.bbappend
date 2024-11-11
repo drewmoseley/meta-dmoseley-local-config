@@ -21,15 +21,15 @@ do_install:append:dmoseley-setup () {
 
             install -d ${D}${sysconfdir}/wpa_supplicant/
             if ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-homenetworks', 'true', 'false', d)}; then
-                install -D -m 600 ${WORKDIR}/wpa_supplicant-dmoseley-home.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-${WIFI_IFACE}.conf
+                install -D -m 600 ${UNPACKDIR}/wpa_supplicant-dmoseley-home.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-${WIFI_IFACE}.conf
             else
-                install -D -m 600 ${WORKDIR}/wpa_supplicant-dmoseley-lab.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-${WIFI_IFACE}.conf
+                install -D -m 600 ${UNPACKDIR}/wpa_supplicant-dmoseley-lab.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-${WIFI_IFACE}.conf
             fi
         fi
     else
         # sysvinit/busybox
         # Setup my standard wpa_supplicant.conf file in /etc
-        install -D -m 600 ${WORKDIR}/wpa_supplicant-dmoseley-lab.conf ${D}${sysconfdir}/wpa_supplicant.conf
+        install -D -m 600 ${UNPACKDIR}/wpa_supplicant-dmoseley-lab.conf ${D}${sysconfdir}/wpa_supplicant.conf
     fi
 }
 

@@ -9,5 +9,5 @@ FILES:${PN}:append:dmoseley-labnetworks = " /var/lib/connman/caribbean-Lab.confi
 
 do_install:append:dmoseley-setup() {
 	install -d -m 0755 ${D}/var/lib/connman
-	install -m 0600 ${WORKDIR}/settings ${WORKDIR}/*.config ${D}/var/lib/connman/
+	install -m 0600 ${S}/settings ${S}/*.config ${D}/var/lib/connman/
 }
