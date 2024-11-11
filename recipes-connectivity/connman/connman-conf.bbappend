@@ -15,5 +15,5 @@ do_install:append:dmoseley-setup() {
 		install -m 0644 ${WORKDIR}/main-ethernet-first.conf ${D}${sysconfdir}/connman/main.conf
 	fi
 	install -d -m 0755 ${D}/var/lib/connman
-	install -m 0600 ${WORKDIR}/settings ${WORKDIR}/*.config ${D}/var/lib/connman/
+	install -m 0600 ${S}/settings ${S}/*.config ${D}/var/lib/connman/
 }

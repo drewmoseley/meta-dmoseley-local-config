@@ -13,6 +13,6 @@ SRC_URI:append:beaglebone-yocto = " \
 # SRC_URI:append:raspberrypi4 = " file://0001-rpi4-Enable-GENET-Ethernet-controller.patch"
 
 do_configure:append:beaglebone-yocto() {
-    cat ${WORKDIR}/enable-usb-eth-88179.cfg >> ${B}/.configure                                       
-    cat ${WORKDIR}/enable-ums-command.cfg >> ${B}/.configure                                       
+    cat ${UNPACKDIR}/enable-usb-eth-88179.cfg >> ${B}/.configure                                       
+    cat ${UNPACKDIR}/enable-ums-command.cfg >> ${B}/.configure                                       
 }

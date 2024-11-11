@@ -18,5 +18,5 @@ SERIAL:dmoseley-fastboot=""
 CMDLINE:append:dmoseley-setup = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
 
 do_compile:prepend:dmoseley-setup() {
-    install -m 644 ${WORKDIR}/${LOGO} ${S}/drivers/video/logo/logo_linux_clut224.ppm
+    install -m 644 ${UNPACKDIR}/${LOGO} ${S}/drivers/video/logo/logo_linux_clut224.ppm
 }
