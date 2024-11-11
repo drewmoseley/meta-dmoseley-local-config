@@ -19,7 +19,6 @@ python() {
         'dmoseley-networkd',             # Use systemd-networkd
         'dmoseley-networkmanager',       # Use networkmanager
         'dmoseley-connman',              # Use connman
-        'dmoseley-wifi-connect',         # Use wifi-connect
         'dmoseley-wifi',                 # Use wifi and install device firmware blobs
         'dmoseley-localntp',             # Use a custom local NTP server
         'dmoseley-access-point',         # Enable access point mode
@@ -57,7 +56,7 @@ python() {
 
     numberOfNetworkManagersConfigured=0
     networkManagersConfigured=""
-    for networkManager in [ "networkd", "networkmanager", "connman", "wifi-connect", "busybox" ]:
+    for networkManager in [ "networkd", "networkmanager", "connman", "busybox" ]:
         if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-" + networkManager, True, False, d):
             numberOfNetworkManagersConfigured += 1
             networkManagersConfigured += " " + networkManager
@@ -99,7 +98,6 @@ IMAGE_INSTALL:append:dmoseley-systemd = " systemd-analyze "
 IMAGE_INSTALL:append:dmoseley-networkd = " wpa-supplicant "
 IMAGE_INSTALL:append:dmoseley-connman = " connman connman-client connman-conf "
 IMAGE_INSTALL:append:dmoseley-networkmanager = " networkmanager "
-IMAGE_INSTALL:append:dmoseley-wifi-connect = " wifi-connect "
 
 DISTRO_FEATURES:append:dmoseley-wifi = " wifi "
 # Add wifi for beaglebone since we will use either a bbb wireless or a USB dongle
