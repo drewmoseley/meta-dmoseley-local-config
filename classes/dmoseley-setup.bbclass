@@ -104,9 +104,9 @@ DISTRO_FEATURES:append:dmoseley-wifi = " wifi "
 MACHINE_FEATURES:append:dmoseley-wifi:beaglebone-yocto = " wifi "
 MACHINE_FEATURES:append:dmoseley-wifi:beaglebone = " wifi "
 IMAGE_INSTALL:append:dmoseley-wifi = " \
-    ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-mt7601u linux-firmware-mt76xxx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'beaglebone', 'linux-firmware-wl18xx kernel-module-wl18xx linux-firmware-mt7601u linux-firmware-mt76xxx linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'beagleplay', 'wlconf wl18xx-fw ', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'beaglebone-yocto', 'linux-firmware-wl18xx kernel-module-wl18xx ti-18xx-wlconf linux-firmware-mt76x2 linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'beaglebone', 'wl18xx-fw wlconf linux-firmware-wlcommon linux-firmware-mt76x2 linux-firmware-ralink linux-firmware-rtl8188 linux-firmware-rtl8192ce linux-firmware-rtl8192cu linux-firmware-rtl8192su', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'beagleplay', 'wl18xx-fw wlconf linux-firmware-wlcommon ', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
 "
