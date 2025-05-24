@@ -209,11 +209,12 @@ IMAGE_INSTALL:remove:genericx86-64 = "kernel-devicetree"
 IMAGE_INSTALL:remove:genericarm64 = "kernel-devicetree"
 IMAGE_INSTALL:append = " libnss-mdns "
 IMAGE_INSTALL:append = " nano "
+IMAGE_INSTALL:append = " picocom "
 IMAGE_INSTALL:append = " strace "
 IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
 
-EXTRA_IMAGE_FEATURES:append = " package-management "
+EXTRA_IMAGE_FEATURES:append = " package-management debug-tweaks"
 PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
@@ -416,7 +417,7 @@ DISTRO_FEATURES:append:dmoseley-ptest = " ptest "
 EXTRA_IMAGE_FEATURES:append:dmoseley-ptest = " ptest-pkgs "
 
 DISTRO_FEATURES:append = " virtualization "
-IMAGE_INSTALL:append = " docker "
+IMAGE_INSTALL:append = " docker ca-certificates "
 
 BB_GENERATE_MIRROR_TARBALLS ?= "0"
 BB_GENERATE_SHALLOW_TARBALLS ?= "0"
