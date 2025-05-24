@@ -213,6 +213,7 @@ IMAGE_INSTALL:append = " picocom "
 IMAGE_INSTALL:append = " strace "
 IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
+IMAGE_INSTALL:append = " uuu "
 
 EXTRA_IMAGE_FEATURES:append = " package-management debug-tweaks"
 PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
