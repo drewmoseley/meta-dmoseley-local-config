@@ -250,15 +250,15 @@ PREFERRED_PROVIDER_u-boot:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/dtb:toradex = "device-tree-overlays"
 DISTROOVERRIDES:append:toradex = ":tdx"
-TORADEX_BSP_VERSION="toradex-bsp-6.2.0"
+TORADEX_BSP_VERSION = "toradex-bsp-6.2.0"
 TEZI_STORAGE_DEVICE:apalis-imx6 = "mmcblk0"
 # Meta-virtualization brings this in but it doesn't work with linux-toradex
-KERNEL_FEATURES:remove:toradex="cfg/virtio.scc"
+KERNEL_FEATURES:remove:toradex = "cfg/virtio.scc"
 WIFI_IFACE:toradex:dmoseley-systemd = "wlp1s0"
 WIFI_IFACE:apalis-imx6 = ""
 WIFI_IFACE:toradex:dmoseley-connman = "mlan0"
 WIFI_IFACE:toradex:dmoseley-networkmanager = "wlp1s0"
-XSERVER_DRIVER:remove:toradex:mx8="xf86-video-imx-vivante"
+XSERVER_DRIVER:remove:toradex:mx8 = "xf86-video-imx-vivante"
 
 # Default for HDMI
 DMOSELEY_DISPLAY_RESOLUTION ?= "1920x1080"
