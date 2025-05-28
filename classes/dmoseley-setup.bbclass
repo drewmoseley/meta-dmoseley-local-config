@@ -213,7 +213,7 @@ IMAGE_INSTALL:append = " picocom "
 IMAGE_INSTALL:append = " strace "
 IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
-IMAGE_INSTALL:append = " uuu "
+IMAGE_INSTALL:append = " uuu dfu-util "
 IMAGE_INSTALL:append = " rsync bzip2 libusb1 "
 
 EXTRA_IMAGE_FEATURES += "package-management"
@@ -431,9 +431,10 @@ BB_GIT_SHALLOW_DEPTH ?= "1"
 inherit extrausers
 PASSWD = "\$5\$4/wE9jXZFsGpfAnm\$WbyvhYsSMQZ0LK/33Zg6fE4muwUNG2n2pzuHuIsrAV0"
 EXTRA_USERS_PARAMS = "\
-    useradd -p '${PASSWD}' dmoseley; \
+    usermod -p '${PASSWD}' -G docker,dialout dmoseley; \
     usermod -p '${PASSWD}' root; \
     "
+IMAGE_INSTALL:append =" dmoseley-files "
 
 ##### TODO
 #####
