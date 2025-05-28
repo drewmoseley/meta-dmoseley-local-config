@@ -214,8 +214,11 @@ IMAGE_INSTALL:append = " strace "
 IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
 IMAGE_INSTALL:append = " uuu "
+IMAGE_INSTALL:append = " rsync bzip2 libusb1 "
 
-EXTRA_IMAGE_FEATURES:append = " package-management debug-tweaks"
+EXTRA_IMAGE_FEATURES += "package-management"
+EXTRA_IMAGE_FEATURES += "allow-root-login post-install-logging"
+
 PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
 
 # Now install all of packagegroup-base which pulls in things from MACHINE_EXTRA_RDEPENDS and
@@ -424,6 +427,13 @@ BB_GENERATE_MIRROR_TARBALLS ?= "0"
 BB_GENERATE_SHALLOW_TARBALLS ?= "0"
 BB_GIT_SHALLOW ?= "1"
 BB_GIT_SHALLOW_DEPTH ?= "1"
+
+inherit extrausers
+PASSWD = "\$5\$4/wE9jXZFsGpfAnm\$WbyvhYsSMQZ0LK/33Zg6fE4muwUNG2n2pzuHuIsrAV0"
+EXTRA_USERS_PARAMS = "\
+    useradd -p '${PASSWD}' dmoseley; \
+    usermod -p '${PASSWD}' root; \
+    "
 
 ##### TODO
 #####
