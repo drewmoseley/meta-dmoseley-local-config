@@ -215,6 +215,7 @@ IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
 IMAGE_INSTALL:append = " uuu dfu-util "
 IMAGE_INSTALL:append = " rsync bzip2 libusb1 "
+IMAGE_INSTALL:append = " lshw "
 
 EXTRA_IMAGE_FEATURES += "package-management"
 EXTRA_IMAGE_FEATURES += "allow-root-login post-install-logging"
