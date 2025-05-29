@@ -30,6 +30,7 @@ python() {
         'dmoseley-passwordless',         # Disable all password based logins; assumes ssh key-based authentication
         'dmoseley-ptest',                # Enable all ptest configs
         'dmoseley-users',                # Enable extra users and passwords
+        'dmoseley-board-farm-controller' # Settings for the board-farm-controller
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
@@ -210,13 +211,14 @@ IMAGE_INSTALL:remove:genericx86-64 = "kernel-devicetree"
 IMAGE_INSTALL:remove:genericarm64 = "kernel-devicetree"
 IMAGE_INSTALL:append = " libnss-mdns "
 IMAGE_INSTALL:append = " nano "
-IMAGE_INSTALL:append = " picocom "
 IMAGE_INSTALL:append = " strace "
 IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
-IMAGE_INSTALL:append = " uuu dfu-util "
-IMAGE_INSTALL:append = " rsync bzip2 libusb1 "
 IMAGE_INSTALL:append = " lshw "
+
+IMAGE_INSTALL:append:dmoseley-board-farm-controller = " picocom "
+IMAGE_INSTALL:append:dmoseley-board-farm-controller = " uuu dfu-util "
+IMAGE_INSTALL:append:dmoseley-board-farm-controller = " rsync bzip2 libusb1 "
 
 EXTRA_IMAGE_FEATURES += "package-management"
 EXTRA_IMAGE_FEATURES += "allow-root-login post-install-logging ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-users', '', 'allow-empty-password empty-root-password', d)}"

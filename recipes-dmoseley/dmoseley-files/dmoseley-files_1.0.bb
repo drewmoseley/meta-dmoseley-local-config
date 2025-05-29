@@ -11,8 +11,7 @@ GROUPADD_PARAM:${PN} = "-g 1000 dmoseley"
 DEPENDS += "rsync-native"
 RDEPENDS:${PN} = "bash sed coreutils udev-extraconf perl"
 
-# The target directory in the final image
-do_install() {
+do_install:append:dmoseley-board-farm-controller() {
 	install -d ${D}/home/dmoseley/tezi
 	rsync -avP --delete /work2/dmoseley/Toradex/Apalis* \
 		  /work2/dmoseley/Toradex/Aquila* \
@@ -24,10 +23,20 @@ do_install() {
 		ln -s /usr/bin/uuu ${dir}/
 		ln -s /usr/bin/dfu-util ${dir}/
 	done
+	for script in "inventory-serial-ports-local" "serial-term-local"; do
+		install -m 0755 ~/SyncThing/mackup/bin/$script ${D}/home/dmoseley/SyncThing/mackup/bin/
+	done
+	install -d ${D}${sysconfdir}/modprobe.d
+	cat > ${D}${sysconfdir}/modprobe.d/boardfarm-misdetected-wlan.conf <<EOF
+blacklist rtl8xxxu
+EOF
 
-	cp ~/.aliases ~/.bash_functions ~/.bashrc ~/.bash_profile ~/.bash_prompt ~/.profile ${D}/home/dmoseley/
+}
+
+do_install() {
 	install -d ${D}/home/dmoseley/SyncThing/mackup/bin
-	for script in "inventory-serial-ports-local" "serial-term-local" "path_fix.pl"; do
+	cp ~/.aliases ~/.bash_functions ~/.bashrc ~/.bash_profile ~/.bash_prompt ~/.profile ${D}/home/dmoseley/
+	for script in "path_fix.pl"; do
 		install -m 0755 ~/SyncThing/mackup/bin/$script ${D}/home/dmoseley/SyncThing/mackup/bin/
 	done
 	install -d -m 700 ${D}/home/dmoseley/.ssh
@@ -36,3 +45,4 @@ do_install() {
 }
 
 FILES:${PN} = "/home/dmoseley"
+FILES:${PN}:append:dmoseley-board-farm-controller = " ${sysconfdir}/modprobe.d/boardfarm-misdetected-wlan.conf"
