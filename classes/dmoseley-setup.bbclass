@@ -1,4 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-updater-${UPDATER} \
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-updater-${UPDATER} dmoseley-users \
                      ${@'' if '${UPDATER}' == 'none' else 'dmoseley-updater-any'}"
 OVERRIDES =. "dmoseley-setup:"
 
@@ -29,6 +29,7 @@ python() {
         'dmoseley-homenetworks',         # Connect to caribbean
         'dmoseley-passwordless',         # Disable all password based logins; assumes ssh key-based authentication
         'dmoseley-ptest',                # Enable all ptest configs
+        'dmoseley-users',                # Enable extra users and passwords
     }
 
     for feature in d.getVar('DMOSELEY_FEATURES').split():
@@ -218,7 +219,7 @@ IMAGE_INSTALL:append = " rsync bzip2 libusb1 "
 IMAGE_INSTALL:append = " lshw "
 
 EXTRA_IMAGE_FEATURES += "package-management"
-EXTRA_IMAGE_FEATURES += "allow-root-login post-install-logging"
+EXTRA_IMAGE_FEATURES += "allow-root-login post-install-logging ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-users', '', 'allow-empty-password empty-root-password', d)}"
 
 PACKAGE_FEED_URIS = "http://192.168.17.41:5678"
 
@@ -430,12 +431,12 @@ BB_GIT_SHALLOW ?= "1"
 BB_GIT_SHALLOW_DEPTH ?= "1"
 
 inherit extrausers
-PASSWD = "\$5\$4/wE9jXZFsGpfAnm\$WbyvhYsSMQZ0LK/33Zg6fE4muwUNG2n2pzuHuIsrAV0"
-EXTRA_USERS_PARAMS = "\
+PASSWD:dmoseley-users = "\$5\$4/wE9jXZFsGpfAnm\$WbyvhYsSMQZ0LK/33Zg6fE4muwUNG2n2pzuHuIsrAV0"
+EXTRA_USERS_PARAMS:dmoseley-users = "\
     usermod -p '${PASSWD}' -G docker,dialout dmoseley; \
     usermod -p '${PASSWD}' root; \
     "
-IMAGE_INSTALL:append =" dmoseley-files "
+IMAGE_INSTALL:append:dmoseley-users =" dmoseley-files "
 
 ##### TODO
 #####
