@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+
+<service-group>
+  <name replace-wildcards="yes">Tezi Server on %h</name>
+
+  <service>
+    <type>_tezi._tcp</type>
+    <port>8000</port>
+    <txt-record>name=Tezi images</txt-record>
+    <txt-record>path=/image_list.json</txt-record>
+  </service>
+</service-group>

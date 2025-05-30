@@ -1,0 +1,15 @@
+{
+    "config_format": 1,
+    "images": [
+        "apalis-imx6/image.json",
+        "apalis-imx8/image.json",
+        "colibri-imx6/image.json",
+        "colibri-imx6ull-emmc/image.json",
+        "colibri-imx6ull/image.json",
+        "colibri-imx7-emmc/image.json",
+        "colibri-imx8x/image.json",
+        "verdin-am62/image.json",
+        "verdin-imx8mm/image.json",
+        "verdin-imx8mp/image.json"
+    ]
+}
