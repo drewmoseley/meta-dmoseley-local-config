@@ -17,6 +17,7 @@ SRC_URI = " \
     file://image_list.json \
     file://tezi.service \
     file://board-farm-misdetected-wlan.conf \
+    file://authorized_keys \
     "
 
 do_install:append:dmoseley-board-farm-controller() {
@@ -51,7 +52,7 @@ do_install() {
 		install -m 0755 ~/SyncThing/mackup/bin/$script ${D}/home/dmoseley/SyncThing/mackup/bin/
 	done
 	install -d -m 700 ${D}/home/dmoseley/.ssh
-	install -m 600 /home/dmoseley/.ssh/id_rsa.pub ${D}/home/dmoseley/.ssh/authorized_keys
+	install -m 600 ${WORKDIR}/authorized_keys ${D}/home/dmoseley/.ssh/authorized_keys
 	chown -R 1000:1000 ${D}/home/dmoseley
 }
 
