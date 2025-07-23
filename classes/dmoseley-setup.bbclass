@@ -111,6 +111,7 @@ IMAGE_INSTALL:append:dmoseley-wifi = " \
     ${@bb.utils.contains('MACHINE', 'beagleplay', 'wl18xx-fw wlconf linux-firmware-wlcommon ', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi0', 'linux-firmware-ralink linux-firmware-rtl8188', '', d)} \
     ${@bb.utils.contains('MACHINE', 'raspberrypi2', 'linux-firmware-rtl8192cu', '', d)} \
+    ${@bb.utils.contains('MACHINE', 'orange-pi-zero', 'xradio-firmware', '', d)} \
 "
 
 DTB_FILES:prepend:beaglebone-yocto = " am335x-boneblack-wireless.dtb am335x-pocketbeagle.dtb "
