@@ -14,7 +14,7 @@ SRC_URI:append:dmoseley-setup = " \
 SRC_URI:append:beaglebone-yocto = " \
     file://usb_eth_drivers_for_rootfs.cfg \
 "
-SERIAL:dmoseley-fastboot=""
+SERIAL:dmoseley-fastboot = ""
 CMDLINE:append:dmoseley-setup = " ${@bb.utils.contains('DMOSELEY_FEATURES','dmoseley-fastboot','quiet vt.global_cursor_default=0','console=tty1',d)} "
 
 do_compile:prepend:dmoseley-setup() {

@@ -308,7 +308,7 @@ EXTRA_USERS_PARAMS:dmoseley-users = "\
     usermod -p '${PASSWD}' -G docker,dialout dmoseley; \
     usermod -p '${PASSWD}' root; \
     "
-IMAGE_INSTALL:append:dmoseley-users =" dmoseley-files "
+IMAGE_INSTALL:append:dmoseley-users = " dmoseley-files "
 
 ##### TODO
 #####

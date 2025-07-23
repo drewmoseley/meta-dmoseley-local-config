@@ -19,7 +19,8 @@ SRC_URI[Linux.sha256sum] = "f863bba022202361d19e5026be0af408d307f78d2dbf2c139fb7
 SRC_URI[Mac.sha256sum] = "62da0bd7e333931fba100823aa50133621c7e6047be0546bc12e29c0ea78a4d8"
 SRC_URI[Windows.sha256sum] = "013ed8bb45e21b971b6b3a5802c5f154733913714bece0b020cb770a809cd206"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 inherit allarch
 
