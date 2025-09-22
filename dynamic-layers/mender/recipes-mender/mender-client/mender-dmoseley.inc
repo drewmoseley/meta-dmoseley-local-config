@@ -1,6 +1,6 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:/work/dmoseley/local:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:${HOME}/SyncThing/local:"
 
-require /work/dmoseley/local/mender-dmoseley-certs.inc
+require ${HOME}/SyncThing/local/mender-dmoseley-certs.inc
 
 SRC_URI:append = " \
      file://artifact-verify-key.pem \

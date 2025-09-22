@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend:dmoseley-networkmanager := "${THISDIR}/files:/work/dmoseley/local/:"
+FILESEXTRAPATHS:prepend:dmoseley-networkmanager := "${THISDIR}/files:${HOME}/SyncThing/local/:"
 
 SRC_URI:append:dmoseley-networkmanager = " \
      ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-access-point', 'file://DM_OE_AP.in', '', d)} \

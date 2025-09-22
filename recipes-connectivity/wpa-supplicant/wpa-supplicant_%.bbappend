@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend:dmoseley-setup := "/work/dmoseley/local:"
+FILESEXTRAPATHS:prepend:dmoseley-setup := "${HOME}/SyncThing/local:"
 
 # Install my custom wpa_supplicant configuration.
 SRC_URI:append:dmoseley-labnetworks:dmoseley-busybox = " \

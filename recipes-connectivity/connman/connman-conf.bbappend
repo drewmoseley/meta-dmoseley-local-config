@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:/work/dmoseley/local:"
+FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:${HOME}/SyncThing/local:"
 
 SRC_URI:append:dmoseley-setup = " file://settings file://main-wifi-first.conf file://main-ethernet-first.conf "
 SRC_URI:append:dmoseley-homenetworks = " file://caribbean.config "
