@@ -47,8 +47,11 @@ do_install:append:dmoseley-board-farm-controller() {
 
 do_install() {
 	install -d ${D}/home/dmoseley/SyncThing/mackup/bin
-	cp ~/.aliases ~/.bash_functions ~/.bashrc ~/.bash_profile ~/.bash_prompt ~/.profile ${D}/home/dmoseley/
-	for script in "path_fix.pl"; do
+	install -d ${D}/home/dmoseley/.config
+
+	cp ~/.aliases ~/.bash_functions ~/.bashrc ~/.bash_profile ~/.profile ${D}/home/dmoseley/
+	cp ~/.config/starship.toml ${D}/home/dmoseley/.config/
+	for script in path_fix.pl find-ssh-key.sh; do
 		install -m 0755 ~/SyncThing/mackup/bin/$script ${D}/home/dmoseley/SyncThing/mackup/bin/
 	done
 	install -d -m 700 ${D}/home/dmoseley/.ssh
