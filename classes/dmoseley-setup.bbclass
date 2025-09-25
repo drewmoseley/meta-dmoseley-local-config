@@ -1,5 +1,4 @@
-DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-updater-${UPDATER} dmoseley-users \
-                     ${@'' if '${UPDATER}' == 'none' else 'dmoseley-updater-any'}"
+DMOSELEY_FEATURES = "dmoseley-setup dmoseley-systemd dmoseley-wifi dmoseley-labnetworks dmoseley-users"
 OVERRIDES =. "dmoseley-setup:"
 
 python() {
@@ -7,12 +6,6 @@ python() {
     # Each one will also define the same string in OVERRIDES.
     dmoseley_local_features = {
         'dmoseley-setup',                # Basic setup -- flag for conditional settings
-        'dmoseley-updater-any',          # Any updater
-        'dmoseley-updater-none',         # No updater
-        'dmoseley-updater-mender',       # Use mender
-        'dmoseley-updater-ostree',       # Use ostree
-        'dmoseley-updater-rauc',         # Use rauc
-        'dmoseley-updater-swupdate',     # Use swupdate
         'dmoseley-busybox',              # Use busybox for system initialization and dev management
         'dmoseley-sysvinit',             # Use sysvinit for system initialization and dev management
         'dmoseley-systemd',              # Use systemd for system initialization and dev management
@@ -47,15 +40,6 @@ python() {
     if (numberOfInitSystemsConfigured != 1):
         bb.fatal("Must specify exactly one init system.")
 
-    numberOfUpdatersConfigured=0
-    updatersConfigured = ""
-    for updater in [ "mender", "swupdate", "rauc", "ostree" ]:
-        if bb.utils.contains('DMOSELEY_FEATURES', "dmoseley-updater-" + updater, True, False, d):
-            numberOfUpdatersConfigured += 1
-            updatersConfigured += " " + updater
-    if (numberOfUpdatersConfigured > 1):
-        bb.fatal("Must specify zero or one updaters: %s." % updatersConfigured)
-
     numberOfNetworkManagersConfigured=0
     networkManagersConfigured=""
     for networkManager in [ "networkd", "networkmanager", "connman", "busybox" ]:
@@ -81,20 +65,6 @@ python() {
 OVERRIDES:prepend = "${@'dmoseley-qemu:' if d.getVar('MACHINE',True).startswith('qemu') else ''}"
 DMOSELEY_FEATURES:remove:dmoseley-qemu = " dmoseley-wifi "
 DISTRO_FEATURES:remove:dmoseley-qemu = " wifi "
-ROOT_HOME:dmoseley-updater-mender = "/data/home/root"
-ROOT_HOME:dmoseley-updater-swupdate = "/media/home/root"
-
-def dmoseley_get_mender_bbclass(d):
-    updater = d.getVar('UPDATER')
-    machine = d.getVar('MACHINE')
-    if updater != "mender":
-        return ""
-    elif machine == "colibri-imx6ull":
-        return "mender-full-ubi"
-    else:
-        return "mender-full"
-
-inherit ${@dmoseley_get_mender_bbclass(d)}
 
 IMAGE_INSTALL:append:dmoseley-systemd = " systemd-analyze "
 IMAGE_INSTALL:append:dmoseley-networkd = " wpa-supplicant "
@@ -125,16 +95,6 @@ require ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-systemd', 'conf/dist
 WIFI_IFACE ?= "wlan0"
 
 # Cleanup FSTYPES
-IMAGE_FSTYPES_APPEND_MENDER = " \
-"
-IMAGE_FSTYPES_REMOVE_MENDER = " \
-    ext4 ext3 \
-    jffs2 jffs2.bz2 jffs2.gz jffs2.xz \
-    sdcard sdcard.gz sdcard.bz2 sdcard.xz \
-    tar tar.bz2 tar.gz tar.xz \
-    wic wic.bz2 wic.gz wic.xz wic.bmap \
-    teziimg sdimg.bz2 uefiimg.bz2 mender.bmap \
-"
 IMAGE_FSTYPES_APPEND_COMMUNITY = " \
     ext4 tar.xz \
     ${@bb.utils.contains("MACHINE", "beaglebone-yocto", "jffs2.bmap", "", d)} \
@@ -147,25 +107,7 @@ IMAGE_FSTYPES_REMOVE_COMMUNITY = " \
     ${@bb.utils.contains("SOC_FAMILY", "rpi", "wic.bz2", "", d)} \
 "
 
-IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", " ${IMAGE_FSTYPES_APPEND_MENDER}", " ${IMAGE_FSTYPES_APPEND_COMMUNITY}", d)} "
-IMAGE_FSTYPES:remove = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", " ${IMAGE_FSTYPES_REMOVE_MENDER}", " ${IMAGE_FSTYPES_REMOVE_COMMUNITY}", d)}"
-
 DMOSELEY_LOCAL_NTP_ADDRESS ??= "192.168.7.41"
-
-# Setup Mender
-MENDER_BOOT_PART_SIZE_MB:rpi ??= "64"
-MENDER_STORAGE_TOTAL_SIZE_MB:qemux86 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB:qemux86-64 ??= "2048"
-MENDER_STORAGE_TOTAL_SIZE_MB:rpi ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB:beaglebone-yocto ??= "1024"
-MENDER_STORAGE_TOTAL_SIZE_MB:genericx86-64 ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB:genericx86 ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB:intel-corei7-64 ??= "4096"
-MENDER_STORAGE_TOTAL_SIZE_MB:minnowboard ??= "3072"
-MENDER_STORAGE_TOTAL_SIZE_MB:colibri-imx6ull = "512"
-MENDER_STORAGE_PEB_SIZE:colibri-imx6ull = "131072"
-MENDER_ARTIFACT_NAME ??= "${YOCTO_BRANCH}-target-image-1.0"
-IMAGE_ROOTFS_SIZE:dmoseley-updater-mender = "1048576"
 
 # Multimedia licensing
 LICENSE_FLAGS_ACCEPTED:append = " commercial "
@@ -185,17 +127,7 @@ VIDEO_CAMERA:rpi = "1"
 # RASPBERRYPI_CAMERA_V3:rpi = "1"
 IMAGE_INSTALL:append:rpi = " libcamera-apps "
 SDIMG_ROOTFS_TYPE:rpi = "ext4"
-_MENDER_BOOTLOADER_DEFAULT:rpi = "mender-uboot"
-_MENDER_IMAGE_TYPE_DEFAULT:rpi = "mender-image-sd"
 LICENSE_FLAGS_ACCEPTED:append:rpi = " synaptics-killswitch "
-MENDER_DTB_NAME_FORCE:raspberrypi0 = "bcm2708-rpi-zero.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi0-wifi = "bcm2708-rpi-zero-w.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi0-2w = "bcm2710-rpi-zero-2.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi0-2w-64 = "broadcom/bcm2710-rpi-zero-2.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi3 = "bcm2710-rpi-3-b-plus.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi3-64 = "broadcom/bcm2710-rpi-3-b-plus.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi4 = "bcm2711-rpi-4-b.dtb"
-MENDER_DTB_NAME_FORCE:raspberrypi4-64 = "broadcom/bcm2711-rpi-4-b.dtb"
 
 # Other packages to install in _all_ images
 IMAGE_INSTALL:append = " kernel-image kernel-modules kernel-devicetree "
@@ -235,9 +167,6 @@ IMAGE_INSTALL:append = " packagegroup-base "
 
 add_dmoseley_data() {
    local buildhost=$(hostname)
-   case $(hostname) in
-        ip-172-30-0-144 ) buildhost="menderBuild";;
-   esac
    cat > ${IMAGE_ROOTFS}${sysconfdir}/yocto-dmoseley-release <<-EOF
 	yocto_image=${IMAGE_BASENAME}
 	yocto_buildhost=$buildhost
@@ -280,7 +209,7 @@ IMAGE_INSTALL:append = " \
 # Check for CVEs
 # inherit cve-check
 
-GRUB_SPLASH_IMAGE_FILE ?= "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "Mender.tga", "Max.tga", d)}"
+GRUB_SPLASH_IMAGE_FILE ?= "Max.tga"
 
 # I'm not sure why this cannot be calculated using bitbake variable inline python syntax
 # but when I do it that way, and SB is not enabled then the expansion is not done and the
@@ -299,20 +228,9 @@ IMAGE_BOOT_FILES:append:intel-corei7-64 = " \
     ${EFI_SECUREBOOT_BOOT_FILES} \
 "
 
-MENDER_FEATURES_ENABLE:append:dmoseley-updater-mender = " mender-persist-systemd-machine-id mender-growfs-data "
-CMDLINE_ROOTFS:remove:dmoseley-updater-mender = "root=/dev/mmcblk0p2"
-CMDLINE_ROOTFS:append:dmoseley-updater-mender = " root=\${mender_kernel_root} "
-
 #
 # Settings for Toradex boards
 #
-
-# We set this varible using this syntax rather than a proper override due to the order of operations.
-# If we use an override, that does not get applied until after the logic in mender-setup-ubi which
-# causes a parse failure. Unfortunately if we end up with more raw NAND boards this logic will
-# need to be beefed up but fortunately that does not seem likely
-MENDER_MTDIDS = "${@bb.utils.contains('MACHINE', 'colibri-imx6ull', 'nand0=gpmi-nand', '', d)}"
-
 DISTROOVERRIDES:append:apalis-imx6 = ":upstream"
 DISTROOVERRIDES:append:colibri-imx6 = ":upstream"
 DISTROOVERRIDES:append:colibri-imx6ull = ":upstream"
@@ -326,34 +244,14 @@ IMX_DEFAULT_BSP:colibri-imx6ull-emmc = "mainline"
 IMX_DEFAULT_BSP:colibri-imx7 = "mainline"
 IMX_DEFAULT_BSP:colibri-imx7-ennc = "mainline"
 OVERRIDES:prepend = "${@'toradex:' if d.getVar('MACHINE',True).startswith('colibri') or d.getVar('MACHINE',True).startswith('apalis') or d.getVar('MACHINE',True).startswith('verdin') else ''}"
-MACHINE_BOOT_FILES:remove:mender-grub:toradex = "boot.scr"
 PREFERRED_PROVIDER_u-boot:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader:toradex = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/dtb:toradex = "device-tree-overlays"
-IMAGE_TYPE_MENDER_TEZI=""
-IMAGE_TYPE_MENDER_TEZI:toradex = "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "image_type_mender_tezi", "", d)}"
-IMAGE_CLASSES:append = " ${IMAGE_TYPE_MENDER_TEZI} "
-IMAGE_FSTYPES:append:toradex = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender_tezi", "", d)}"
 DISTROOVERRIDES:append:toradex = ":tdx"
 TORADEX_BSP_VERSION="toradex-bsp-6.2.0"
-TORADEX_MENDER_CLASS=""
-TORADEX_MENDER_CLASS:toradex="mender-toradex"
-inherit ${@bb.utils.contains('DMOSELEY_FEATURES', 'dmoseley-updater-mender', '${TORADEX_MENDER_CLASS}', '', d)}
-MENDER_STORAGE_DEVICE:apalis-imx6 = "/dev/mmcblk2"
 TEZI_STORAGE_DEVICE:apalis-imx6 = "mmcblk0"
-MENDER_UBOOT_STORAGE_DEVICE:apalis-imx6 = "0"
-MENDER_STORAGE_DEVICE:colibri-imx7-emmc = "/dev/mmcblk0"
-MENDER_UBOOT_STORAGE_DEVICE:colibri-imx7-emmc = "0"
-MENDER_MTDPARTS:colibri-imx6ull = "gpmi-nand:512k(mx6ull-bcb),1536k(u-boot1)ro,1536k(u-boot2)ro,-(ubi)"
 # Meta-virtualization brings this in but it doesn't work with linux-toradex
 KERNEL_FEATURES:remove:toradex="cfg/virtio.scc"
-_MENDER_BOOTLOADER_DEFAULT:toradex = "mender-uboot"
-_MENDER_IMAGE_TYPE_DEFAULT:toradex = "${@bb.utils.contains_any('MACHINE','colibri-imx6ull','mender-image-ubi','mender-image-sd',d)}"
-MENDER_IMAGE_BOOTLOADER_BOOTSECTOR_OFFSET:apalis-imx8 = "0"
-MENDER_BOOT_PART_SIZE_MB:apalis-imx8 = "32"
-OFFSET_SPL_PAYLOAD:apalis-imx8 = ""
-MENDER_STORAGE_DEVICE:apalis-imx8 = "/dev/mmcblk0"
-MENDER_STORAGE_TOTAL_SIZE_MB:apalis-imx8 = "12288"
 WIFI_IFACE:toradex:dmoseley-systemd = "wlp1s0"
 WIFI_IFACE:apalis-imx6 = ""
 WIFI_IFACE:toradex:dmoseley-connman = "mlan0"
@@ -366,36 +264,7 @@ DMOSELEY_DISPLAY_RESOLUTION:colibri-imx7-emmc ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION:rpi ?= "800x480"
 DMOSELEY_DISPLAY_RESOLUTION:intel-corei7-64 ?= "800x600"
 
-# Mender Commercial settings
-IMAGE_INSTALL:append:arm = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL:append:aarch64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender-binary-delta", "", d)}"
-IMAGE_INSTALL:append:x86-64 = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "mender-binary-delta", "", d)}"
-LICENSE_FLAGS_ACCEPTED:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-mender", "commercial_mender-yocto-layer-license", "", d)}"
-SRC_URI:pn-mender-binary-delta = "file:///work2/dmoseley/mender-binary-delta/mender-binary-delta-1.4.1.tar.xz"
-
-
 ACCEPT_FSL_EULA = "1"
-
-# SWUpdate settings
-IMAGE_CLASSES += "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "image_types_zchunk", "", d)}"
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", "swupdate swupdate-www swupdate-progress libubootenv-bin", "", d)}"
-IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-swupdate", " ext4.gz ext4.zck ext4.zck.zckheader ", "", d)} "
-WKS_FILE:rpi:dmoseley-updater-swupdate = "ts-raspberrypi.wks"
-IMAGE_ROOTFS_SIZE:dmoseley-updater-swupdate = "1048576"
-
-# Rauc settings
-DISTRO_FEATURES += "${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "rauc", "", d)}"
-IMAGE_INSTALL:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "rauc rauc-grow-data-part casync", "", d)}"
-IMAGE_FSTYPES:append = " ${@bb.utils.contains("DMOSELEY_FEATURES", "dmoseley-updater-rauc", "ext4", "", d)}"
-WKS_FILE:rpi:dmoseley-updater-rauc = "sdimage-dual-raspberrypi.wks.in"
-RAUC_KEYRING_FILE:dmoseley-updater-rauc = "${HOME}/SyncThing/local/rauc-example-ca/ca.cert.pem"
-RAUC_KEY_FILE:dmoseley-updater-rauc = "${HOME}/SyncThing/local/rauc-example-ca/private/development-1.key.pem"
-RAUC_CERT_FILE:dmoseley-updater-rauc = "${HOME}/SyncThing/local/rauc-example-ca/development-1.cert.pem"
-RAUC_SLOT_rootfs:dmoseley-updater-rauc = "core-image-full-cmdline"
-RAUC_SLOT_rootfs[adaptive] = "block-hash-index"
-RAUC_BUNDLE_FORMAT:dmoseley-updater-rauc = "verity"
-RAUC_CASYNC_BUNDLE:dmoseley-updater-rauc = "1"
-IMAGE_ROOTFS_SIZE:dmoseley-updater-rauc = "1048576"
 
 # Readonly settings
 EXTRA_IMAGE_FEATURES:append:dmoseley-readonly = " read-only-rootfs "
@@ -419,8 +288,6 @@ PREFERRED_PROVIDER_virtual/wpebackend = "wpebackend-fdo"
 PREFERRED_RPROVIDER_virtual/wpebackend = "wpebackend-fdo"
 
 inherit image-buildinfo
-
-MENDER_ARTIFACT_SIGNING_KEY = "${HOME}/SyncThing/local/mender-artifact-signing-private.key"
 
 DISTRO_FEATURES:append:dmoseley-ptest = " ptest "
 EXTRA_IMAGE_FEATURES:append:dmoseley-ptest = " ptest-pkgs "

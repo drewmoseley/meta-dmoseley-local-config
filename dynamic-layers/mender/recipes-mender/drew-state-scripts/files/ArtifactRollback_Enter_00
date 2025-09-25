@@ -1,5 +1,0 @@
-#!/bin/sh
-# Save off the Mender client system logs before rolling back
-
-journalctl -u mender > /data/mender/pre-rollback-mender-client-logs-$(date).txt
-exit 0

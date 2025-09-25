@@ -1,6 +1,6 @@
 FILESEXTRAPATHS:prepend:dmoseley-setup := "${THISDIR}/files:"
 
-LOGO_PREFIX:dmoseley-setup = "${@bb.utils.contains("DISTRO_FEATURES", "mender-client-install", "mender", "Max_Jojo", d)}"
+LOGO_PREFIX:dmoseley-setup = "Max_Jojo"
 LOGO:dmoseley-setup = "${LOGO_PREFIX}_${DMOSELEY_DISPLAY_RESOLUTION}.ppm"
 
 SRC_URI:append:dmoseley-setup = " \
