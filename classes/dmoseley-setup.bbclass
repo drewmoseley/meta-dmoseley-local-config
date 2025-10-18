@@ -148,6 +148,7 @@ IMAGE_INSTALL:append = " strace "
 IMAGE_INSTALL:append = " parted "
 IMAGE_INSTALL:append = " v4l-utils "
 IMAGE_INSTALL:append = " lshw "
+IMAGE_INSTALL:append = " zram "
 
 IMAGE_INSTALL:append:dmoseley-board-farm-controller = " picocom "
 IMAGE_INSTALL:append:dmoseley-board-farm-controller = " uuu dfu-util "
