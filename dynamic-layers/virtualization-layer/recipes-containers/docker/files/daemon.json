@@ -1,0 +1,8 @@
+{
+    "insecure-registries": [
+        "vhost.lab.moseleynet.net:5000"
+    ],
+    "registry-mirrors": [
+        "http://vhost.lab.moseleynet.net:5000"
+    ]
+}
