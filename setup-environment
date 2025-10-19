@@ -1,0 +1,172 @@
+#!/bin/bash
+#
+
+if [ -z "${YOCTO_PROJECT_SETUP_SCRIPT}" ]; then
+    echo "Cannot configure.  No known setup script"
+    exit 0
+fi
+
+if [ -z "${YOCTO_BRANCH}" ]; then
+    echo "Cannot configure.  No known Yocto project branch"
+    exit 0
+fi
+
+set -ue
+
+
+#
+# Run the SETUP_SCRIPT and set MACHINE
+#
+set +u
+. "${YOCTO_PROJECT_SETUP_SCRIPT}" "${YOCTO_PROJECT_BUILD_DIR}"
+set -u
+
+#
+# Add generic layers
+#
+cat >> "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers.conf" <<-"EOF"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-oe"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-initramfs"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-python"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-multimedia"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-networking"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-gnome"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-xfce"
+	BBLAYERS += "${TOPDIR}/../src/meta-openembedded/meta-filesystems"
+	BBLAYERS += "${TOPDIR}/../src/meta-clang"
+	BBLAYERS += "${TOPDIR}/../src/meta-webkit"
+	BBLAYERS += "${TOPDIR}/../src/meta-browser/meta-chromium"
+	BBLAYERS += "${TOPDIR}/../src/meta-virtualization"
+	BBLAYERS += "${TOPDIR}/../src/meta-dmoseley-local-config"
+EOF
+
+#
+# Add branch specific mixin layers
+#
+if [ "${YOCTO_BRANCH}" = "scarthgap" ]; then
+cat >> "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers.conf" <<-"EOF"
+	BBLAYERS += "${TOPDIR}/../src/lts-mixin-scarthgap-rust"
+EOF
+fi
+
+#
+# Add dynamic machine-specific layers
+#
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers-intel.conf" <<-"EOF"
+	INTEL_LAYERS = " \
+	  ${TOPDIR}/../src/meta-intel \
+	"
+	BBLAYERS += "${@'${INTEL_LAYERS}' if '${MACHINE}'.startswith('intel-core') else ''}"
+EOF
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers-beaglebone-ti.conf" <<-"EOF"
+	BEAGLEBONE_TI_LAYERS = " \
+	  ${TOPDIR}/../src/meta-arm/meta-arm-toolchain \
+	  ${TOPDIR}/../src/meta-arm/meta-arm \
+	  ${TOPDIR}/../src/meta-ti/meta-beagle \
+	  ${TOPDIR}/../src/meta-ti/meta-ti-bsp \
+	  ${TOPDIR}/../src/meta-ti/meta-ti-extras \
+	"
+	BBLAYERS += "${@'${BEAGLEBONE_TI_LAYERS}' if '${MACHINE}' == 'beaglebone' else ''}"
+
+	BEAGLEPLAY_TI_LAYERS = " \
+	  ${TOPDIR}/../src/meta-arm/meta-arm-toolchain \
+	  ${TOPDIR}/../src/meta-arm/meta-arm \
+	  ${TOPDIR}/../src/meta-ti/meta-beagle \
+	  ${TOPDIR}/../src/meta-ti/meta-ti-bsp \
+	  ${TOPDIR}/../src/meta-ti/meta-ti-extras \
+	"
+	BBLAYERS += "${@'${BEAGLEPLAY_TI_LAYERS}' if '${MACHINE}' == 'beagleplay' else ''}"
+EOF
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers-sunxi.conf" <<-"EOF"
+	SUNXI_LAYERS = " \
+	  ${TOPDIR}/../src/meta-arm/meta-arm-toolchain \
+	  ${TOPDIR}/../src/meta-arm/meta-arm \
+	  ${TOPDIR}/../src/meta-sunxi \
+	"
+	BBLAYERS += "${@'${SUNXI_LAYERS}' if '${MACHINE}'.startswith('orange-pi') else ''}"
+EOF
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers-riscv.conf" <<-"EOF"
+	RISCV_LAYERS = " \
+	  ${TOPDIR}/../src/meta-riscv \
+	"
+	BBLAYERS += "${@'${RISCV_LAYERS}' if 'riscv' in '${MACHINE}' else ''}"
+	BBLAYERS += "${@'${RISCV_LAYERS}' if '${MACHINE}' == 'freedom-u540' else ''}"
+EOF
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers-rpi.conf" <<-"EOF"
+	RPI_LAYERS = " \
+	  ${TOPDIR}/../src/meta-raspberrypi \
+	"
+	BBLAYERS += "${@'${RPI_LAYERS}' if '${MACHINE}'.startswith('raspberrypi') else ''}"
+	RPI5_LAYERS = " \
+	  ${TOPDIR}/../src/lts-mixin-scarthgap-uboot \
+	"
+	BBLAYERS += "${@'${RPI5_LAYERS}' if '${MACHINE}' == 'raspberrypi5' else ''}"
+EOF
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers-toradex.conf" <<-"EOF"
+	TORADEX_LAYERS = " \
+	  ${TOPDIR}/../src/meta-freescale \
+	  ${TOPDIR}/../src/meta-freescale-distro \
+	  ${TOPDIR}/../src/meta-freescale-3rdparty \
+	  ${TOPDIR}/../src/meta-arm/meta-arm-toolchain \
+	  ${TOPDIR}/../src/meta-arm/meta-arm \
+	  ${TOPDIR}/../src/meta-ti/meta-ti-bsp \
+	"
+	BBLAYERS += "${@'${TORADEX_LAYERS}' if '${MACHINE}'.startswith('colibri') else ''}"
+	BBLAYERS += "${@'${TORADEX_LAYERS}' if '${MACHINE}'.startswith('apalis') else ''}"
+	BBLAYERS += "${@'${TORADEX_LAYERS}' if '${MACHINE}'.startswith('verdin') else ''}"
+EOF
+cat >> "${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers.conf" <<-"EOF"
+
+	#
+	# Machine configs
+	#
+	require conf/bblayers-intel.conf
+	require conf/bblayers-beaglebone-ti.conf
+	require conf/bblayers-sunxi.conf
+	require conf/bblayers-riscv.conf
+	require conf/bblayers-rpi.conf
+	require conf/bblayers-toradex.conf
+EOF
+
+#
+# Replace all layer dirs with relative paths
+#
+for i in ${YOCTO_PROJECT_BUILD_DIR}/conf/bblayers*conf; do
+	sed -i -e "s@${YOCTO_PROJECT_SRC_DIR}@\${TOPDIR}/../src@g" $i
+done
+
+#
+# Setup auto.conf
+#
+cat > "${YOCTO_PROJECT_BUILD_DIR}/conf/auto.conf" <<-EOF
+	DISTRO = "dmoseley-distro"
+
+	# Yocto branch
+	YOCTO_BRANCH = "$YOCTO_BRANCH"
+
+	# Other options for network managers
+	# DMOSELEY_FEATURES:append = " dmoseley-networkd "
+	DMOSELEY_FEATURES:append = " dmoseley-connman "
+	# DMOSELEY_FEATURES:append = " dmoseley-networkmanager "
+	# DMOSELEY_FEATURES:append = " dmoseley-wifi-connect "
+	
+	# Enable readonly mode
+	# DMOSELEY_FEATURES:append = " dmoseley-readonly "
+
+	# Enable ptest
+	# DMOSELEY_FEATURES:append = " dmoseley-ptest "
+
+	# Enable persistent logs
+	# DMOSELEY_FEATURES:append = " dmoseley-persistent-logs "
+
+	# Enable board farm controller build
+	# DMOSELEY_FEATURES:append = " dmoseley-board-farm-controller "
+	# DMOSELEY_FEATURES:append = " dmoseley-networkmanager "
+	# DMOSELEY_FEATURES:remove = " dmoseley-networkd dmoseley-wifi-connect dmoseley-connman "
+
+	# Set BSPDIR for Freescale imx BSP  builds
+	BSPDIR := "\${TOPDIR}/.."
+	EOF
+
+# Setup for Toradex Tezi builds
+echo TDX_MATRIX_BUILD_TIME = \"$(date +'%Y%m%d%H%M%S' -d 20240101)\" >> "${YOCTO_PROJECT_BUILD_DIR}/conf/auto.conf"
